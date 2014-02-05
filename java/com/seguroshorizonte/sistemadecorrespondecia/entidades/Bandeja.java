@@ -28,16 +28,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Bandeja.findAll", query = "SELECT b FROM Bandeja b"),
     @NamedQuery(name = "Bandeja.findByIdban", query = "SELECT b FROM Bandeja b WHERE b.idban = :idban"),
-    @NamedQuery(name = "Bandeja.findByLeidoban", query = "SELECT b FROM Bandeja b WHERE b.leidoban = :leidoban")})
+    @NamedQuery(name = "Bandeja.findByLeidoban", query = "SELECT b FROM Bandeja b WHERE b.leidoban = :leidoban"),
+    @NamedQuery(name = "Bandeja.findByIdusu", query = "SELECT b FROM Bandeja b WHERE b.idusu = :idusu"),
+    @NamedQuery(name = "Bandeja.findByIdgdp", query = "SELECT b FROM Bandeja b WHERE b.idgdp = :idgdp")})
 public class Bandeja implements Serializable {
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "IDUSU")
-    private String idusu;
-    @Size(max = 20)
-    @Column(name = "IDGDP")
-    private String idgdp;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -49,14 +43,20 @@ public class Bandeja implements Serializable {
     @NotNull
     @Column(name = "LEIDOBAN")
     private char leidoban;
-   
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "IDUSU")
+    private String idusu;
+    @Size(max = 20)
+    @Column(name = "IDGDP")
+    private String idgdp;
     @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
     @ManyToOne
     private Paquete idpaq;
     @JoinColumn(name = "IDIBA", referencedColumnName = "IDIBA")
     @ManyToOne(optional = false)
     private Infobandeja idiba;
-   
 
     public Bandeja() {
     }
@@ -65,9 +65,10 @@ public class Bandeja implements Serializable {
         this.idban = idban;
     }
 
-    public Bandeja(String idban, char leidoban) {
+    public Bandeja(String idban, char leidoban, String idusu) {
         this.idban = idban;
         this.leidoban = leidoban;
+        this.idusu = idusu;
     }
 
     public String getIdban() {
@@ -86,7 +87,21 @@ public class Bandeja implements Serializable {
         this.leidoban = leidoban;
     }
 
-   
+    public String getIdusu() {
+        return idusu;
+    }
+
+    public void setIdusu(String idusu) {
+        this.idusu = idusu;
+    }
+
+    public String getIdgdp() {
+        return idgdp;
+    }
+
+    public void setIdgdp(String idgdp) {
+        this.idgdp = idgdp;
+    }
 
     public Paquete getIdpaq() {
         return idpaq;
@@ -103,8 +118,6 @@ public class Bandeja implements Serializable {
     public void setIdiba(Infobandeja idiba) {
         this.idiba = idiba;
     }
-
-   
 
     @Override
     public int hashCode() {
@@ -129,22 +142,6 @@ public class Bandeja implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Bandeja[ idban=" + idban + " ]";
-    }
-
-    public String getIdusu() {
-        return idusu;
-    }
-
-    public void setIdusu(String idusu) {
-        this.idusu = idusu;
-    }
-
-    public String getIdgdp() {
-        return idgdp;
-    }
-
-    public void setIdgdp(String idgdp) {
-        this.idgdp = idgdp;
     }
     
 }

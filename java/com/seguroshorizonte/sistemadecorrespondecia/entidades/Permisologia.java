@@ -5,20 +5,16 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -62,8 +58,6 @@ public class Permisologia implements Serializable {
     @Size(max = 2)
     @Column(name = "DESHABILITARPER")
     private String deshabilitarper;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idper")
-    private Collection<Usuario> usuarioCollection;
 
     public Permisologia() {
     }
@@ -126,15 +120,6 @@ public class Permisologia implements Serializable {
 
     public void setDeshabilitarper(String deshabilitarper) {
         this.deshabilitarper = deshabilitarper;
-    }
-
-    @XmlTransient
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
-    }
-
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
     }
 
     @Override

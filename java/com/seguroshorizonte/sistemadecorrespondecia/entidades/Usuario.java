@@ -5,25 +5,18 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -42,21 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByPasswordusu", query = "SELECT u FROM Usuario u WHERE u.passwordusu = :passwordusu"),
     @NamedQuery(name = "Usuario.findByStatususu", query = "SELECT u FROM Usuario u WHERE u.statususu = :statususu")})
 public class Usuario implements Serializable {
-    @OneToMany(mappedBy = "idusu")
-    private Collection<Seguimiento> seguimientoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Bitacora> bitacoraCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Valija> valijaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")
-    private Collection<Paquete> paqueteCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
-    private Collection<Paquete> paqueteCollection1;
     private static final long serialVersionUID = 1L;
-     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
-    @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", allocationSize = 1)
     @Id
     @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "IDUSU")
     private String idusu;
@@ -91,10 +73,6 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "IDPER", referencedColumnName = "IDPER")
     @ManyToOne(optional = false)
     private Permisologia idper;
-    @OneToMany(mappedBy = "idusu")
-    private Collection<Infobandeja> infobandejaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Bandeja> bandejaCollection;
 
     public Usuario() {
     }
@@ -176,24 +154,6 @@ public class Usuario implements Serializable {
         this.idper = idper;
     }
 
-    @XmlTransient
-    public Collection<Infobandeja> getInfobandejaCollection() {
-        return infobandejaCollection;
-    }
-
-    public void setInfobandejaCollection(Collection<Infobandeja> infobandejaCollection) {
-        this.infobandejaCollection = infobandejaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Bandeja> getBandejaCollection() {
-        return bandejaCollection;
-    }
-
-    public void setBandejaCollection(Collection<Bandeja> bandejaCollection) {
-        this.bandejaCollection = bandejaCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -217,51 +177,6 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario[ idusu=" + idusu + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Seguimiento> getSeguimientoCollection() {
-        return seguimientoCollection;
-    }
-
-    public void setSeguimientoCollection(Collection<Seguimiento> seguimientoCollection) {
-        this.seguimientoCollection = seguimientoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Bitacora> getBitacoraCollection() {
-        return bitacoraCollection;
-    }
-
-    public void setBitacoraCollection(Collection<Bitacora> bitacoraCollection) {
-        this.bitacoraCollection = bitacoraCollection;
-    }
-
-    @XmlTransient
-    public Collection<Valija> getValijaCollection() {
-        return valijaCollection;
-    }
-
-    public void setValijaCollection(Collection<Valija> valijaCollection) {
-        this.valijaCollection = valijaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection() {
-        return paqueteCollection;
-    }
-
-    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
-        this.paqueteCollection = paqueteCollection;
-    }
-
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection1() {
-        return paqueteCollection1;
-    }
-
-    public void setPaqueteCollection1(Collection<Paquete> paqueteCollection1) {
-        this.paqueteCollection1 = paqueteCollection1;
     }
     
 }

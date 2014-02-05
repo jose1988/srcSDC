@@ -9,8 +9,6 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -29,11 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Adjunto.findAll", query = "SELECT a FROM Adjunto a"),
     @NamedQuery(name = "Adjunto.findByIdadj", query = "SELECT a FROM Adjunto a WHERE a.idadj = :idadj"),
     @NamedQuery(name = "Adjunto.findByNombreadj", query = "SELECT a FROM Adjunto a WHERE a.nombreadj = :nombreadj"),
-    @NamedQuery(name = "Adjunto.findByUrladj", query = "SELECT a FROM Adjunto a WHERE a.urladj = :urladj")})
+    @NamedQuery(name = "Adjunto.findByUrladj", query = "SELECT a FROM Adjunto a WHERE a.urladj = :urladj"),
+    @NamedQuery(name = "Adjunto.findByIddoc", query = "SELECT a FROM Adjunto a WHERE a.iddoc = :iddoc")})
 public class Adjunto implements Serializable {
-    @Size(max = 20)
-    @Column(name = "IDDOC")
-    private String iddoc;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -51,10 +47,9 @@ public class Adjunto implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "URLADJ")
     private String urladj;
-    @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
-    @ManyToOne
-    private Paquete idpaq;
-  
+    @Size(max = 20)
+    @Column(name = "IDDOC")
+    private String iddoc;
 
     public Adjunto() {
     }
@@ -93,15 +88,14 @@ public class Adjunto implements Serializable {
         this.urladj = urladj;
     }
 
-    public Paquete getIdpaq() {
-        return idpaq;
+    public String getIddoc() {
+        return iddoc;
     }
 
-    public void setIdpaq(Paquete idpaq) {
-        this.idpaq = idpaq;
+    public void setIddoc(String iddoc) {
+        this.iddoc = iddoc;
     }
 
-  
     @Override
     public int hashCode() {
         int hash = 0;
@@ -125,14 +119,6 @@ public class Adjunto implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Adjunto[ idadj=" + idadj + " ]";
-    }
-
-    public String getIddoc() {
-        return iddoc;
-    }
-
-    public void setIddoc(String iddoc) {
-        this.iddoc = iddoc;
     }
     
 }

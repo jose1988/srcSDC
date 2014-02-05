@@ -70,17 +70,7 @@ public class CorrespondenciaWS {
     public List<Paquete> consultarPaquetesXBandeja(@WebParam(name = "user") String user,@WebParam(name = "ban") String ban) {
         
          List<Paquete> Registro = new  ArrayList<Paquete>();
-        List<Paquete> intermedios = ejbPaquete.findAll();
-        Usuario auxid= new Usuario();
-        auxid.setIdusu(user);
-        auxid=ejbUsuario.find(user);
-         Collection<Bandeja> caux = auxid.getBandejaCollection();
-         for (Bandeja bx : caux){
-             
-             if(bx.getIdiba().getNombreiba().equals(ban)){
-             Registro.add(bx.getIdpaq());
-             }
-         }
+       
          
         return Registro;
     }
