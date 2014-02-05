@@ -8,13 +8,11 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Bandeja;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Documento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Infobandeja;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Permisologia;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.BandejaFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.DocumentoFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.InfobandejaFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PaqueteFacade;
-import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PermisologiaFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.UsuarioFacade;
 
 import java.util.ArrayList;
@@ -182,7 +180,7 @@ public class CorrespondenciaWS {
      *
      * @param idPermisologia string que contiene el id del Permisologia a consultar
      * @return objeto de la entidad Permisologia
-     */
+     *
     @WebMethod(operationName = "consultarPermisologia")
     public Permisologia consultarPermisologia(@WebParam(name = "idUsuario") String idPer) {
         Permisologia Resultado;
@@ -200,7 +198,7 @@ public class CorrespondenciaWS {
      *
      * @param idPermisologia string que contiene el id del Permisologia a consultar
      * @return objeto de la entidad Permisologia
-     */
+     *
     @WebMethod(operationName = "listarPermisologia")
     public List<Permisologia> listarPermisologia() {
          List<Permisologia> Resultado;

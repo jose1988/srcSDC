@@ -70,9 +70,9 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "STATUSUSU")
     private String statususu;
-    @JoinColumn(name = "IDPER", referencedColumnName = "IDPER")
+    @JoinColumn(name = "IDROL", referencedColumnName = "IDROL")
     @ManyToOne(optional = false)
-    private Permisologia idper;
+    private Rol idrol;
 
     public Usuario() {
     }
@@ -146,12 +146,12 @@ public class Usuario implements Serializable {
         this.statususu = statususu;
     }
 
-    public Permisologia getIdper() {
-        return idper;
+    public Rol getIdrol() {
+        return idrol;
     }
 
-    public void setIdper(Permisologia idper) {
-        this.idper = idper;
+    public void setIdrol(Rol idrol) {
+        this.idrol = idrol;
     }
 
     @Override
