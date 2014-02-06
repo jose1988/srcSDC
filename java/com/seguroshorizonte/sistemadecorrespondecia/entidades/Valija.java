@@ -34,10 +34,11 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Valija.findAll", query = "SELECT v FROM Valija v"),
     @NamedQuery(name = "Valija.findByIdval", query = "SELECT v FROM Valija v WHERE v.idval = :idval"),
-    @NamedQuery(name = "Valija.findByOrigenval", query = "SELECT v FROM Valija v WHERE v.origenval = :origenval"),
-    @NamedQuery(name = "Valija.findByDestinoval", query = "SELECT v FROM Valija v WHERE v.destinoval = :destinoval"),
-    @NamedQuery(name = "Valija.findByFechaval", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval"),
     @NamedQuery(name = "Valija.findByAsuntoval", query = "SELECT v FROM Valija v WHERE v.asuntoval = :asuntoval"),
+    @NamedQuery(name = "Valija.findByFechaval", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval"),
+    @NamedQuery(name = "Valija.findByFechaalerval", query = "SELECT v FROM Valija v WHERE v.fechaalerval = :fechaalerval"),
+    @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
+    @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.zoomval = :zoomval"),
     @NamedQuery(name = "Valija.findByIddval", query = "SELECT v FROM Valija v WHERE v.iddval = :iddval")})
 public class Valija implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -47,30 +48,35 @@ public class Valija implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "IDVAL")
     private String idval;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "ORIGENVAL")
-    private String origenval;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "DESTINOVAL")
-    private String destinoval;
+    @Size(max = 20)
+    @Column(name = "ASUNTOVAL")
+    private String asuntoval;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAVAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaval;
+    @Column(name = "FECHAALERVAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaalerval;
     @Size(max = 20)
-    @Column(name = "ASUNTOVAL")
-    private String asuntoval;
+    @Column(name = "STATUSVAL")
+    private String statusval;
+    @Size(max = 20)
+    @Column(name = "ZOOMVAL")
+    private String zoomval;
     @Size(max = 20)
     @Column(name = "IDDVAL")
     private String iddval;
     @JoinColumn(name = "IDUSU", referencedColumnName = "IDUSU")
     @ManyToOne(optional = false)
     private Usuario idusu;
+    @JoinColumn(name = "ORIGENVAL", referencedColumnName = "IDSED")
+    @ManyToOne(optional = false)
+    private Sede origenval;
+    @JoinColumn(name = "DESTINOVAL", referencedColumnName = "IDSED")
+    @ManyToOne(optional = false)
+    private Sede destinoval;
     @OneToMany(mappedBy = "idval")
     private Collection<Paquete> paqueteCollection;
 
@@ -81,10 +87,8 @@ public class Valija implements Serializable {
         this.idval = idval;
     }
 
-    public Valija(String idval, String origenval, String destinoval, Date fechaval) {
+    public Valija(String idval, Date fechaval) {
         this.idval = idval;
-        this.origenval = origenval;
-        this.destinoval = destinoval;
         this.fechaval = fechaval;
     }
 
@@ -96,20 +100,12 @@ public class Valija implements Serializable {
         this.idval = idval;
     }
 
-    public String getOrigenval() {
-        return origenval;
+    public String getAsuntoval() {
+        return asuntoval;
     }
 
-    public void setOrigenval(String origenval) {
-        this.origenval = origenval;
-    }
-
-    public String getDestinoval() {
-        return destinoval;
-    }
-
-    public void setDestinoval(String destinoval) {
-        this.destinoval = destinoval;
+    public void setAsuntoval(String asuntoval) {
+        this.asuntoval = asuntoval;
     }
 
     public Date getFechaval() {
@@ -120,12 +116,28 @@ public class Valija implements Serializable {
         this.fechaval = fechaval;
     }
 
-    public String getAsuntoval() {
-        return asuntoval;
+    public Date getFechaalerval() {
+        return fechaalerval;
     }
 
-    public void setAsuntoval(String asuntoval) {
-        this.asuntoval = asuntoval;
+    public void setFechaalerval(Date fechaalerval) {
+        this.fechaalerval = fechaalerval;
+    }
+
+    public String getStatusval() {
+        return statusval;
+    }
+
+    public void setStatusval(String statusval) {
+        this.statusval = statusval;
+    }
+
+    public String getZoomval() {
+        return zoomval;
+    }
+
+    public void setZoomval(String zoomval) {
+        this.zoomval = zoomval;
     }
 
     public String getIddval() {
@@ -142,6 +154,22 @@ public class Valija implements Serializable {
 
     public void setIdusu(Usuario idusu) {
         this.idusu = idusu;
+    }
+
+    public Sede getOrigenval() {
+        return origenval;
+    }
+
+    public void setOrigenval(Sede origenval) {
+        this.origenval = origenval;
+    }
+
+    public Sede getDestinoval() {
+        return destinoval;
+    }
+
+    public void setDestinoval(Sede destinoval) {
+        this.destinoval = destinoval;
     }
 
     @XmlTransient

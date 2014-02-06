@@ -1,9 +1,9 @@
 package com.seguroshorizonte.sistemadecorrespondecia.controller;
 
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Prioridad;
 import com.seguroshorizonte.sistemadecorrespondecia.controller.util.JsfUtil;
 import com.seguroshorizonte.sistemadecorrespondecia.controller.util.PaginationHelper;
-import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.SeguimientoFacade;
+import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PrioridadFacade;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -18,29 +18,29 @@ import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 
-@ManagedBean(name = "seguimientoController")
+@ManagedBean(name = "prioridadController")
 @SessionScoped
-public class SeguimientoController implements Serializable {
+public class PrioridadController implements Serializable {
 
-    private Seguimiento current;
+    private Prioridad current;
     private DataModel items = null;
     @EJB
-    private com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.SeguimientoFacade ejbFacade;
+    private com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PrioridadFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
-    public SeguimientoController() {
+    public PrioridadController() {
     }
 
-    public Seguimiento getSelected() {
+    public Prioridad getSelected() {
         if (current == null) {
-            current = new Seguimiento();
+            current = new Prioridad();
             selectedItemIndex = -1;
         }
         return current;
     }
 
-    private SeguimientoFacade getFacade() {
+    private PrioridadFacade getFacade() {
         return ejbFacade;
     }
 
@@ -67,13 +67,13 @@ public class SeguimientoController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Seguimiento) getItems().getRowData();
+        current = (Prioridad) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View";
     }
 
     public String prepareCreate() {
-        current = new Seguimiento();
+        current = new Prioridad();
         selectedItemIndex = -1;
         return "Create";
     }
@@ -81,7 +81,7 @@ public class SeguimientoController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("SeguimientoCreated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PrioridadCreated"));
             return prepareCreate();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -90,7 +90,7 @@ public class SeguimientoController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Seguimiento) getItems().getRowData();
+        current = (Prioridad) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit";
     }
@@ -98,7 +98,7 @@ public class SeguimientoController implements Serializable {
     public String update() {
         try {
             getFacade().edit(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("SeguimientoUpdated"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PrioridadUpdated"));
             return "View";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -107,7 +107,7 @@ public class SeguimientoController implements Serializable {
     }
 
     public String destroy() {
-        current = (Seguimiento) getItems().getRowData();
+        current = (Prioridad) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -131,7 +131,7 @@ public class SeguimientoController implements Serializable {
     private void performDestroy() {
         try {
             getFacade().remove(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("SeguimientoDeleted"));
+            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("PrioridadDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
         }
@@ -187,15 +187,15 @@ public class SeguimientoController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = Seguimiento.class)
-    public static class SeguimientoControllerConverter implements Converter {
+    @FacesConverter(forClass = Prioridad.class)
+    public static class PrioridadControllerConverter implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if (value == null || value.length() == 0) {
                 return null;
             }
-            SeguimientoController controller = (SeguimientoController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "seguimientoController");
+            PrioridadController controller = (PrioridadController) facesContext.getApplication().getELResolver().
+                    getValue(facesContext.getELContext(), null, "prioridadController");
             return controller.ejbFacade.find(getKey(value));
         }
 
@@ -215,11 +215,11 @@ public class SeguimientoController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Seguimiento) {
-                Seguimiento o = (Seguimiento) object;
-                return getStringKey(o.getIdseg());
+            if (object instanceof Prioridad) {
+                Prioridad o = (Prioridad) object;
+                return getStringKey(o.getIdpri());
             } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Seguimiento.class.getName());
+                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Prioridad.class.getName());
             }
         }
     }

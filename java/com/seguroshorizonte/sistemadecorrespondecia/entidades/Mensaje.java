@@ -32,8 +32,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Mensaje.findByNombremen", query = "SELECT m FROM Mensaje m WHERE m.nombremen = :nombremen"),
     @NamedQuery(name = "Mensaje.findByDescripcionmen", query = "SELECT m FROM Mensaje m WHERE m.descripcionmen = :descripcionmen")})
 public class Mensaje implements Serializable {
-    @OneToMany(mappedBy = "idmen")
-    private Collection<Paquete> paqueteCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -51,6 +49,8 @@ public class Mensaje implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "DESCRIPCIONMEN")
     private String descripcionmen;
+    @OneToMany(mappedBy = "idmen")
+    private Collection<Paquete> paqueteCollection;
 
     public Mensaje() {
     }
@@ -89,6 +89,15 @@ public class Mensaje implements Serializable {
         this.descripcionmen = descripcionmen;
     }
 
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection() {
+        return paqueteCollection;
+    }
+
+    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
+        this.paqueteCollection = paqueteCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -112,15 +121,6 @@ public class Mensaje implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Mensaje[ idmen=" + idmen + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection() {
-        return paqueteCollection;
-    }
-
-    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
-        this.paqueteCollection = paqueteCollection;
     }
     
 }

@@ -37,14 +37,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByCorreousu", query = "SELECT u FROM Usuario u WHERE u.correousu = :correousu"),
     @NamedQuery(name = "Usuario.findByUserusu", query = "SELECT u FROM Usuario u WHERE u.userusu = :userusu"),
     @NamedQuery(name = "Usuario.findByPasswordusu", query = "SELECT u FROM Usuario u WHERE u.passwordusu = :passwordusu"),
-    @NamedQuery(name = "Usuario.findByStatususu", query = "SELECT u FROM Usuario u WHERE u.statususu = :statususu")})
+    @NamedQuery(name = "Usuario.findByStatususu", query = "SELECT u FROM Usuario u WHERE u.statususu = :statususu"),
+    @NamedQuery(name = "Usuario.findByTelefonousu", query = "SELECT u FROM Usuario u WHERE u.telefonousu = :telefonousu"),
+    @NamedQuery(name = "Usuario.findByTelefono2usu", query = "SELECT u FROM Usuario u WHERE u.telefono2usu = :telefono2usu"),
+    @NamedQuery(name = "Usuario.findByDireccionusu", query = "SELECT u FROM Usuario u WHERE u.direccionusu = :direccionusu"),
+    @NamedQuery(name = "Usuario.findByDireccion2usu", query = "SELECT u FROM Usuario u WHERE u.direccion2usu = :direccion2usu")})
 public class Usuario implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Valija> valijaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")
-    private Collection<Paquete> paqueteCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
-    private Collection<Paquete> paqueteCollection1;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -80,9 +78,34 @@ public class Usuario implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "STATUSUSU")
     private String statususu;
+    @Size(max = 20)
+    @Column(name = "TELEFONOUSU")
+    private String telefonousu;
+    @Size(max = 20)
+    @Column(name = "TELEFONO2USU")
+    private String telefono2usu;
+    @Size(max = 2500)
+    @Column(name = "DIRECCIONUSU")
+    private String direccionusu;
+    @Size(max = 2500)
+    @Column(name = "DIRECCION2USU")
+    private String direccion2usu;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
+    private Collection<Seguimiento> seguimientoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
+    private Collection<Valija> valijaCollection;
+    @JoinColumn(name = "IDSED", referencedColumnName = "IDSED")
+    @ManyToOne
+    private Sede idsed;
     @JoinColumn(name = "IDROL", referencedColumnName = "IDROL")
     @ManyToOne(optional = false)
     private Rol idrol;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
+    private Collection<Bitacora> bitacoraCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
+    private Collection<Paquete> paqueteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")
+    private Collection<Paquete> paqueteCollection1;
 
     public Usuario() {
     }
@@ -156,12 +179,97 @@ public class Usuario implements Serializable {
         this.statususu = statususu;
     }
 
+    public String getTelefonousu() {
+        return telefonousu;
+    }
+
+    public void setTelefonousu(String telefonousu) {
+        this.telefonousu = telefonousu;
+    }
+
+    public String getTelefono2usu() {
+        return telefono2usu;
+    }
+
+    public void setTelefono2usu(String telefono2usu) {
+        this.telefono2usu = telefono2usu;
+    }
+
+    public String getDireccionusu() {
+        return direccionusu;
+    }
+
+    public void setDireccionusu(String direccionusu) {
+        this.direccionusu = direccionusu;
+    }
+
+    public String getDireccion2usu() {
+        return direccion2usu;
+    }
+
+    public void setDireccion2usu(String direccion2usu) {
+        this.direccion2usu = direccion2usu;
+    }
+
+    @XmlTransient
+    public Collection<Seguimiento> getSeguimientoCollection() {
+        return seguimientoCollection;
+    }
+
+    public void setSeguimientoCollection(Collection<Seguimiento> seguimientoCollection) {
+        this.seguimientoCollection = seguimientoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Valija> getValijaCollection() {
+        return valijaCollection;
+    }
+
+    public void setValijaCollection(Collection<Valija> valijaCollection) {
+        this.valijaCollection = valijaCollection;
+    }
+
+    public Sede getIdsed() {
+        return idsed;
+    }
+
+    public void setIdsed(Sede idsed) {
+        this.idsed = idsed;
+    }
+
     public Rol getIdrol() {
         return idrol;
     }
 
     public void setIdrol(Rol idrol) {
         this.idrol = idrol;
+    }
+
+    @XmlTransient
+    public Collection<Bitacora> getBitacoraCollection() {
+        return bitacoraCollection;
+    }
+
+    public void setBitacoraCollection(Collection<Bitacora> bitacoraCollection) {
+        this.bitacoraCollection = bitacoraCollection;
+    }
+
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection() {
+        return paqueteCollection;
+    }
+
+    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
+        this.paqueteCollection = paqueteCollection;
+    }
+
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection1() {
+        return paqueteCollection1;
+    }
+
+    public void setPaqueteCollection1(Collection<Paquete> paqueteCollection1) {
+        this.paqueteCollection1 = paqueteCollection1;
     }
 
     @Override
@@ -187,33 +295,6 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario[ idusu=" + idusu + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Valija> getValijaCollection() {
-        return valijaCollection;
-    }
-
-    public void setValijaCollection(Collection<Valija> valijaCollection) {
-        this.valijaCollection = valijaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection() {
-        return paqueteCollection;
-    }
-
-    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
-        this.paqueteCollection = paqueteCollection;
-    }
-
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection1() {
-        return paqueteCollection1;
-    }
-
-    public void setPaqueteCollection1(Collection<Paquete> paqueteCollection1) {
-        this.paqueteCollection1 = paqueteCollection1;
     }
     
 }

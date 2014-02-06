@@ -9,6 +9,8 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -50,6 +52,9 @@ public class Adjunto implements Serializable {
     @Size(max = 20)
     @Column(name = "IDDOC")
     private String iddoc;
+    @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
+    @ManyToOne
+    private Paquete idpaq;
 
     public Adjunto() {
     }
@@ -94,6 +99,14 @@ public class Adjunto implements Serializable {
 
     public void setIddoc(String iddoc) {
         this.iddoc = iddoc;
+    }
+
+    public Paquete getIdpaq() {
+        return idpaq;
+    }
+
+    public void setIdpaq(Paquete idpaq) {
+        this.idpaq = idpaq;
     }
 
     @Override

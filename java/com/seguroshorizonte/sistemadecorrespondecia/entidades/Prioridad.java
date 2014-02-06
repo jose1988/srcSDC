@@ -32,8 +32,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Prioridad.findByNombrepri", query = "SELECT p FROM Prioridad p WHERE p.nombrepri = :nombrepri"),
     @NamedQuery(name = "Prioridad.findByDescripcionpri", query = "SELECT p FROM Prioridad p WHERE p.descripcionpri = :descripcionpri")})
 public class Prioridad implements Serializable {
-    @OneToMany(mappedBy = "idpri")
-    private Collection<Paquete> paqueteCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -49,6 +47,8 @@ public class Prioridad implements Serializable {
     @Size(max = 20)
     @Column(name = "DESCRIPCIONPRI")
     private String descripcionpri;
+    @OneToMany(mappedBy = "idpri")
+    private Collection<Paquete> paqueteCollection;
 
     public Prioridad() {
     }
@@ -86,6 +86,15 @@ public class Prioridad implements Serializable {
         this.descripcionpri = descripcionpri;
     }
 
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection() {
+        return paqueteCollection;
+    }
+
+    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
+        this.paqueteCollection = paqueteCollection;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -109,15 +118,6 @@ public class Prioridad implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Prioridad[ idpri=" + idpri + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection() {
-        return paqueteCollection;
-    }
-
-    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
-        this.paqueteCollection = paqueteCollection;
     }
     
 }

@@ -4,7 +4,7 @@
  */
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  * @author Pangea
  */
 @Stateless
-public class PaqueteFacade extends AbstractFacade<Paquete> {
+public class SedeFacade extends AbstractFacade<Sede> {
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -23,8 +23,8 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         return em;
     }
 
-    public PaqueteFacade() {
-        super(Paquete.class);
+    public SedeFacade() {
+        super(Sede.class);
     }
     
 }

@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,47 +30,66 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Seguimiento.findAll", query = "SELECT s FROM Seguimiento s"),
-    @NamedQuery(name = "Seguimiento.findByIdpaq", query = "SELECT s FROM Seguimiento s WHERE s.idpaq = :idpaq"),
-    @NamedQuery(name = "Seguimiento.findByIdrol", query = "SELECT s FROM Seguimiento s WHERE s.idrol = :idrol")})
+    @NamedQuery(name = "Seguimiento.findByIdseg", query = "SELECT s FROM Seguimiento s WHERE s.idseg = :idseg"),
+    @NamedQuery(name = "Seguimiento.findByFechaseg", query = "SELECT s FROM Seguimiento s WHERE s.fechaseg = :fechaseg"),
+    @NamedQuery(name = "Seguimiento.findByStatusseg", query = "SELECT s FROM Seguimiento s WHERE s.statusseg = :statusseg")})
 public class Seguimiento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
-    @Column(name = "IDPAQ")
-    private String idpaq;
+    @Column(name = "IDSEG")
+    private String idseg;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "FECHASEG")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fechaseg;
     @Size(max = 20)
-    @Column(name = "IDROL")
-    private String idrol;
+    @Column(name = "STATUSSEG")
+    private String statusseg;
     @JoinColumn(name = "IDUSU", referencedColumnName = "IDUSU")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Usuario idusu;
-    @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Paquete paquete;
+    @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
+    @ManyToOne(optional = false)
+    private Paquete idpaq;
 
     public Seguimiento() {
     }
 
-    public Seguimiento(String idpaq) {
-        this.idpaq = idpaq;
+    public Seguimiento(String idseg) {
+        this.idseg = idseg;
     }
 
-    public String getIdpaq() {
-        return idpaq;
+    public Seguimiento(String idseg, Date fechaseg) {
+        this.idseg = idseg;
+        this.fechaseg = fechaseg;
     }
 
-    public void setIdpaq(String idpaq) {
-        this.idpaq = idpaq;
+    public String getIdseg() {
+        return idseg;
     }
 
-    public String getIdrol() {
-        return idrol;
+    public void setIdseg(String idseg) {
+        this.idseg = idseg;
     }
 
-    public void setIdrol(String idrol) {
-        this.idrol = idrol;
+    public Date getFechaseg() {
+        return fechaseg;
+    }
+
+    public void setFechaseg(Date fechaseg) {
+        this.fechaseg = fechaseg;
+    }
+
+    public String getStatusseg() {
+        return statusseg;
+    }
+
+    public void setStatusseg(String statusseg) {
+        this.statusseg = statusseg;
     }
 
     public Usuario getIdusu() {
@@ -79,18 +100,18 @@ public class Seguimiento implements Serializable {
         this.idusu = idusu;
     }
 
-    public Paquete getPaquete() {
-        return paquete;
+    public Paquete getIdpaq() {
+        return idpaq;
     }
 
-    public void setPaquete(Paquete paquete) {
-        this.paquete = paquete;
+    public void setIdpaq(Paquete idpaq) {
+        this.idpaq = idpaq;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idpaq != null ? idpaq.hashCode() : 0);
+        hash += (idseg != null ? idseg.hashCode() : 0);
         return hash;
     }
 
@@ -101,7 +122,7 @@ public class Seguimiento implements Serializable {
             return false;
         }
         Seguimiento other = (Seguimiento) object;
-        if ((this.idpaq == null && other.idpaq != null) || (this.idpaq != null && !this.idpaq.equals(other.idpaq))) {
+        if ((this.idseg == null && other.idseg != null) || (this.idseg != null && !this.idseg.equals(other.idseg))) {
             return false;
         }
         return true;
@@ -109,7 +130,7 @@ public class Seguimiento implements Serializable {
 
     @Override
     public String toString() {
-        return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento[ idpaq=" + idpaq + " ]";
+        return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento[ idseg=" + idseg + " ]";
     }
     
 }
