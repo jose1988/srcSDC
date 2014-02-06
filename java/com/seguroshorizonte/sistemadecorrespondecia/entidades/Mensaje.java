@@ -5,16 +5,19 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -29,6 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Mensaje.findByNombremen", query = "SELECT m FROM Mensaje m WHERE m.nombremen = :nombremen"),
     @NamedQuery(name = "Mensaje.findByDescripcionmen", query = "SELECT m FROM Mensaje m WHERE m.descripcionmen = :descripcionmen")})
 public class Mensaje implements Serializable {
+    @OneToMany(mappedBy = "idmen")
+    private Collection<Paquete> paqueteCollection;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -107,6 +112,15 @@ public class Mensaje implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Mensaje[ idmen=" + idmen + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection() {
+        return paqueteCollection;
+    }
+
+    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
+        this.paqueteCollection = paqueteCollection;
     }
     
 }

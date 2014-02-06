@@ -5,7 +5,9 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -13,10 +15,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -35,6 +39,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Usuario.findByPasswordusu", query = "SELECT u FROM Usuario u WHERE u.passwordusu = :passwordusu"),
     @NamedQuery(name = "Usuario.findByStatususu", query = "SELECT u FROM Usuario u WHERE u.statususu = :statususu")})
 public class Usuario implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
+    private Collection<Valija> valijaCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")
+    private Collection<Paquete> paqueteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
+    private Collection<Paquete> paqueteCollection1;
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -177,6 +187,33 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario[ idusu=" + idusu + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Valija> getValijaCollection() {
+        return valijaCollection;
+    }
+
+    public void setValijaCollection(Collection<Valija> valijaCollection) {
+        this.valijaCollection = valijaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection() {
+        return paqueteCollection;
+    }
+
+    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
+        this.paqueteCollection = paqueteCollection;
+    }
+
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection1() {
+        return paqueteCollection1;
+    }
+
+    public void setPaqueteCollection1(Collection<Paquete> paqueteCollection1) {
+        this.paqueteCollection1 = paqueteCollection1;
     }
     
 }

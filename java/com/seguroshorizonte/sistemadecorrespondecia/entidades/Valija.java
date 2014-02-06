@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -14,12 +15,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -68,6 +71,8 @@ public class Valija implements Serializable {
     @JoinColumn(name = "IDUSU", referencedColumnName = "IDUSU")
     @ManyToOne(optional = false)
     private Usuario idusu;
+    @OneToMany(mappedBy = "idval")
+    private Collection<Paquete> paqueteCollection;
 
     public Valija() {
     }
@@ -137,6 +142,15 @@ public class Valija implements Serializable {
 
     public void setIdusu(Usuario idusu) {
         this.idusu = idusu;
+    }
+
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection() {
+        return paqueteCollection;
+    }
+
+    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
+        this.paqueteCollection = paqueteCollection;
     }
 
     @Override

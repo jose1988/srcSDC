@@ -39,8 +39,7 @@ public class CorrespondenciaWS {
     private PaqueteFacade ejbPaquete;
     @EJB
     private BandejaFacade ejbBandeja;
-     @EJB
-    private PermisologiaFacade ejbPermisologia;
+    
     @EJB
     private DocumentoFacade ejbDocumento;
    
