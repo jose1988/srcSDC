@@ -32,7 +32,6 @@ public class mariela {
     @EJB
     UsuarioFacade usuarioFacade;
 
-
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
         return "Hello " + txt + " !";
@@ -210,22 +209,44 @@ public class mariela {
         return Alerta;
     }
 
-    @WebMethod(operationName = "paquetesXFechaAlerta")
-    public List<Paquete> paquetesXFechaAlerta() {
+    @WebMethod(operationName = "paquetesXFechaAlertaXUsuarioDestino")
+    public List<Paquete> paquetesXFechaAlertaXUsuarioDestino(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
         List<Paquete> Resultado = null;
         try {
-            Resultado = paqueteFacade.consultarPaqueteXFechaAlerta();
+            Resultado = paqueteFacade.consultarPaqueteXAlertaXUsuarioDestino(registroUsuario);
         } catch (Exception e) {
             return null;
         }
         return Resultado;
     }
 
-    @WebMethod(operationName = "paquetesXFechaVencimiento")
-    public List<Paquete> paquetesXFechaVencimiento() {
+    @WebMethod(operationName = "paquetesXFechaAlertaXUsuarioOrigen")
+    public List<Paquete> paquetesXFechaAlertaXUsuarioOrigen(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
         List<Paquete> Resultado = null;
         try {
-            Resultado = paqueteFacade.consultarPaqueteXFechaVencimiento();
+            Resultado = paqueteFacade.consultarPaqueteXAlertaXUsuarioOrigen(registroUsuario);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "paquetesXFechaVencimientoXUsuarioOrigen")
+    public List<Paquete> paquetesXFechaVencimientoXUsuarioOrigen(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
+        List<Paquete> Resultado = null;
+        try {
+            Resultado = paqueteFacade.consultarPaqueteXFechaVencimientoXOrigen(registroUsuario);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "paquetesXFechaVencimientoXUsuarioDestino")
+    public List<Paquete> paquetesXFechaVencimientoXUsuarioDestino(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
+        List<Paquete> Resultado = null;
+        try {
+            Resultado = paqueteFacade.consultarPaqueteXFechaVencimientoXDestino(registroUsuario);
         } catch (Exception e) {
             return null;
         }
