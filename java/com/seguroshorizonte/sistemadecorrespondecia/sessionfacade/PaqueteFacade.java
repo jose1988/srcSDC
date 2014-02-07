@@ -6,6 +6,8 @@ package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -48,14 +50,34 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
     public List<Paquete> consultarPaqueteXFechaAlerta() {
         List<Paquete> Resultado;
-        Query consulta = em.createNamedQuery("Paquete.findByFechaapaq").setParameter("fechaapaq", new Date());
+        Date fecha = new Date();
+        Calendar cal = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal.setTime(fecha);
+        System.out.print(cal);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        fecha = cal.getTime();
+        Query consulta = em.createNamedQuery("Paquete.findByFechaapaq").setParameter("fechaapaq", fecha);
         Resultado = consulta.getResultList();
         return Resultado;
     }
 
     public List<Paquete> consultarPaqueteXFechaVencimiento() {
         List<Paquete> Resultado;
-        Query consulta = em.createNamedQuery("Paquete.findByVencimiento").setParameter("fechaenviopaq", new Date());
+        Date fecha = new Date();
+        Calendar cal = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal.setTime(fecha);
+        System.out.print(cal);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        fecha = cal.getTime();
+        Query consulta = em.createNamedQuery("Paquete.findByVencimiento").setParameter("fechaenviopaq", fecha);
         Resultado = consulta.getResultList();
         return Resultado;
     }

@@ -31,8 +31,7 @@ public class mariela {
     PaqueteFacade paqueteFacade;
     @EJB
     UsuarioFacade usuarioFacade;
-    @EJB
-    ValijaFacade valijaFacade;
+
 
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
@@ -86,7 +85,7 @@ public class mariela {
                     }
                 }
             }//Caso  Receptor nivel 1 Destino o Caso  Receptor nivel 3 Destino
-            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("6") == 0 || registroUsuario.getIdrol().getIdrol().toString().compareTo("7") == 0) {
+            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("6") == 0 || registroUsuario.getIdrol().getIdrol().toString().compareTo("8") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                     if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().toString().compareTo("7") == 0) {
                         Resultado = 1;
