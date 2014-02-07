@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -36,7 +37,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByApellidousu", query = "SELECT u FROM Usuario u WHERE u.apellidousu = :apellidousu"),
     @NamedQuery(name = "Usuario.findByCorreousu", query = "SELECT u FROM Usuario u WHERE u.correousu = :correousu"),
     @NamedQuery(name = "Usuario.findByUserusu", query = "SELECT u FROM Usuario u WHERE u.userusu = :userusu"),
-    @NamedQuery(name = "Usuario.findByPasswordusu", query = "SELECT u FROM Usuario u WHERE u.passwordusu = :passwordusu"),
     @NamedQuery(name = "Usuario.findByStatususu", query = "SELECT u FROM Usuario u WHERE u.statususu = :statususu"),
     @NamedQuery(name = "Usuario.findByTelefonousu", query = "SELECT u FROM Usuario u WHERE u.telefonousu = :telefonousu"),
     @NamedQuery(name = "Usuario.findByTelefono2usu", query = "SELECT u FROM Usuario u WHERE u.telefono2usu = :telefono2usu"),
@@ -44,35 +44,30 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByDireccion2usu", query = "SELECT u FROM Usuario u WHERE u.direccion2usu = :direccion2usu")})
 public class Usuario implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDUSU")
-    private String idusu;
+    private BigDecimal idusu;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 200)
     @Column(name = "NOMBREUSU")
     private String nombreusu;
-    @Size(max = 20)
+    @Size(max = 200)
     @Column(name = "APELLIDOUSU")
     private String apellidousu;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 200)
     @Column(name = "CORREOUSU")
     private String correousu;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 200)
     @Column(name = "USERUSU")
     private String userusu;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "PASSWORDUSU")
-    private String passwordusu;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -90,44 +85,42 @@ public class Usuario implements Serializable {
     @Size(max = 2500)
     @Column(name = "DIRECCION2USU")
     private String direccion2usu;
+    @OneToMany(mappedBy = "idusu")
+    private Collection<Usuariosede> usuariosedeCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
     private Collection<Seguimiento> seguimientoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
     private Collection<Valija> valijaCollection;
-    @JoinColumn(name = "IDSED", referencedColumnName = "IDSED")
-    @ManyToOne
-    private Sede idsed;
     @JoinColumn(name = "IDROL", referencedColumnName = "IDROL")
     @ManyToOne(optional = false)
     private Rol idrol;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
     private Collection<Bitacora> bitacoraCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
-    private Collection<Paquete> paqueteCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")
+    private Collection<Paquete> paqueteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
     private Collection<Paquete> paqueteCollection1;
 
     public Usuario() {
     }
 
-    public Usuario(String idusu) {
+    public Usuario(BigDecimal idusu) {
         this.idusu = idusu;
     }
 
-    public Usuario(String idusu, String nombreusu, String correousu, String userusu, String passwordusu, String statususu) {
+    public Usuario(BigDecimal idusu, String nombreusu, String correousu, String userusu, String statususu) {
         this.idusu = idusu;
         this.nombreusu = nombreusu;
         this.correousu = correousu;
         this.userusu = userusu;
-        this.passwordusu = passwordusu;
         this.statususu = statususu;
     }
 
-    public String getIdusu() {
+    public BigDecimal getIdusu() {
         return idusu;
     }
 
-    public void setIdusu(String idusu) {
+    public void setIdusu(BigDecimal idusu) {
         this.idusu = idusu;
     }
 
@@ -161,14 +154,6 @@ public class Usuario implements Serializable {
 
     public void setUserusu(String userusu) {
         this.userusu = userusu;
-    }
-
-    public String getPasswordusu() {
-        return passwordusu;
-    }
-
-    public void setPasswordusu(String passwordusu) {
-        this.passwordusu = passwordusu;
     }
 
     public String getStatususu() {
@@ -212,6 +197,15 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Usuariosede> getUsuariosedeCollection() {
+        return usuariosedeCollection;
+    }
+
+    public void setUsuariosedeCollection(Collection<Usuariosede> usuariosedeCollection) {
+        this.usuariosedeCollection = usuariosedeCollection;
+    }
+
+    @XmlTransient
     public Collection<Seguimiento> getSeguimientoCollection() {
         return seguimientoCollection;
     }
@@ -227,14 +221,6 @@ public class Usuario implements Serializable {
 
     public void setValijaCollection(Collection<Valija> valijaCollection) {
         this.valijaCollection = valijaCollection;
-    }
-
-    public Sede getIdsed() {
-        return idsed;
-    }
-
-    public void setIdsed(Sede idsed) {
-        this.idsed = idsed;
     }
 
     public Rol getIdrol() {

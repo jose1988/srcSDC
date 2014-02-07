@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -35,12 +36,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByStatusseg", query = "SELECT s FROM Seguimiento s WHERE s.statusseg = :statusseg")})
 public class Seguimiento implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDSEG")
-    private String idseg;
+    private BigDecimal idseg;
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHASEG")
@@ -59,20 +60,20 @@ public class Seguimiento implements Serializable {
     public Seguimiento() {
     }
 
-    public Seguimiento(String idseg) {
+    public Seguimiento(BigDecimal idseg) {
         this.idseg = idseg;
     }
 
-    public Seguimiento(String idseg, Date fechaseg) {
+    public Seguimiento(BigDecimal idseg, Date fechaseg) {
         this.idseg = idseg;
         this.fechaseg = fechaseg;
     }
 
-    public String getIdseg() {
+    public BigDecimal getIdseg() {
         return idseg;
     }
 
-    public void setIdseg(String idseg) {
+    public void setIdseg(BigDecimal idseg) {
         this.idseg = idseg;
     }
 

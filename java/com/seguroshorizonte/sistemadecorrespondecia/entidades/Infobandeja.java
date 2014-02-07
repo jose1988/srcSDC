@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -31,40 +32,36 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Infobandeja.findAll", query = "SELECT i FROM Infobandeja i"),
     @NamedQuery(name = "Infobandeja.findByIdiba", query = "SELECT i FROM Infobandeja i WHERE i.idiba = :idiba"),
     @NamedQuery(name = "Infobandeja.findByNombreiba", query = "SELECT i FROM Infobandeja i WHERE i.nombreiba = :nombreiba"),
-    @NamedQuery(name = "Infobandeja.findByDescripcioniba", query = "SELECT i FROM Infobandeja i WHERE i.descripcioniba = :descripcioniba"),
-    @NamedQuery(name = "Infobandeja.findByIdusu", query = "SELECT i FROM Infobandeja i WHERE i.idusu = :idusu")})
+    @NamedQuery(name = "Infobandeja.findByDescripcioniba", query = "SELECT i FROM Infobandeja i WHERE i.descripcioniba = :descripcioniba")})
 public class Infobandeja implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDIBA")
-    private String idiba;
-    @Size(max = 20)
+    private BigDecimal idiba;
+    @Size(max = 200)
     @Column(name = "NOMBREIBA")
     private String nombreiba;
-    @Size(max = 250)
+    @Size(max = 2500)
     @Column(name = "DESCRIPCIONIBA")
     private String descripcioniba;
-    @Size(max = 20)
-    @Column(name = "IDUSU")
-    private String idusu;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idiba")
     private Collection<Bandeja> bandejaCollection;
 
     public Infobandeja() {
     }
 
-    public Infobandeja(String idiba) {
+    public Infobandeja(BigDecimal idiba) {
         this.idiba = idiba;
     }
 
-    public String getIdiba() {
+    public BigDecimal getIdiba() {
         return idiba;
     }
 
-    public void setIdiba(String idiba) {
+    public void setIdiba(BigDecimal idiba) {
         this.idiba = idiba;
     }
 
@@ -82,14 +79,6 @@ public class Infobandeja implements Serializable {
 
     public void setDescripcioniba(String descripcioniba) {
         this.descripcioniba = descripcioniba;
-    }
-
-    public String getIdusu() {
-        return idusu;
-    }
-
-    public void setIdusu(String idusu) {
-        this.idusu = idusu;
     }
 
     @XmlTransient

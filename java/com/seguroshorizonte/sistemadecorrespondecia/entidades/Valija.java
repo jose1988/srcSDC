@@ -5,6 +5,8 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -34,20 +36,24 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Valija.findAll", query = "SELECT v FROM Valija v"),
     @NamedQuery(name = "Valija.findByIdval", query = "SELECT v FROM Valija v WHERE v.idval = :idval"),
+    @NamedQuery(name = "Valija.findByOrigenval", query = "SELECT v FROM Valija v WHERE v.origenval = :origenval"),
     @NamedQuery(name = "Valija.findByAsuntoval", query = "SELECT v FROM Valija v WHERE v.asuntoval = :asuntoval"),
     @NamedQuery(name = "Valija.findByFechaval", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval"),
     @NamedQuery(name = "Valija.findByFechaalerval", query = "SELECT v FROM Valija v WHERE v.fechaalerval = :fechaalerval"),
     @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
-    @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.zoomval = :zoomval"),
-    @NamedQuery(name = "Valija.findByIddval", query = "SELECT v FROM Valija v WHERE v.iddval = :iddval")})
+    @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.zoomval = :zoomval")})
 public class Valija implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDVAL")
-    private String idval;
+    private BigDecimal idval;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ORIGENVAL")
+    private BigInteger origenval;
     @Size(max = 20)
     @Column(name = "ASUNTOVAL")
     private String asuntoval;
@@ -65,15 +71,9 @@ public class Valija implements Serializable {
     @Size(max = 20)
     @Column(name = "ZOOMVAL")
     private String zoomval;
-    @Size(max = 20)
-    @Column(name = "IDDVAL")
-    private String iddval;
     @JoinColumn(name = "IDUSU", referencedColumnName = "IDUSU")
     @ManyToOne(optional = false)
     private Usuario idusu;
-    @JoinColumn(name = "ORIGENVAL", referencedColumnName = "IDSED")
-    @ManyToOne(optional = false)
-    private Sede origenval;
     @JoinColumn(name = "DESTINOVAL", referencedColumnName = "IDSED")
     @ManyToOne(optional = false)
     private Sede destinoval;
@@ -83,21 +83,30 @@ public class Valija implements Serializable {
     public Valija() {
     }
 
-    public Valija(String idval) {
+    public Valija(BigDecimal idval) {
         this.idval = idval;
     }
 
-    public Valija(String idval, Date fechaval) {
+    public Valija(BigDecimal idval, BigInteger origenval, Date fechaval) {
         this.idval = idval;
+        this.origenval = origenval;
         this.fechaval = fechaval;
     }
 
-    public String getIdval() {
+    public BigDecimal getIdval() {
         return idval;
     }
 
-    public void setIdval(String idval) {
+    public void setIdval(BigDecimal idval) {
         this.idval = idval;
+    }
+
+    public BigInteger getOrigenval() {
+        return origenval;
+    }
+
+    public void setOrigenval(BigInteger origenval) {
+        this.origenval = origenval;
     }
 
     public String getAsuntoval() {
@@ -140,28 +149,12 @@ public class Valija implements Serializable {
         this.zoomval = zoomval;
     }
 
-    public String getIddval() {
-        return iddval;
-    }
-
-    public void setIddval(String iddval) {
-        this.iddval = iddval;
-    }
-
     public Usuario getIdusu() {
         return idusu;
     }
 
     public void setIdusu(Usuario idusu) {
         this.idusu = idusu;
-    }
-
-    public Sede getOrigenval() {
-        return origenval;
-    }
-
-    public void setOrigenval(Sede origenval) {
-        this.origenval = origenval;
     }
 
     public Sede getDestinoval() {

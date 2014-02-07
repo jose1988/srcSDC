@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -37,15 +38,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Bitacora.findByObservacionbit", query = "SELECT b FROM Bitacora b WHERE b.observacionbit = :observacionbit")})
 public class Bitacora implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDBIT")
-    private String idbit;
+    private BigDecimal idbit;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 200)
     @Column(name = "ACCIONBIT")
     private String accionbit;
     @Basic(optional = false)
@@ -53,10 +54,10 @@ public class Bitacora implements Serializable {
     @Column(name = "FECHABIT")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechabit;
-    @Size(max = 20)
     @Column(name = "HORABIT")
-    private String horabit;
-    @Size(max = 20)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date horabit;
+    @Size(max = 2000)
     @Column(name = "OBSERVACIONBIT")
     private String observacionbit;
     @JoinColumn(name = "IDUSU", referencedColumnName = "IDUSU")
@@ -66,21 +67,21 @@ public class Bitacora implements Serializable {
     public Bitacora() {
     }
 
-    public Bitacora(String idbit) {
+    public Bitacora(BigDecimal idbit) {
         this.idbit = idbit;
     }
 
-    public Bitacora(String idbit, String accionbit, Date fechabit) {
+    public Bitacora(BigDecimal idbit, String accionbit, Date fechabit) {
         this.idbit = idbit;
         this.accionbit = accionbit;
         this.fechabit = fechabit;
     }
 
-    public String getIdbit() {
+    public BigDecimal getIdbit() {
         return idbit;
     }
 
-    public void setIdbit(String idbit) {
+    public void setIdbit(BigDecimal idbit) {
         this.idbit = idbit;
     }
 
@@ -100,11 +101,11 @@ public class Bitacora implements Serializable {
         this.fechabit = fechabit;
     }
 
-    public String getHorabit() {
+    public Date getHorabit() {
         return horabit;
     }
 
-    public void setHorabit(String horabit) {
+    public void setHorabit(Date horabit) {
         this.horabit = horabit;
     }
 

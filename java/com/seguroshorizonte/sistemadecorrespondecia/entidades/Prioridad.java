@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -33,18 +34,18 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Prioridad.findByDescripcionpri", query = "SELECT p FROM Prioridad p WHERE p.descripcionpri = :descripcionpri")})
 public class Prioridad implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDPRI")
-    private String idpri;
+    private BigDecimal idpri;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 200)
     @Column(name = "NOMBREPRI")
     private String nombrepri;
-    @Size(max = 20)
+    @Size(max = 2000)
     @Column(name = "DESCRIPCIONPRI")
     private String descripcionpri;
     @OneToMany(mappedBy = "idpri")
@@ -53,20 +54,20 @@ public class Prioridad implements Serializable {
     public Prioridad() {
     }
 
-    public Prioridad(String idpri) {
+    public Prioridad(BigDecimal idpri) {
         this.idpri = idpri;
     }
 
-    public Prioridad(String idpri, String nombrepri) {
+    public Prioridad(BigDecimal idpri, String nombrepri) {
         this.idpri = idpri;
         this.nombrepri = nombrepri;
     }
 
-    public String getIdpri() {
+    public BigDecimal getIdpri() {
         return idpri;
     }
 
-    public void setIdpri(String idpri) {
+    public void setIdpri(BigDecimal idpri) {
         this.idpri = idpri;
     }
 

@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -34,13 +35,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Rol.findByDescripcionrol", query = "SELECT r FROM Rol r WHERE r.descripcionrol = :descripcionrol")})
 public class Rol implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDROL")
-    private String idrol;
-    @Size(max = 20)
+    private BigDecimal idrol;
+    @Size(max = 200)
     @Column(name = "NOMBREROL")
     private String nombrerol;
     @Size(max = 2000)
@@ -52,15 +53,15 @@ public class Rol implements Serializable {
     public Rol() {
     }
 
-    public Rol(String idrol) {
+    public Rol(BigDecimal idrol) {
         this.idrol = idrol;
     }
 
-    public String getIdrol() {
+    public BigDecimal getIdrol() {
         return idrol;
     }
 
-    public void setIdrol(String idrol) {
+    public void setIdrol(BigDecimal idrol) {
         this.idrol = idrol;
     }
 

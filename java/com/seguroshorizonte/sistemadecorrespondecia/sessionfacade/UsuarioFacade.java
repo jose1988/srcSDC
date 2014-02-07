@@ -35,7 +35,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
           Registro = (Usuario) (em.createNamedQuery("Usuario.findByUserusu").setParameter("userusu", user).getSingleResult());
         }catch(Exception e){
             
-            Registro.setIdusu("No");
+           
             return Registro;
         }
         

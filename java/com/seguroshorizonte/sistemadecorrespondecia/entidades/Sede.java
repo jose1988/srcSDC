@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -37,12 +38,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Sede.findByTelefono2sed", query = "SELECT s FROM Sede s WHERE s.telefono2sed = :telefono2sed")})
 public class Sede implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDSED")
-    private String idsed;
+    private BigDecimal idsed;
     @Size(max = 20)
     @Column(name = "NOMBRESED")
     private String nombresed;
@@ -58,25 +59,23 @@ public class Sede implements Serializable {
     @Size(max = 20)
     @Column(name = "TELEFONO2SED")
     private String telefono2sed;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenval")
-    private Collection<Valija> valijaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinoval")
-    private Collection<Valija> valijaCollection1;
     @OneToMany(mappedBy = "idsed")
-    private Collection<Usuario> usuarioCollection;
+    private Collection<Usuariosede> usuariosedeCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinoval")
+    private Collection<Valija> valijaCollection;
 
     public Sede() {
     }
 
-    public Sede(String idsed) {
+    public Sede(BigDecimal idsed) {
         this.idsed = idsed;
     }
 
-    public String getIdsed() {
+    public BigDecimal getIdsed() {
         return idsed;
     }
 
-    public void setIdsed(String idsed) {
+    public void setIdsed(BigDecimal idsed) {
         this.idsed = idsed;
     }
 
@@ -121,30 +120,21 @@ public class Sede implements Serializable {
     }
 
     @XmlTransient
+    public Collection<Usuariosede> getUsuariosedeCollection() {
+        return usuariosedeCollection;
+    }
+
+    public void setUsuariosedeCollection(Collection<Usuariosede> usuariosedeCollection) {
+        this.usuariosedeCollection = usuariosedeCollection;
+    }
+
+    @XmlTransient
     public Collection<Valija> getValijaCollection() {
         return valijaCollection;
     }
 
     public void setValijaCollection(Collection<Valija> valijaCollection) {
         this.valijaCollection = valijaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Valija> getValijaCollection1() {
-        return valijaCollection1;
-    }
-
-    public void setValijaCollection1(Collection<Valija> valijaCollection1) {
-        this.valijaCollection1 = valijaCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
-    }
-
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
     }
 
     @Override

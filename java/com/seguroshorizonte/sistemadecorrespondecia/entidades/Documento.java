@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -34,15 +35,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Documento.findByDescripciondoc", query = "SELECT d FROM Documento d WHERE d.descripciondoc = :descripciondoc")})
 public class Documento implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDDOC")
-    private String iddoc;
+    private BigDecimal iddoc;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 200)
     @Column(name = "NOMBREDOC")
     private String nombredoc;
     @Size(max = 2000)
@@ -54,20 +55,20 @@ public class Documento implements Serializable {
     public Documento() {
     }
 
-    public Documento(String iddoc) {
+    public Documento(BigDecimal iddoc) {
         this.iddoc = iddoc;
     }
 
-    public Documento(String iddoc, String nombredoc) {
+    public Documento(BigDecimal iddoc, String nombredoc) {
         this.iddoc = iddoc;
         this.nombredoc = nombredoc;
     }
 
-    public String getIddoc() {
+    public BigDecimal getIddoc() {
         return iddoc;
     }
 
-    public void setIddoc(String iddoc) {
+    public void setIddoc(BigDecimal iddoc) {
         this.iddoc = iddoc;
     }
 

@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -33,20 +34,20 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Mensaje.findByDescripcionmen", query = "SELECT m FROM Mensaje m WHERE m.descripcionmen = :descripcionmen")})
 public class Mensaje implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDMEN")
-    private String idmen;
+    private BigDecimal idmen;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 200)
     @Column(name = "NOMBREMEN")
     private String nombremen;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(min = 1, max = 2000)
     @Column(name = "DESCRIPCIONMEN")
     private String descripcionmen;
     @OneToMany(mappedBy = "idmen")
@@ -55,21 +56,21 @@ public class Mensaje implements Serializable {
     public Mensaje() {
     }
 
-    public Mensaje(String idmen) {
+    public Mensaje(BigDecimal idmen) {
         this.idmen = idmen;
     }
 
-    public Mensaje(String idmen, String nombremen, String descripcionmen) {
+    public Mensaje(BigDecimal idmen, String nombremen, String descripcionmen) {
         this.idmen = idmen;
         this.nombremen = nombremen;
         this.descripcionmen = descripcionmen;
     }
 
-    public String getIdmen() {
+    public BigDecimal getIdmen() {
         return idmen;
     }
 
-    public void setIdmen(String idmen) {
+    public void setIdmen(BigDecimal idmen) {
         this.idmen = idmen;
     }
 

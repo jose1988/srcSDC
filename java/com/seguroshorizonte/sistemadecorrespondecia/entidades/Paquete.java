@@ -5,6 +5,8 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -42,16 +44,17 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByFechaapaq", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq"),
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),
     @NamedQuery(name = "Paquete.findByLocalizacionpaq", query = "SELECT p FROM Paquete p WHERE p.localizacionpaq = :localizacionpaq"),
-    @NamedQuery(name = "Paquete.findByIdadj", query = "SELECT p FROM Paquete p WHERE p.idadj = :idadj")})
+    @NamedQuery(name = "Paquete.findByIdadj", query = "SELECT p FROM Paquete p WHERE p.idadj = :idadj"),
+    @NamedQuery(name = "Paquete.findByRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq")})
 public class Paquete implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDPAQ")
-    private String idpaq;
-    @Size(max = 20)
+    private BigDecimal idpaq;
+    @Size(max = 200)
     @Column(name = "ASUNTOPAQ")
     private String asuntopaq;
     @Size(max = 4000)
@@ -69,12 +72,14 @@ public class Paquete implements Serializable {
     @Size(max = 20)
     @Column(name = "STATUSPAQ")
     private String statuspaq;
-    @Size(max = 20)
+    @Size(max = 250)
     @Column(name = "LOCALIZACIONPAQ")
     private String localizacionpaq;
-    @Size(max = 20)
     @Column(name = "IDADJ")
-    private String idadj;
+    private BigInteger idadj;
+    @Size(max = 20)
+    @Column(name = "RESPAQ")
+    private String respaq;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaq")
     private Collection<Seguimiento> seguimientoCollection;
     @OneToMany(mappedBy = "idpaq")
@@ -84,12 +89,12 @@ public class Paquete implements Serializable {
     @JoinColumn(name = "IDVAL", referencedColumnName = "IDVAL")
     @ManyToOne
     private Valija idval;
-    @JoinColumn(name = "DESTINOPAQ", referencedColumnName = "IDUSU")
-    @ManyToOne(optional = false)
-    private Usuario destinopaq;
     @JoinColumn(name = "ORIGENPAQ", referencedColumnName = "IDUSU")
     @ManyToOne(optional = false)
     private Usuario origenpaq;
+    @JoinColumn(name = "DESTINOPAQ", referencedColumnName = "IDUSU")
+    @ManyToOne(optional = false)
+    private Usuario destinopaq;
     @JoinColumn(name = "IDPRI", referencedColumnName = "IDPRI")
     @ManyToOne
     private Prioridad idpri;
@@ -103,15 +108,15 @@ public class Paquete implements Serializable {
     public Paquete() {
     }
 
-    public Paquete(String idpaq) {
+    public Paquete(BigDecimal idpaq) {
         this.idpaq = idpaq;
     }
 
-    public String getIdpaq() {
+    public BigDecimal getIdpaq() {
         return idpaq;
     }
 
-    public void setIdpaq(String idpaq) {
+    public void setIdpaq(BigDecimal idpaq) {
         this.idpaq = idpaq;
     }
 
@@ -171,12 +176,20 @@ public class Paquete implements Serializable {
         this.localizacionpaq = localizacionpaq;
     }
 
-    public String getIdadj() {
+    public BigInteger getIdadj() {
         return idadj;
     }
 
-    public void setIdadj(String idadj) {
+    public void setIdadj(BigInteger idadj) {
         this.idadj = idadj;
+    }
+
+    public String getRespaq() {
+        return respaq;
+    }
+
+    public void setRespaq(String respaq) {
+        this.respaq = respaq;
     }
 
     @XmlTransient
@@ -214,20 +227,20 @@ public class Paquete implements Serializable {
         this.idval = idval;
     }
 
-    public Usuario getDestinopaq() {
-        return destinopaq;
-    }
-
-    public void setDestinopaq(Usuario destinopaq) {
-        this.destinopaq = destinopaq;
-    }
-
     public Usuario getOrigenpaq() {
         return origenpaq;
     }
 
     public void setOrigenpaq(Usuario origenpaq) {
         this.origenpaq = origenpaq;
+    }
+
+    public Usuario getDestinopaq() {
+        return destinopaq;
+    }
+
+    public void setDestinopaq(Usuario destinopaq) {
+        this.destinopaq = destinopaq;
     }
 
     public Prioridad getIdpri() {

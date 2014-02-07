@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,29 +29,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Bandeja.findAll", query = "SELECT b FROM Bandeja b"),
     @NamedQuery(name = "Bandeja.findByIdban", query = "SELECT b FROM Bandeja b WHERE b.idban = :idban"),
-    @NamedQuery(name = "Bandeja.findByLeidoban", query = "SELECT b FROM Bandeja b WHERE b.leidoban = :leidoban"),
-    @NamedQuery(name = "Bandeja.findByIdusu", query = "SELECT b FROM Bandeja b WHERE b.idusu = :idusu"),
-    @NamedQuery(name = "Bandeja.findByIdgdp", query = "SELECT b FROM Bandeja b WHERE b.idgdp = :idgdp")})
+    @NamedQuery(name = "Bandeja.findByLeidoban", query = "SELECT b FROM Bandeja b WHERE b.leidoban = :leidoban")})
 public class Bandeja implements Serializable {
     private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "IDBAN")
-    private String idban;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "LEIDOBAN")
-    private char leidoban;
+    private BigDecimal idban;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
-    @Column(name = "IDUSU")
-    private String idusu;
-    @Size(max = 20)
-    @Column(name = "IDGDP")
-    private String idgdp;
+    @Column(name = "LEIDOBAN")
+    private String leidoban;
     @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
     @ManyToOne
     private Paquete idpaq;
@@ -61,46 +53,29 @@ public class Bandeja implements Serializable {
     public Bandeja() {
     }
 
-    public Bandeja(String idban) {
+    public Bandeja(BigDecimal idban) {
         this.idban = idban;
     }
 
-    public Bandeja(String idban, char leidoban, String idusu) {
+    public Bandeja(BigDecimal idban, String leidoban) {
         this.idban = idban;
         this.leidoban = leidoban;
-        this.idusu = idusu;
     }
 
-    public String getIdban() {
+    public BigDecimal getIdban() {
         return idban;
     }
 
-    public void setIdban(String idban) {
+    public void setIdban(BigDecimal idban) {
         this.idban = idban;
     }
 
-    public char getLeidoban() {
+    public String getLeidoban() {
         return leidoban;
     }
 
-    public void setLeidoban(char leidoban) {
+    public void setLeidoban(String leidoban) {
         this.leidoban = leidoban;
-    }
-
-    public String getIdusu() {
-        return idusu;
-    }
-
-    public void setIdusu(String idusu) {
-        this.idusu = idusu;
-    }
-
-    public String getIdgdp() {
-        return idgdp;
-    }
-
-    public void setIdgdp(String idgdp) {
-        this.idgdp = idgdp;
     }
 
     public Paquete getIdpaq() {
