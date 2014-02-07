@@ -10,7 +10,6 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PaqueteFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.SeguimientoFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.UsuarioFacade;
-import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.ValijaFacade;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -26,11 +25,11 @@ import javax.jws.WebParam;
 public class mariela {
 
     @EJB
-    SeguimientoFacade seguimientoFacade;
+    SeguimientoFacade ejbSeguimiento;
     @EJB
-    PaqueteFacade paqueteFacade;
+    PaqueteFacade ejbPaquete;
     @EJB
-    UsuarioFacade usuarioFacade;
+    UsuarioFacade ejbUsuario;
 
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
@@ -42,7 +41,7 @@ public class mariela {
         int Resultado = 0;
         Seguimiento nuevoSeg = new Seguimiento();
         try {
-            List<Seguimiento> RegistrosSeguimiento = seguimientoFacade.consultarSeguimientoXPaquete(registroPaquete);
+            List<Seguimiento> RegistrosSeguimiento = ejbSeguimiento.consultarSeguimientoXPaquete(registroPaquete);
             for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                 if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().compareTo(registroUsuario.getIdrol().getIdrol()) == 0) {
                     return Resultado;
@@ -76,7 +75,7 @@ public class mariela {
             else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("5") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                     if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("4") == 0) {
-                        registroPaquete = paqueteFacade.ConsultarPaqueteXId(registroPaquete);
+                        registroPaquete = ejbPaquete.ConsultarPaqueteXId(registroPaquete);
                         if (registroPaquete.getIdval().getZoomval() != null) {
                             Resultado = 1;
                         }
@@ -108,7 +107,7 @@ public class mariela {
                 nuevoSeg.setIdpaq(registroPaquete);
                 nuevoSeg.setIdusu(registroUsuario);
                 nuevoSeg.setStatusseg("En seguimiento");
-                seguimientoFacade.insertarSeguimiento(nuevoSeg);
+                ejbSeguimiento.insertarSeguimiento(nuevoSeg);
             }
         } catch (Exception e) {
             return Resultado;
@@ -130,7 +129,7 @@ public class mariela {
         int Resultado = 0;
 //Caso  Usuario Destino
         try {
-            List<Seguimiento> RegistrosSeguimiento = seguimientoFacade.consultarSeguimientoXPaquete(registroPaquete);
+            List<Seguimiento> RegistrosSeguimiento = ejbSeguimiento.consultarSeguimientoXPaquete(registroPaquete);
             boolean Nivel2 = false;
             for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                 if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("7") == 0) {
@@ -141,7 +140,7 @@ public class mariela {
             if (Nivel2) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                     RegistrosSeguimiento.get(i).setStatusseg("SI");
-                    seguimientoFacade.edit(RegistrosSeguimiento.get(i));
+                    ejbSeguimiento.edit(RegistrosSeguimiento.get(i));
                 }
             }
 
@@ -157,17 +156,17 @@ public class mariela {
         Seguimiento nuevoSeg = new Seguimiento();
         try {
             if (registroUsuario.getIdrol().getIdrol().toString().compareTo("5") == 0) {
-                List<Seguimiento> RegistrosSeguimiento = seguimientoFacade.consultarSeguimientoXPaquete(registroPaquete);
+                List<Seguimiento> RegistrosSeguimiento = ejbSeguimiento.consultarSeguimientoXPaquete(registroPaquete);
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                     if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("4") == 0) {
-                        registroPaquete = paqueteFacade.ConsultarPaqueteXId(registroPaquete);
+                        registroPaquete = ejbPaquete.ConsultarPaqueteXId(registroPaquete);
                         if (registroPaquete.getIdval().getZoomval() != null) {
                             nuevoSeg = new Seguimiento();
                             nuevoSeg.setFechaseg(new Date());
                             nuevoSeg.setIdpaq(registroPaquete);
                             nuevoSeg.setIdusu(registroUsuario);
                             nuevoSeg.setStatusseg("Reenvio");
-                            seguimientoFacade.insertarSeguimiento(nuevoSeg);
+                            ejbSeguimiento.insertarSeguimiento(nuevoSeg);
                             Resultado = 1;
                             break;
                         }
@@ -184,7 +183,7 @@ public class mariela {
     public int editarUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
         int Resultado = 0;
         try {
-            usuarioFacade.editarUsuario(registroUsuario);
+            ejbUsuario.editarUsuario(registroUsuario);
             Resultado = 1;
         } catch (Exception e) {
             return 0;
@@ -196,7 +195,7 @@ public class mariela {
     public String alertaXFechaVencida(@WebParam(name = "registroPaquete") Paquete registroPaquete) {
         String Alerta = "";
         try {
-            registroPaquete = paqueteFacade.ConsultarPaqueteXId(registroPaquete);
+            registroPaquete = ejbPaquete.ConsultarPaqueteXId(registroPaquete);
             if (registroPaquete.getFechaapaq() == new Date()) {
                 Alerta = "ALERTA";
             }
@@ -213,7 +212,7 @@ public class mariela {
     public List<Paquete> paquetesXFechaAlertaXUsuarioDestino(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
         List<Paquete> Resultado = null;
         try {
-            Resultado = paqueteFacade.consultarPaqueteXAlertaXUsuarioDestino(registroUsuario);
+            Resultado = ejbPaquete.consultarPaqueteXAlertaXUsuarioDestino(registroUsuario);
         } catch (Exception e) {
             return null;
         }
@@ -224,7 +223,7 @@ public class mariela {
     public List<Paquete> paquetesXFechaAlertaXUsuarioOrigen(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
         List<Paquete> Resultado = null;
         try {
-            Resultado = paqueteFacade.consultarPaqueteXAlertaXUsuarioOrigen(registroUsuario);
+            Resultado = ejbPaquete.consultarPaqueteXAlertaXUsuarioOrigen(registroUsuario);
         } catch (Exception e) {
             return null;
         }
@@ -235,7 +234,7 @@ public class mariela {
     public List<Paquete> paquetesXFechaVencimientoXUsuarioOrigen(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
         List<Paquete> Resultado = null;
         try {
-            Resultado = paqueteFacade.consultarPaqueteXFechaVencimientoXOrigen(registroUsuario);
+            Resultado = ejbPaquete.consultarPaqueteXFechaVencimientoXOrigen(registroUsuario);
         } catch (Exception e) {
             return null;
         }
@@ -246,7 +245,7 @@ public class mariela {
     public List<Paquete> paquetesXFechaVencimientoXUsuarioDestino(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
         List<Paquete> Resultado = null;
         try {
-            Resultado = paqueteFacade.consultarPaqueteXFechaVencimientoXDestino(registroUsuario);
+            Resultado = ejbPaquete.consultarPaqueteXFechaVencimientoXDestino(registroUsuario);
         } catch (Exception e) {
             return null;
         }
