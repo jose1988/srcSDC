@@ -9,11 +9,14 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Documento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Infobandeja;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.BandejaFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.DocumentoFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.InfobandejaFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PaqueteFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.UsuarioFacade;
+import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.ValijaFacade;
+import java.math.BigDecimal;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +45,9 @@ public class CorrespondenciaWS {
     
     @EJB
     private DocumentoFacade ejbDocumento;
+    
+     @EJB
+    private ValijaFacade ejbValija;
    
     
     /**
@@ -54,21 +60,42 @@ public class CorrespondenciaWS {
         return ejbUsuario.consultarUsuarioXUser(user);
     }
     
-    @WebMethod(operationName = "consultarBandejaXUser")
-    public List<Infobandeja> consultarBandejaXUser(@WebParam(name = "user") String user) {
+    @WebMethod(operationName = "consultarBandejas")
+    public List<Infobandeja> consultarBandejas() {
         
          List<Infobandeja> Registro = new  ArrayList<Infobandeja>();
-      
+        
+         try{
+             Registro=ejbInfobandeja.findAll();
+           
+        } catch (Exception e) {
+            Registro = null;
+        }
+ 
         return Registro;
     }
     
     
      @WebMethod(operationName = "consultarPaquetesXBandeja")
-    public List<Paquete> consultarPaquetesXBandeja(@WebParam(name = "user") String user,@WebParam(name = "ban") String ban) {
-        
-         List<Paquete> Registro = new  ArrayList<Paquete>();
-       
+    public List<Paquete> consultarPaquetesXBandeja(@WebParam(name = "idUser") String idUser,@WebParam(name = "ban") String ban) {
          
+         BigDecimal id=new BigDecimal(idUser);
+         List<Paquete> Registro = new  ArrayList<Paquete>();
+
+         Infobandeja inBandeja=ejbInfobandeja.consultarBandejaXNombre(ban);
+         Usuario usuario=ejbUsuario.find(id);
+         
+         Iterator<Bandeja> iterator = inBandeja.getBandejaCollection().iterator();
+         while(iterator.hasNext()){
+           Bandeja aux=iterator.next();
+           if(aux.getIdpaq().getOrigenpaq().getIdusu()==usuario.getIdusu() || aux.getIdpaq().getDestinopaq().getIdusu()==usuario.getIdusu()  && aux.getIdusu().getIdusu()==usuario.getIdusu()){
+              Registro.add(aux.getIdpaq());
+           }else{
+                iterator.remove();
+           }
+  
+         }
+    
         return Registro;
     }
     
@@ -116,8 +143,16 @@ public class CorrespondenciaWS {
      * mínimo los campos obligatorios para poder insertar
      */
     @WebMethod(operationName = "insertarUsuario")
-    public void insertarUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
+    public int insertarUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
+        
+         int Resultado;
+        try {
         ejbUsuario.insertar(registroUsuario);
+        Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
     }
 
     /**
@@ -226,8 +261,15 @@ public class CorrespondenciaWS {
      * mínimo los campos obligatorios para poder insertar
      */
     @WebMethod(operationName = "insertarDocumento")
-    public void insertarDocumento(@WebParam(name = "registroDocumento") Documento registroDocumento) {
+    public int insertarDocumento(@WebParam(name = "registroDocumento") Documento registroDocumento) {
+         int Resultado;
+        try {
         ejbDocumento.insertar(registroDocumento);
+         Resultado=1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
     }
 
     /**
@@ -236,8 +278,16 @@ public class CorrespondenciaWS {
      * @param registroDocumento objeto de la entidad Documento
      */
     @WebMethod(operationName = "editarDocumento")
-    public void editarDocumento(@WebParam(name = "registroDocumento") Documento registroDocumento) {
+    public int editarDocumento(@WebParam(name = "registroDocumento") Documento registroDocumento) {
+         int Resultado;
+        try {
+   
         ejbDocumento.editar(registroDocumento);
+         Resultado=1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
     }
 
     /**
@@ -275,5 +325,45 @@ public class CorrespondenciaWS {
     public Documento consultarDocumentoXNombre(@WebParam(name = "doc") String docum) {
         return ejbDocumento.consultarDocumentoXNombre(docum);
     }
+     
+   @WebMethod(operationName = "crearPaquete")
+    public int insertarPaquete(@WebParam(name = "registroPaquete") Paquete registroPaquete) {
+        int Resultado;
+        try {
+           ejbPaquete.crearPaquete(registroPaquete);
+           Resultado=1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }    
+   
+   @WebMethod(operationName = "crearValija")
+    public int insertarValija(@WebParam(name = "registoValija") Valija registroValija) {
+        int Resultado;
+        try {
+           ejbValija.crearValija(registroValija);
+           Resultado=1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }    
+   
+   @WebMethod(operationName = "actualizarBandeja")
+    public int actualizarBandeja(@WebParam(name = "registoPaquete") Paquete registroPaquete) {
+        int Resultado;
+        
+         
+        try {
+           
+           Resultado=1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }    
+   
+     
    
 }

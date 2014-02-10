@@ -27,4 +27,10 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         super(Valija.class);
     }
     
+     public void crearValija(Valija registro){
+       
+        this.create(registro);
+       
+    }
+    
 }

@@ -35,6 +35,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         super(Paquete.class);
     }
 
+
     public List<Paquete> ConsultarPaquetesXValija(Valija idValija) {
         List<Paquete> lista;
         Query consulta = em.createNamedQuery("Paquete.findByIdadj").setParameter("idadj", idValija);
@@ -89,4 +90,14 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         Resultado = consulta.getResultList();
         return Resultado;
     }
+
+    public void crearPaquete(Paquete registro){
+       
+        this.create(registro);
+       
+    }
+    
+    
+    
+
 }

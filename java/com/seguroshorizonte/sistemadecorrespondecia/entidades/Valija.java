@@ -43,6 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
     @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.zoomval = :zoomval")})
 public class Valija implements Serializable {
+    @JoinColumn(name = "IDINC", referencedColumnName = "IDINC")
+    @ManyToOne
+    private Incidente idinc;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -197,6 +200,14 @@ public class Valija implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija[ idval=" + idval + " ]";
+    }
+
+    public Incidente getIdinc() {
+        return idinc;
+    }
+
+    public void setIdinc(Incidente idinc) {
+        this.idinc = idinc;
     }
     
 }

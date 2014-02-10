@@ -43,6 +43,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByDireccionusu", query = "SELECT u FROM Usuario u WHERE u.direccionusu = :direccionusu"),
     @NamedQuery(name = "Usuario.findByDireccion2usu", query = "SELECT u FROM Usuario u WHERE u.direccion2usu = :direccion2usu")})
 public class Usuario implements Serializable {
+    @OneToMany(mappedBy = "idusubuz")
+    private Collection<Buzon> buzonCollection;
+    @OneToMany(mappedBy = "idusu")
+    private Collection<Buzon> buzonCollection1;
+    @OneToMany(mappedBy = "idusu")
+    private Collection<Bandeja> bandejaCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -281,6 +287,33 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario[ idusu=" + idusu + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Bandeja> getBandejaCollection() {
+        return bandejaCollection;
+    }
+
+    public void setBandejaCollection(Collection<Bandeja> bandejaCollection) {
+        this.bandejaCollection = bandejaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Buzon> getBuzonCollection() {
+        return buzonCollection;
+    }
+
+    public void setBuzonCollection(Collection<Buzon> buzonCollection) {
+        this.buzonCollection = buzonCollection;
+    }
+
+    @XmlTransient
+    public Collection<Buzon> getBuzonCollection1() {
+        return buzonCollection1;
+    }
+
+    public void setBuzonCollection1(Collection<Buzon> buzonCollection1) {
+        this.buzonCollection1 = buzonCollection1;
     }
     
 }
