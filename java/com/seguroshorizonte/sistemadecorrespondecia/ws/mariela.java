@@ -4,9 +4,11 @@
  */
 package com.seguroshorizonte.sistemadecorrespondecia.ws;
 
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Buzon;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.BuzonFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PaqueteFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.SeguimientoFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.UsuarioFacade;
@@ -30,6 +32,8 @@ public class mariela {
     PaqueteFacade ejbPaquete;
     @EJB
     UsuarioFacade ejbUsuario;
+    @EJB
+    BuzonFacade ejbBuzon;
 
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
@@ -37,44 +41,47 @@ public class mariela {
     }
 
     @WebMethod(operationName = "registroSeguimiento")
-    public int registroSeguimiento(@WebParam(name = "registroPaquete") Paquete registroPaquete, @WebParam(name = "registroUsuario") Usuario registroUsuario) {
+    public int registroSeguimiento(@WebParam(name = "registroPaquete") Paquete registroPaquete, @WebParam(name = "registroUsuario") Usuario registroUsuario, String Tipo) {
         int Resultado = 0;
+        boolean reenvio = false;
         Seguimiento nuevoSeg = new Seguimiento();
         try {
             List<Seguimiento> RegistrosSeguimiento = ejbSeguimiento.consultarSeguimientoXPaquete(registroPaquete);
+
             for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().compareTo(registroUsuario.getIdrol().getIdrol()) == 0) {
-                    return Resultado;
+                //pregunto ya un envajilador habia tocado el paquete y el q recibo como parametro es envajilador quiere decir que es un reenvio de paquete
+                if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol() == registroUsuario.getIdrol().getIdrol() && RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("0") == 0) {
+                    reenvio = true;
+                } else {
+                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol() == registroUsuario.getIdrol().getIdrol() && RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("4") != 0) {
+                        return Resultado;
+                    }
                 }
             }
             //Caso  Receptor nivel 1 Origen o Receptor nivel 3 Origen
-            if (registroUsuario.getIdrol().getIdrol().toString().compareTo("1") == 1 || registroUsuario.getIdrol().getIdrol().toString().compareTo("3") == 0) {
+            if ((registroUsuario.getIdrol().getIdrol().toString().compareTo("1") == 1 || registroUsuario.getIdrol().getIdrol().toString().compareTo("3") == 0) && Tipo.compareTo("0") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("2") == 0) {
+                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("2") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
                         return Resultado;
                     }
                 }
                 Resultado = 1;
 
             } //Caso  Receptor nivel 2 Origen
-            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("2") == 0) {
+            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("2") == 0 && Tipo.compareTo("0") == 0) {
                 Resultado = 1;
             } //Caso  Empaquetador 
-            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("4") == 0) {
-                boolean nivel2 = false;
+            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("0") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("2") == 0) {
-                        nivel2 = true;
+                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("2") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
+                        Resultado = 1;
                         break;
                     }
                 }
-                if (nivel2) {
-                    Resultado = 1;
-                }
             }//Caso  Desenvalijador 
-            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("5") == 0) {
+            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("1") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("4") == 0) {
+                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("4") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
                         registroPaquete = ejbPaquete.ConsultarPaqueteXId(registroPaquete);
                         if (registroPaquete.getIdval().getZoomval() != null) {
                             Resultado = 1;
@@ -83,18 +90,18 @@ public class mariela {
                     }
                 }
             }//Caso  Receptor nivel 1 Destino o Caso  Receptor nivel 3 Destino
-            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("6") == 0 || registroUsuario.getIdrol().getIdrol().toString().compareTo("8") == 0) {
+            else if ((registroUsuario.getIdrol().getIdrol().toString().compareTo("1") == 0 || registroUsuario.getIdrol().getIdrol().toString().compareTo("3") == 0) && Tipo.compareTo("1") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().toString().compareTo("7") == 0) {
+                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().toString().compareTo("2") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
                         Resultado = 1;
                         break;
                     }
                 }
 
             } //Caso  Receptor nivel 2 Destino
-            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("7") == 0) {
+            else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("2") == 0 && Tipo.compareTo("1") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("5") == 0) {
+                    if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("4") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
                         Resultado = 1;
                         break;
                     }
@@ -106,7 +113,11 @@ public class mariela {
                 nuevoSeg.setFechaseg(new Date());
                 nuevoSeg.setIdpaq(registroPaquete);
                 nuevoSeg.setIdusu(registroUsuario);
-                nuevoSeg.setStatusseg("En seguimiento");
+                if (reenvio) {
+                    nuevoSeg.setStatusseg("2");
+                } else {
+                    nuevoSeg.setStatusseg("0");
+                }
                 ejbSeguimiento.insertarSeguimiento(nuevoSeg);
             }
         } catch (Exception e) {
@@ -132,14 +143,14 @@ public class mariela {
             List<Seguimiento> RegistrosSeguimiento = ejbSeguimiento.consultarSeguimientoXPaquete(registroPaquete);
             boolean Nivel2 = false;
             for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("7") == 0) {
+                if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("2") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
                     Nivel2 = true;
                     break;
                 }
             }
             if (Nivel2) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    RegistrosSeguimiento.get(i).setStatusseg("SI");
+                    RegistrosSeguimiento.get(i).setStatusseg("1");
                     ejbSeguimiento.edit(RegistrosSeguimiento.get(i));
                 }
             }
@@ -149,6 +160,7 @@ public class mariela {
 
         return 0;
     }
+//esta ya no
 
     @WebMethod(operationName = "registroReenvioXDesenvajilador")
     public int registroReenvioXDesenvajilador(@WebParam(name = "registroPaquete") Paquete registroPaquete, @WebParam(name = "registroUsuario") Usuario registroUsuario) {
@@ -246,6 +258,17 @@ public class mariela {
         List<Paquete> Resultado = null;
         try {
             Resultado = ejbPaquete.consultarPaqueteXFechaVencimientoXDestino(registroUsuario);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "consultarBuzonXUsuario")
+    public List<Buzon> consultarBuzonXUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
+        List<Buzon> Resultado = null;
+        try {
+            Resultado = ejbBuzon.ConsultarBuzonXUsuario(registroUsuario);
         } catch (Exception e) {
             return null;
         }

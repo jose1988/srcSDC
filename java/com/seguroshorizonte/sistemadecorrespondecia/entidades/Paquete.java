@@ -39,6 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByAsuntopaq", query = "SELECT p FROM Paquete p WHERE p.asuntopaq = :asuntopaq"),
     @NamedQuery(name = "Paquete.findByTextopaq", query = "SELECT p FROM Paquete p WHERE p.textopaq = :textopaq"),
     @NamedQuery(name = "Paquete.findByFechapaq", query = "SELECT p FROM Paquete p WHERE p.fechapaq = :fechapaq"),
+    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND P.origenpaq = :origen"),
+    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND P.destinopaq = :destino"),
+    @NamedQuery(name = "Paquete.findByAlertaXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq And p.origenpaq = :origen"),
+    @NamedQuery(name = "Paquete.findByAlertaXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq And p.destinopaq = :destino"),
     @NamedQuery(name = "Paquete.findByFechaenviopaq", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq = :fechaenviopaq"),
     @NamedQuery(name = "Paquete.findByFechaapaq", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq"),
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),
@@ -46,6 +50,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByIdadj", query = "SELECT p FROM Paquete p WHERE p.idadj = :idadj"),
     @NamedQuery(name = "Paquete.findByRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq")})
 public class Paquete implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -268,5 +273,4 @@ public class Paquete implements Serializable {
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete[ idpaq=" + idpaq + " ]";
     }
-    
 }
