@@ -77,7 +77,7 @@ public class CorrespondenciaWS {
     
     
      @WebMethod(operationName = "consultarPaquetesXBandeja")
-    public List<Paquete> consultarPaquetesXBandeja(@WebParam(name = "idUser") String idUser,@WebParam(name = "ban") String ban) {
+    public List<Paquete> consultarPaquetesXBandeja(@WebParam(name = "user") String idUser,@WebParam(name = "ban") String ban) {
          
          BigDecimal id=new BigDecimal(idUser);
          List<Paquete> Registro = new  ArrayList<Paquete>();
@@ -108,7 +108,7 @@ public class CorrespondenciaWS {
      */
     
     @WebMethod(operationName = "buscarUsuario")
-    public Usuario buscarUsuario(@WebParam(name = "UsuarioActual") String UsuarioActual) {
+    public Usuario buscarUsuario(@WebParam(name = "user") String UsuarioActual) {
         return ejbUsuario.find(UsuarioActual);
     }
 
