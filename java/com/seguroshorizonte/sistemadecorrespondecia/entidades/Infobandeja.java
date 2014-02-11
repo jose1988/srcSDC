@@ -15,7 +15,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -35,8 +34,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Infobandeja.findByNombreiba", query = "SELECT i FROM Infobandeja i WHERE i.nombreiba = :nombreiba"),
     @NamedQuery(name = "Infobandeja.findByDescripcioniba", query = "SELECT i FROM Infobandeja i WHERE i.descripcioniba = :descripcioniba")})
 public class Infobandeja implements Serializable {
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "infobandeja")
-    private Bandeja bandeja;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -116,14 +113,6 @@ public class Infobandeja implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Infobandeja[ idiba=" + idiba + " ]";
-    }
-
-    public Bandeja getBandeja() {
-        return bandeja;
-    }
-
-    public void setBandeja(Bandeja bandeja) {
-        this.bandeja = bandeja;
     }
     
 }

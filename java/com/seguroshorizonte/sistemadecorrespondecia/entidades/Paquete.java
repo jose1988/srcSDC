@@ -10,7 +10,6 @@ import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -41,17 +40,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByTextopaq", query = "SELECT p FROM Paquete p WHERE p.textopaq = :textopaq"),
     @NamedQuery(name = "Paquete.findByFechapaq", query = "SELECT p FROM Paquete p WHERE p.fechapaq = :fechapaq"),
     @NamedQuery(name = "Paquete.findByFechaenviopaq", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq = :fechaenviopaq"),
-    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND P.origenpaq = :origen"),
-    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND P.destinopaq = :destino"),
     @NamedQuery(name = "Paquete.findByFechaapaq", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq"),
-    @NamedQuery(name = "Paquete.findByAlertaXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq And p.origenpaq = :origen"),
-    @NamedQuery(name = "Paquete.findByAlertaXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq And p.destinopaq = :destino"),
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),
     @NamedQuery(name = "Paquete.findByLocalizacionpaq", query = "SELECT p FROM Paquete p WHERE p.localizacionpaq = :localizacionpaq"),
     @NamedQuery(name = "Paquete.findByIdadj", query = "SELECT p FROM Paquete p WHERE p.idadj = :idadj"),
     @NamedQuery(name = "Paquete.findByRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq")})
 public class Paquete implements Serializable {
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -85,10 +79,6 @@ public class Paquete implements Serializable {
     @Size(max = 20)
     @Column(name = "RESPAQ")
     private String respaq;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaq")
-    private Collection<Seguimiento> seguimientoCollection;
-    @OneToMany(mappedBy = "idpaq")
-    private Collection<Adjunto> adjuntoCollection;
     @OneToMany(mappedBy = "idpaq")
     private Collection<Bandeja> bandejaCollection;
     @JoinColumn(name = "IDVAL", referencedColumnName = "IDVAL")
@@ -198,24 +188,6 @@ public class Paquete implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Seguimiento> getSeguimientoCollection() {
-        return seguimientoCollection;
-    }
-
-    public void setSeguimientoCollection(Collection<Seguimiento> seguimientoCollection) {
-        this.seguimientoCollection = seguimientoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Adjunto> getAdjuntoCollection() {
-        return adjuntoCollection;
-    }
-
-    public void setAdjuntoCollection(Collection<Adjunto> adjuntoCollection) {
-        this.adjuntoCollection = adjuntoCollection;
-    }
-
-    @XmlTransient
     public Collection<Bandeja> getBandejaCollection() {
         return bandejaCollection;
     }
@@ -296,4 +268,5 @@ public class Paquete implements Serializable {
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete[ idpaq=" + idpaq + " ]";
     }
+    
 }

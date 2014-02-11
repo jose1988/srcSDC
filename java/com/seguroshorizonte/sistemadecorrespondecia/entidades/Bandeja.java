@@ -6,7 +6,6 @@ package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,8 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Bandeja.findAll", query = "SELECT b FROM Bandeja b"),
     @NamedQuery(name = "Bandeja.findByIdban", query = "SELECT b FROM Bandeja b WHERE b.idban = :idban"),
-    @NamedQuery(name = "Bandeja.findByLeidoban", query = "SELECT b FROM Bandeja b WHERE b.leidoban = :leidoban"),
-    @NamedQuery(name = "Bandeja.findByIdiba", query = "SELECT b FROM Bandeja b WHERE b.idiba = :idiba")})
+    @NamedQuery(name = "Bandeja.findByLeidoban", query = "SELECT b FROM Bandeja b WHERE b.leidoban = :leidoban")})
 public class Bandeja implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -46,19 +43,15 @@ public class Bandeja implements Serializable {
     @Size(min = 1, max = 20)
     @Column(name = "LEIDOBAN")
     private String leidoban;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "IDIBA")
-    private BigInteger idiba;
     @JoinColumn(name = "IDUSU", referencedColumnName = "IDUSU")
     @ManyToOne
     private Usuario idusu;
     @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
     @ManyToOne
     private Paquete idpaq;
-    @JoinColumn(name = "IDBAN", referencedColumnName = "IDIBA", insertable = false, updatable = false)
-    @OneToOne(optional = false)
-    private Infobandeja infobandeja;
+    @JoinColumn(name = "IDIBA", referencedColumnName = "IDIBA")
+    @ManyToOne(optional = false)
+    private Infobandeja idiba;
 
     public Bandeja() {
     }
@@ -67,10 +60,9 @@ public class Bandeja implements Serializable {
         this.idban = idban;
     }
 
-    public Bandeja(BigDecimal idban, String leidoban, BigInteger idiba) {
+    public Bandeja(BigDecimal idban, String leidoban) {
         this.idban = idban;
         this.leidoban = leidoban;
-        this.idiba = idiba;
     }
 
     public BigDecimal getIdban() {
@@ -89,14 +81,6 @@ public class Bandeja implements Serializable {
         this.leidoban = leidoban;
     }
 
-    public BigInteger getIdiba() {
-        return idiba;
-    }
-
-    public void setIdiba(BigInteger idiba) {
-        this.idiba = idiba;
-    }
-
     public Usuario getIdusu() {
         return idusu;
     }
@@ -113,12 +97,12 @@ public class Bandeja implements Serializable {
         this.idpaq = idpaq;
     }
 
-    public Infobandeja getInfobandeja() {
-        return infobandeja;
+    public Infobandeja getIdiba() {
+        return idiba;
     }
 
-    public void setInfobandeja(Infobandeja infobandeja) {
-        this.infobandeja = infobandeja;
+    public void setIdiba(Infobandeja idiba) {
+        this.idiba = idiba;
     }
 
     @Override

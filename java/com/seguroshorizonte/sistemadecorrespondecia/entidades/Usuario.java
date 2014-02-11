@@ -43,12 +43,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByDireccionusu", query = "SELECT u FROM Usuario u WHERE u.direccionusu = :direccionusu"),
     @NamedQuery(name = "Usuario.findByDireccion2usu", query = "SELECT u FROM Usuario u WHERE u.direccion2usu = :direccion2usu")})
 public class Usuario implements Serializable {
-    @OneToMany(mappedBy = "idusubuz")
-    private Collection<Buzon> buzonCollection;
-    @OneToMany(mappedBy = "idusu")
-    private Collection<Buzon> buzonCollection1;
-    @OneToMany(mappedBy = "idusu")
-    private Collection<Bandeja> bandejaCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -91,17 +85,13 @@ public class Usuario implements Serializable {
     @Size(max = 2500)
     @Column(name = "DIRECCION2USU")
     private String direccion2usu;
-    @OneToMany(mappedBy = "idusu")
-    private Collection<Usuariosede> usuariosedeCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Seguimiento> seguimientoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Valija> valijaCollection;
     @JoinColumn(name = "IDROL", referencedColumnName = "IDROL")
     @ManyToOne(optional = false)
     private Rol idrol;
+    @OneToMany(mappedBy = "idusu")
+    private Collection<Bandeja> bandejaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Bitacora> bitacoraCollection;
+    private Collection<Valija> valijaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")
     private Collection<Paquete> paqueteCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
@@ -202,33 +192,6 @@ public class Usuario implements Serializable {
         this.direccion2usu = direccion2usu;
     }
 
-    @XmlTransient
-    public Collection<Usuariosede> getUsuariosedeCollection() {
-        return usuariosedeCollection;
-    }
-
-    public void setUsuariosedeCollection(Collection<Usuariosede> usuariosedeCollection) {
-        this.usuariosedeCollection = usuariosedeCollection;
-    }
-
-    @XmlTransient
-    public Collection<Seguimiento> getSeguimientoCollection() {
-        return seguimientoCollection;
-    }
-
-    public void setSeguimientoCollection(Collection<Seguimiento> seguimientoCollection) {
-        this.seguimientoCollection = seguimientoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Valija> getValijaCollection() {
-        return valijaCollection;
-    }
-
-    public void setValijaCollection(Collection<Valija> valijaCollection) {
-        this.valijaCollection = valijaCollection;
-    }
-
     public Rol getIdrol() {
         return idrol;
     }
@@ -238,12 +201,21 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Bitacora> getBitacoraCollection() {
-        return bitacoraCollection;
+    public Collection<Bandeja> getBandejaCollection() {
+        return bandejaCollection;
     }
 
-    public void setBitacoraCollection(Collection<Bitacora> bitacoraCollection) {
-        this.bitacoraCollection = bitacoraCollection;
+    public void setBandejaCollection(Collection<Bandeja> bandejaCollection) {
+        this.bandejaCollection = bandejaCollection;
+    }
+
+    @XmlTransient
+    public Collection<Valija> getValijaCollection() {
+        return valijaCollection;
+    }
+
+    public void setValijaCollection(Collection<Valija> valijaCollection) {
+        this.valijaCollection = valijaCollection;
     }
 
     @XmlTransient
@@ -287,33 +259,6 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario[ idusu=" + idusu + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Bandeja> getBandejaCollection() {
-        return bandejaCollection;
-    }
-
-    public void setBandejaCollection(Collection<Bandeja> bandejaCollection) {
-        this.bandejaCollection = bandejaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Buzon> getBuzonCollection() {
-        return buzonCollection;
-    }
-
-    public void setBuzonCollection(Collection<Buzon> buzonCollection) {
-        this.buzonCollection = buzonCollection;
-    }
-
-    @XmlTransient
-    public Collection<Buzon> getBuzonCollection1() {
-        return buzonCollection1;
-    }
-
-    public void setBuzonCollection1(Collection<Buzon> buzonCollection1) {
-        this.buzonCollection1 = buzonCollection1;
     }
     
 }
