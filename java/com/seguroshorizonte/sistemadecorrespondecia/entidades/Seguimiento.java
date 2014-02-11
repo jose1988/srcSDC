@@ -35,6 +35,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByFechaseg", query = "SELECT s FROM Seguimiento s WHERE s.fechaseg = :fechaseg"),
     @NamedQuery(name = "Seguimiento.findByStatusseg", query = "SELECT s FROM Seguimiento s WHERE s.statusseg = :statusseg")})
 public class Seguimiento implements Serializable {
+    @Size(max = 20)
+    @Column(name = "TIPOSEG")
+    private String tiposeg;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -132,6 +135,14 @@ public class Seguimiento implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento[ idseg=" + idseg + " ]";
+    }
+
+    public String getTiposeg() {
+        return tiposeg;
+    }
+
+    public void setTiposeg(String tiposeg) {
+        this.tiposeg = tiposeg;
     }
     
 }
