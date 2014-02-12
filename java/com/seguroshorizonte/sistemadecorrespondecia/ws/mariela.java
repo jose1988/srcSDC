@@ -195,7 +195,7 @@ public class mariela {
     public int editarUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
         int Resultado = 0;
         try {
-            ejbUsuario.editarUsuario(registroUsuario);
+           // ejbUsuario.editarUsuario(registroUsuario);
             Resultado = 1;
         } catch (Exception e) {
             return 0;
