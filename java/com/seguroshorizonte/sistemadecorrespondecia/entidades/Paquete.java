@@ -48,7 +48,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),
     @NamedQuery(name = "Paquete.findByLocalizacionpaq", query = "SELECT p FROM Paquete p WHERE p.localizacionpaq = :localizacionpaq"),
     @NamedQuery(name = "Paquete.findByIdadj", query = "SELECT p FROM Paquete p WHERE p.idadj = :idadj"),
-    @NamedQuery(name = "Paquete.findByRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq")})
+    @NamedQuery(name = "Paquete.findByRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq"),
+    @NamedQuery(name = "Paquete.findByFechaenviopaYOrigen", query = "SELECT p FROM Paquete p WHERE p.origenpaq = :origenpaq AND p.fechaenviopaq =:fechaenviopaq"),
+    @NamedQuery(name = "Paquete.findByPaqYValija", query = "SELECT p FROM Paquete p WHERE p.idval = :idval"),
+    @NamedQuery(name = "Paquete.findByStatuspaqYRespaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq AND p.respaq = :respaq")})
+
 public class Paquete implements Serializable {
 
     private static final long serialVersionUID = 1L;

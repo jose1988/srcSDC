@@ -6,6 +6,9 @@ package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -32,6 +35,7 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     }
 
     public List<Seguimiento> consultarSeguimientoXPaquete(Paquete idPaquete) {
+        
         List<Seguimiento> Resultado;
         Query Consulta = em.createNamedQuery("Seguimiento.findByIdpaq").setParameter("idpaq", idPaquete);
         Resultado = Consulta.getResultList();
@@ -39,6 +43,26 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     }
 
     public void insertarSeguimiento(Seguimiento RegSeguimiento) {
+        
         this.create(RegSeguimiento);
+    }
+    
+    public List<Seguimiento> listaPaquetesXUsuarioYFechaProcesadas(Usuario idUsuario){
+    
+        List<Seguimiento> Resultado;
+        Date fecha = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fecha);
+        System.out.print(cal);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        fecha = cal.getTime();
+        
+        Query consulta = em.createNamedQuery("Seguimiento.findByFechasegYUsuario").setParameter("idusu", idUsuario).setParameter("fechaseg", fecha);
+        Resultado = consulta.getResultList();
+        
+        return Resultado;
     }
 }

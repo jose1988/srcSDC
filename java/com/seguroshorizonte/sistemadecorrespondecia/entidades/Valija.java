@@ -41,7 +41,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByFechaval", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval"),
     @NamedQuery(name = "Valija.findByFechaalerval", query = "SELECT v FROM Valija v WHERE v.fechaalerval = :fechaalerval"),
     @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
-    @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.zoomval = :zoomval")})
+    @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.zoomval = :zoomval"),
+    @NamedQuery(name = "Valija.findByNoProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval1 OR v.statusval = :statusval2"),
+    @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval")})
+
 public class Valija implements Serializable {
     @JoinColumn(name = "IDINC", referencedColumnName = "IDINC")
     @ManyToOne

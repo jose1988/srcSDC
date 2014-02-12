@@ -8,6 +8,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Incidente;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,4 +28,16 @@ public class IncidenteFacade extends AbstractFacade<Incidente> {
         super(Incidente.class);
     }
     
+    public void insertarIncidente(Incidente registroIncidente) {
+        
+        this.create(registroIncidente);
+    }
+    
+    public String ultimoIncidente() {
+        
+        Query query = em.createNamedQuery("Incidente.findByMaximoIdinc");
+        Object resultList = query.getSingleResult();
+        String maximoAuxiliar = resultList.toString();
+        return maximoAuxiliar;
+    }
 }
