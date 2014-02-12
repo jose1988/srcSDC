@@ -109,7 +109,10 @@ public class CorrespondenciaWS {
     
     @WebMethod(operationName = "buscarUsuario")
     public Usuario buscarUsuario(@WebParam(name = "user") String UsuarioActual) {
-        return ejbUsuario.find(UsuarioActual);
+        
+        BigDecimal id=new BigDecimal(UsuarioActual);
+        return ejbUsuario.find(id);
+        
     }
 
     /**
