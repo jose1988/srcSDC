@@ -32,8 +32,10 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Buzon.findByTipobuz", query = "SELECT b FROM Buzon b WHERE b.tipobuz = :tipobuz"),
     @NamedQuery(name = "Buzon.findByObservacionbuz", query = "SELECT b FROM Buzon b WHERE b.observacionbuz = :observacionbuz"),
     @NamedQuery(name = "Buzon.findByTelefonobuz", query = "SELECT b FROM Buzon b WHERE b.telefonobuz = :telefonobuz"),
+    @NamedQuery(name = "Buzon.findByUsuario", query = "SELECT b FROM Buzon b WHERE b.idusu = :idusu"),
     @NamedQuery(name = "Buzon.findByNombrebuz", query = "SELECT b FROM Buzon b WHERE b.nombrebuz = :nombrebuz")})
 public class Buzon implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -147,5 +149,4 @@ public class Buzon implements Serializable {
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Buzon[ idbuz=" + idbuz + " ]";
     }
-    
 }

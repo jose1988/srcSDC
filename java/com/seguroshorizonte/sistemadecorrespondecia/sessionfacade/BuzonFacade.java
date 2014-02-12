@@ -5,6 +5,8 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Buzon;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +17,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class BuzonFacade extends AbstractFacade<Buzon> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -26,5 +29,10 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
     public BuzonFacade() {
         super(Buzon.class);
     }
-    
+
+    public List<Buzon> ConsultarBuzonXUsuario(Usuario idUsuario) {
+        List<Buzon> lista;
+        lista = em.createNamedQuery("Buzon.findByUsuario").setParameter("idusu", idUsuario).getResultList();
+        return lista;
+    }
 }

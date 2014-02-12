@@ -32,9 +32,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Seguimiento.findAll", query = "SELECT s FROM Seguimiento s"),
     @NamedQuery(name = "Seguimiento.findByIdseg", query = "SELECT s FROM Seguimiento s WHERE s.idseg = :idseg"),
+    @NamedQuery(name = "Seguimiento.findByIdpaq", query = "SELECT s FROM Seguimiento s WHERE s.idpaq = :idpaq"),
     @NamedQuery(name = "Seguimiento.findByFechaseg", query = "SELECT s FROM Seguimiento s WHERE s.fechaseg = :fechaseg"),
     @NamedQuery(name = "Seguimiento.findByStatusseg", query = "SELECT s FROM Seguimiento s WHERE s.statusseg = :statusseg")})
 public class Seguimiento implements Serializable {
+
     @Size(max = 20)
     @Column(name = "TIPOSEG")
     private String tiposeg;
@@ -144,5 +146,4 @@ public class Seguimiento implements Serializable {
     public void setTiposeg(String tiposeg) {
         this.tiposeg = tiposeg;
     }
-    
 }
