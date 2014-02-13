@@ -5,11 +5,16 @@
 package com.seguroshorizonte.sistemadecorrespondecia.ws;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Buzon;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Documento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Prioridad;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.BuzonFacade;
+import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.DocumentoFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PaqueteFacade;
+import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PrioridadFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.SeguimientoFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.UsuarioFacade;
 import java.util.Date;
@@ -34,6 +39,10 @@ public class mariela {
     UsuarioFacade ejbUsuario;
     @EJB
     BuzonFacade ejbBuzon;
+    @EJB
+    DocumentoFacade ejbDocumento;
+    @EJB
+    PrioridadFacade ejbPrioridad;
 
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
@@ -195,7 +204,7 @@ public class mariela {
     public int editarUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
         int Resultado = 0;
         try {
-           // ejbUsuario.editarUsuario(registroUsuario);
+            // ejbUsuario.editarUsuario(registroUsuario);
             Resultado = 1;
         } catch (Exception e) {
             return 0;
@@ -269,6 +278,39 @@ public class mariela {
         List<Buzon> Resultado = null;
         try {
             Resultado = ejbBuzon.ConsultarBuzonXUsuario(registroUsuario);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "listarDocumentos")
+    public List<Documento> listarDocumentos() {
+        List<Documento> Resultado = null;
+        try {
+            Resultado = ejbDocumento.listarDocumentos();
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "listarPrioridad")
+    public List<Prioridad> listarPrioridad() {
+        List<Prioridad> Resultado = null;
+        try {
+            Resultado = ejbPrioridad.listarPrioridades();
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "ConsultarPaquetesXValija")
+    public List<Paquete> ConsultarPaquetesXValija(@WebParam(name = "registroValija") Valija registroValija) {
+        List<Paquete> Resultado = null;
+        try {
+            Resultado = ejbPaquete.ConsultarPaquetesXValija(registroValija);
         } catch (Exception e) {
             return null;
         }

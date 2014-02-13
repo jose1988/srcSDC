@@ -18,6 +18,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class DocumentoFacade extends AbstractFacade<Documento> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -29,20 +30,19 @@ public class DocumentoFacade extends AbstractFacade<Documento> {
     public DocumentoFacade() {
         super(Documento.class);
     }
-    
-      public List<Documento> listarDocumentos() {
+
+    public List<Documento> listarDocumentos() {
         List<Documento> lista;
         lista = (List<Documento>) em.createNamedQuery("Documento.findAll").getResultList();
         return lista;
     }
-     
-      
 
     public void insertar(Documento registro) {
 
         this.create(registro);
 
     }
+
     public void editar(Documento registro) {
 
         this.edit(registro);
@@ -58,18 +58,17 @@ public class DocumentoFacade extends AbstractFacade<Documento> {
         Documento Registro;
         Registro = this.find(idDocumento);
         return Registro;
-    } 
-    
-     public Documento consultarDocumentoXNombre(String doc) {
+    }
+
+    public Documento consultarDocumentoXNombre(String doc) {
         Documento Registro = new Documento();
-        try{
-          Registro = (Documento) (em.createNamedQuery("Documento.findByNombredoc").setParameter("nombredoc", doc).getSingleResult());
-        }catch(Exception e){
+        try {
+            Registro = (Documento) (em.createNamedQuery("Documento.findByNombredoc").setParameter("nombredoc", doc).getSingleResult());
+        } catch (Exception e) {
             return null;
         }
-        
-        
+
+
         return Registro;
     }
-    
 }

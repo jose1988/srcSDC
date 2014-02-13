@@ -6,6 +6,7 @@ package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Incidente;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -37,13 +38,13 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         this.create(registro);       
     }
      
-     public void editarZoomValija(Valija idValija, String codZoom){
+     public void editarZoomValija(BigDecimal idValija, String codZoom){
         
          Query q = em.createNativeQuery("UPDATE valija "
                 + "SET zoomval=?"
                 + "WHERE idval=?");
          q.setParameter(1, codZoom);
-         q.setParameter(2, idValija.getIdval());
+         q.setParameter(2, idValija);
          q.executeUpdate();
     }
     
