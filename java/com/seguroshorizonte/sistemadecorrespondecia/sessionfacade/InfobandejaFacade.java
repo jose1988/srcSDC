@@ -31,7 +31,7 @@ public class InfobandejaFacade extends AbstractFacade<Infobandeja> {
     public Infobandeja consultarBandejaXNombre(String nombre){
         Infobandeja Info;
         try{
-            Info = (Infobandeja) em.createNamedQuery("Infobandeja.findByNombreiba").setParameter("Nombreiba", nombre).getSingleResult();    
+            Info = (Infobandeja) em.createNamedQuery("Infobandeja.findByNombreiba").setParameter("nombreiba", nombre).getSingleResult();    
         }catch(Exception e){
             Info=null;
         }

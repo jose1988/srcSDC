@@ -38,6 +38,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByFechasegYUsuario", query = "SELECT s FROM Seguimiento s WHERE s.idusu = :idusu AND s.fechaseg = :fechaseg")})
 
 public class Seguimiento implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "NIVELSEG")
+    private String nivelseg;
 
     @Size(max = 20)
     @Column(name = "TIPOSEG")
@@ -147,5 +152,13 @@ public class Seguimiento implements Serializable {
 
     public void setTiposeg(String tiposeg) {
         this.tiposeg = tiposeg;
+    }
+
+    public String getNivelseg() {
+        return nivelseg;
+    }
+
+    public void setNivelseg(String nivelseg) {
+        this.nivelseg = nivelseg;
     }
 }

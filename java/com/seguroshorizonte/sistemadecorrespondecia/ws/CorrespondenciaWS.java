@@ -81,14 +81,14 @@ public class CorrespondenciaWS {
          
          BigDecimal id=new BigDecimal(idUser);
          List<Paquete> Registro = new  ArrayList<Paquete>();
-
+          
          Infobandeja inBandeja=ejbInfobandeja.consultarBandejaXNombre(ban);
          Usuario usuario=ejbUsuario.find(id);
          
          Iterator<Bandeja> iterator = inBandeja.getBandejaCollection().iterator();
          while(iterator.hasNext()){
            Bandeja aux=iterator.next();
-           if(aux.getIdpaq().getOrigenpaq().getIdusu()==usuario.getIdusu() || aux.getIdpaq().getDestinopaq().getIdusu()==usuario.getIdusu()  && aux.getIdusu().getIdusu()==usuario.getIdusu()){
+           if((aux.getIdpaq().getOrigenpaq().getIdusu()==usuario.getIdusu() || aux.getIdpaq().getDestinopaq().getIdusu()==usuario.getIdusu() ) && aux.getIdusu().getIdusu()==usuario.getIdusu()){
               Registro.add(aux.getIdpaq());
            }else{
                 iterator.remove();
