@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Prioridad;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,6 +16,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class PrioridadFacade extends AbstractFacade<Prioridad> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -26,5 +28,10 @@ public class PrioridadFacade extends AbstractFacade<Prioridad> {
     public PrioridadFacade() {
         super(Prioridad.class);
     }
-    
+
+    public List<Prioridad> listarPrioridades() {
+        List<Prioridad> lista;
+        lista = (List<Prioridad>) em.createNamedQuery("Prioridad.findAll").getResultList();
+        return lista;
+    }
 }
