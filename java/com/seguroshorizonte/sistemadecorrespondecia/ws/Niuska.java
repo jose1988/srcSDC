@@ -43,12 +43,14 @@ public class Niuska {
     
     //Lista de Paquete por Usuario y Fecha Procesados
     @WebMethod(operationName = "listaPaquetesXUsuarioYFechaProcesadas")
-    public List<Seguimiento> listaPaquetesXUsuarioYFechaProcesadas(@WebParam(name = "idUsuario") Usuario idUsuario){
+    public List<Seguimiento> listaPaquetesXUsuarioYFechaProcesadas(@WebParam(name = "idUsuario") String idUsuario){
         
         List<Seguimiento> Resultado = null;
         
-        try{            
-            Resultado = ejbSeguimiento.listaPaquetesXUsuarioYFechaProcesadas(idUsuario);
+        try{
+            Usuario idUsu = new Usuario();
+            idUsu.setIdusu(new BigDecimal(idUsuario));
+            Resultado = ejbSeguimiento.listaPaquetesXUsuarioYFechaProcesadas(idUsu);
         
         }catch(Exception e){
             Resultado = null;
@@ -58,17 +60,22 @@ public class Niuska {
     
     //Confirmar Valija
     @WebMethod(operationName = "confirmarValija")
-    public int confirmarValija(@WebParam(name = "idValija") Valija idValija, @WebParam(name = "codZoom") String codZoom){
+    public int confirmarValija(@WebParam(name = "idValija") String idValija, @WebParam(name = "codZoom") String codZoom){
         
         int Resultado = 0;
         List<Paquete> lista;
         BigDecimal idPaquete;
+        BigDecimal idVal;
+        Valija idValPaq;
         
         try {
-            Valija consulta = ejbValija.find(idValija.getIdval());            
+            idVal = new BigDecimal(idValija);
+            idValPaq = new Valija();
+            idValPaq.setIdval(idVal);
+            Valija consulta = ejbValija.find(idVal);            
             if(consulta!=null){
-                ejbValija.editarZoomValija(idValija, codZoom);                
-                lista=ejbPaquete.listarPaquetesXValija(idValija);                
+                ejbValija.editarZoomValija(idVal, codZoom);                
+                lista=ejbPaquete.listarPaquetesXValija(idValPaq);                
                 for(int i=0; i<lista.size(); i++){
                     idPaquete=lista.get(i).getIdpaq();
                     ejbPaquete.editarLocalizacionZoomPaquete(idPaquete);
