@@ -94,12 +94,12 @@ public class Niuska {
         
         int Resultado = 0;
         Seguimiento nuevoSeg;
-        Incidente nuevoIncidente;
-        Incidente idMaxInci;
+        Incidente nuevoIncidente;        
         Paquete registroPaq;
         Usuario registroUsua;
         String idIncidente;
         BigDecimal idVal;
+        BigDecimal idMaxInci;
                 
         try{
             registroPaq = new Paquete();
@@ -122,8 +122,7 @@ public class Niuska {
             ejbIncidente.insertarIncidente(nuevoIncidente);
             
             idIncidente=ejbIncidente.ultimoIncidente();
-            idMaxInci = new Incidente();
-            idMaxInci.setIdinc(new BigDecimal(idIncidente));            
+            idMaxInci = new BigDecimal(idIncidente);            
             ejbValija.editarIncidenteValija(idVal, idMaxInci);                        
             Resultado = 1;
             
@@ -141,6 +140,7 @@ public class Niuska {
         Incidente nuevoIncidente;
         Incidente idMaxInci = new Incidente();
         String idIncidente;
+        BigDecimal idVal;
         
         try{            
             nuevoIncidente = new Incidente();
@@ -148,9 +148,9 @@ public class Niuska {
             nuevoIncidente.setDescripcioninc("Reporte de paquete ausente");
             ejbIncidente.insertarIncidente(nuevoIncidente);
             
-            idIncidente=ejbIncidente.ultimoIncidente();
-            idMaxInci.setIdinc(new BigDecimal(idIncidente));            
-            ejbValija.editarIncidenteValija(registroValija.getIdval(), idMaxInci);            
+            idIncidente = ejbIncidente.ultimoIncidente();
+            //idMaxInci = new BigDecimal(idIncidente);            
+            //ejbValija.editarIncidenteValija(registroValija.getIdval(), idMaxInci);            
             Resultado = 1;
             
         }catch(Exception e){
@@ -181,7 +181,7 @@ public class Niuska {
             idIncidente=ejbIncidente.ultimoIncidente();
             idMaxInci.setIdinc(new BigDecimal(idIncidente));
             
-            ejbValija.editarIncidenteValija(registroValija.getIdval(), idMaxInci);
+            //ejbValija.editarIncidenteValija(registroValija.getIdval(), idMaxInci);
             
             lista=ejbPaquete.listarPaquetesXValija(registroValija);
             
