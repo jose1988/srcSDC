@@ -382,7 +382,7 @@ public class CorrespondenciaWS {
     public List<Paquete> ConsultarPaquetesParaValija( @WebParam(name = "user") String user ,@WebParam(name = "sede") String sede) {
         List<Paquete> Resultado = null;
         try {
-            Resultado = ejbPaquete.ConsultarPaquetesXValija(registroValija);
+            Resultado = ejbPaquete.ConsultarPaquetesParaValija(user, sede);
         } catch (Exception e) {
             return null;
         }
