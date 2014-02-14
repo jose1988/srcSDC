@@ -8,6 +8,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Mensaje;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,4 +28,16 @@ public class MensajeFacade extends AbstractFacade<Mensaje> {
         super(Mensaje.class);
     }
     
+    public void insertarMensaje(Mensaje registroMensaje) {
+        
+        this.create(registroMensaje);
+    }
+    
+    public String ultimoMensaje() {
+        
+        Query query = em.createNamedQuery("Mensaje.findByMaximoIdmen");
+        Object resultList = query.getSingleResult();
+        String maximoAuxiliar = resultList.toString();
+        return maximoAuxiliar;
+    }
 }

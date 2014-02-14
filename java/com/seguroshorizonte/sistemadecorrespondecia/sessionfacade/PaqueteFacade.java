@@ -171,4 +171,12 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         Resultado = (Paquete) consulta.getSingleResult();
         return Resultado;
     }
+     
+     public void editarMensajePaquete(BigDecimal idPaquete, BigDecimal idMensaje){
+        
+         Query q = em.createNativeQuery("UPDATE paquete SET idmen=? WHERE idpaq=?");
+         q.setParameter(1, idMensaje);
+         q.setParameter(2, idPaquete);
+         q.executeUpdate();
+    }
 }
