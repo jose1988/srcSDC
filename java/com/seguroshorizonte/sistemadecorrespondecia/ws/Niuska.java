@@ -95,21 +95,16 @@ public class Niuska {
         int Resultado = 0;
         Seguimiento nuevoSeg;
         Incidente nuevoIncidente;
-        Incidente idMaxInci = new Incidente();
+        Incidente idMaxInci;
         Paquete registroPaq;
-        Paquete idPaq;
         Usuario registroUsua;
-        Valija registroValija;
         String idIncidente;
-        BigDecimal idPaquete;
+        BigDecimal idVal;
                 
         try{
             registroPaq = new Paquete();
-            idPaq = new Paquete();
-            idPaquete = new BigDecimal(registroPaquete);
-            registroPaq = ejbPaquete.ConsultarPaquete(idPaquete);
-            registroValija = new Valija();
-            registroValija = registroPaq.getIdval();
+            registroPaq = ejbPaquete.ConsultarPaquete(new BigDecimal (registroPaquete));
+            idVal = registroPaq.getIdval().getIdval();
             registroUsua = new Usuario();
             registroUsua.setIdusu(new BigDecimal(registroUsuario));
             nuevoSeg = new Seguimiento();
@@ -127,8 +122,9 @@ public class Niuska {
             ejbIncidente.insertarIncidente(nuevoIncidente);
             
             idIncidente=ejbIncidente.ultimoIncidente();
+            idMaxInci = new Incidente();
             idMaxInci.setIdinc(new BigDecimal(idIncidente));            
-            ejbValija.editarIncidenteValija(registroValija, idMaxInci);                        
+            ejbValija.editarIncidenteValija(idVal, idMaxInci);                        
             Resultado = 1;
             
         }catch(Exception e){
@@ -154,7 +150,7 @@ public class Niuska {
             
             idIncidente=ejbIncidente.ultimoIncidente();
             idMaxInci.setIdinc(new BigDecimal(idIncidente));            
-            ejbValija.editarIncidenteValija(registroValija, idMaxInci);            
+            ejbValija.editarIncidenteValija(registroValija.getIdval(), idMaxInci);            
             Resultado = 1;
             
         }catch(Exception e){
@@ -185,7 +181,7 @@ public class Niuska {
             idIncidente=ejbIncidente.ultimoIncidente();
             idMaxInci.setIdinc(new BigDecimal(idIncidente));
             
-            ejbValija.editarIncidenteValija(registroValija, idMaxInci);
+            ejbValija.editarIncidenteValija(registroValija.getIdval(), idMaxInci);
             
             lista=ejbPaquete.listarPaquetesXValija(registroValija);
             
