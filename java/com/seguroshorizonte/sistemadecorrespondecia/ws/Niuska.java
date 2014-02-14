@@ -90,21 +90,36 @@ public class Niuska {
     
     //Reportar Paquete Excedente
     @WebMethod(operationName = "reportarPaqueteExcedente")
-    public int reportarPaqueteExcedente(@WebParam(name = "registroPaquete") Paquete registroPaquete, @WebParam(name = "registroUsuario") Usuario registroUsuario, @WebParam(name = "registroValija") Valija registroValija){
+    public int reportarPaqueteExcedente(@WebParam(name = "registroPaquete") String registroPaquete, @WebParam(name = "registroUsuario") String registroUsuario){
         
         int Resultado = 0;
         Seguimiento nuevoSeg;
         Incidente nuevoIncidente;
         Incidente idMaxInci = new Incidente();
+        Paquete registroPaq;
+        Paquete idPaq;
+        Usuario registroUsua;
+        Valija registroValija;
         String idIncidente;
-        
+        BigDecimal idPaquete;
+                
         try{
+            registroPaq = new Paquete();
+            idPaq = new Paquete();
+            idPaquete = new BigDecimal(registroPaquete);
+            idPaq.setIdpaq(idPaquete);
+            registroPaq = ejbPaquete.ConsultarPaqueteXId(idPaq);
+            registroValija = new Valija();
+            registroValija = registroPaq.getIdval();
+            registroUsua = new Usuario();
+            registroUsua.setIdusu(new BigDecimal(registroUsuario));
             nuevoSeg = new Seguimiento();
             nuevoSeg.setFechaseg(new Date());
-            nuevoSeg.setIdpaq(registroPaquete);
-            nuevoSeg.setIdusu(registroUsuario);
+            nuevoSeg.setIdpaq(registroPaq);
+            nuevoSeg.setIdusu(registroUsua);
             nuevoSeg.setStatusseg("Reenvio");
             nuevoSeg.setTiposeg("1");
+            nuevoSeg.setNivelseg("4");
             ejbSeguimiento.insertarSeguimiento(nuevoSeg);
             
             nuevoIncidente = new Incidente();
@@ -186,6 +201,7 @@ public class Niuska {
                     nuevoSeg.setIdusu(registroUsuario);
                     nuevoSeg.setStatusseg("Reenvio");
                     nuevoSeg.setTiposeg("1");
+                    nuevoSeg.setNivelseg("4");
                     ejbSeguimiento.insertarSeguimiento(nuevoSeg);
                 }
                         
