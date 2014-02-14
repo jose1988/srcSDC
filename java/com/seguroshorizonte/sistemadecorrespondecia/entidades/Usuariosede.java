@@ -27,7 +27,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuariosede.findAll", query = "SELECT u FROM Usuariosede u"),
-    @NamedQuery(name = "Usuariosede.findByIduse", query = "SELECT u FROM Usuariosede u WHERE u.iduse = :iduse")})
+    @NamedQuery(name = "Usuariosede.findByIduse", query = "SELECT u FROM Usuariosede u WHERE u.iduse u = :iduse"),
+    @NamedQuery(name = "Usuariosede.findByIduse", query = "SELECT u FROM Usuariosede u WHERE u.iduse u = :iduse"),
+    @NamedQuery(name = "Usuariosede.findByIduse", query = "SELECT u FROM Usuariosede u WHERE u.iduse u = :iduse")})
 public class Usuariosede implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

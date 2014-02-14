@@ -155,5 +155,12 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         Resultado = consulta.getResultList();
         return Resultado;
     }
-
+    
+     public List<Paquete> ConsultarPaquetesParaValija(String user, String sede){
+        
+        List<Paquete> Resultado = null;
+        Query consulta = em.createNamedQuery("Paquete.findByStatuspaqYRespaq").setParameter("statuspaq", '1').setParameter("respaq", user);
+        Resultado = consulta.getResultList();
+        return Resultado;
+    }
 }
