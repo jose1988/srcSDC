@@ -107,8 +107,7 @@ public class Niuska {
             registroPaq = new Paquete();
             idPaq = new Paquete();
             idPaquete = new BigDecimal(registroPaquete);
-            idPaq.setIdpaq(idPaquete);
-            registroPaq = ejbPaquete.ConsultarPaqueteXId(idPaq);
+            registroPaq = ejbPaquete.ConsultarPaquete(idPaquete);
             registroValija = new Valija();
             registroValija = registroPaq.getIdval();
             registroUsua = new Usuario();

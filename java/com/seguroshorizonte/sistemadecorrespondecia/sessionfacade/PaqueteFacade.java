@@ -163,4 +163,12 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         Resultado = consulta.getResultList();
         return Resultado;
     }
+     
+     public Paquete ConsultarPaquete(BigDecimal idPaquete) {
+        
+        Paquete Resultado;
+        Query consulta = em.createNamedQuery("Paquete.findByIdpaq").setParameter("idpaq", idPaquete);
+        Resultado = (Paquete) consulta.getSingleResult();
+        return Resultado;
+    }
 }
