@@ -378,15 +378,5 @@ public class CorrespondenciaWS {
         return Resultado;
     } 
      
-      @WebMethod(operationName = "ConsultarPaquetesParaValija")
-    public List<Paquete> ConsultarPaquetesParaValija( @WebParam(name = "user") String user ,@WebParam(name = "sede") String sede) {
-        List<Paquete> Resultado = null;
-        try {
-            Resultado = ejbPaquete.ConsultarPaquetesParaValija(user, sede);
-        } catch (Exception e) {
-            return null;
-        }
-        return Resultado;
-    }
    
 }
