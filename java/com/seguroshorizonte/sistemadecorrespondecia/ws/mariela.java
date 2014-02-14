@@ -91,7 +91,7 @@ public class mariela {
             else if (registroUsuario.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("1") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                     if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("4") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
-                        registroPaquete = ejbPaquete.ConsultarPaqueteXId(registroPaquete);
+                        registroPaquete = ejbPaquete.ConsultarPaquete(registroPaquete.getIdpaq());
                         if (registroPaquete.getIdval().getZoomval() != null) {
                             Resultado = 1;
                         }
@@ -180,7 +180,7 @@ public class mariela {
                 List<Seguimiento> RegistrosSeguimiento = ejbSeguimiento.consultarSeguimientoXPaquete(registroPaquete);
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                     if (RegistrosSeguimiento.get(i).getIdusu().getIdrol().getIdrol().toString().compareTo("4") == 0) {
-                        registroPaquete = ejbPaquete.ConsultarPaqueteXId(registroPaquete);
+                        registroPaquete = ejbPaquete.ConsultarPaquete(registroPaquete.getIdpaq());
                         if (registroPaquete.getIdval().getZoomval() != null) {
                             nuevoSeg = new Seguimiento();
                             nuevoSeg.setFechaseg(new Date());
@@ -216,7 +216,7 @@ public class mariela {
     public String alertaXFechaVencida(@WebParam(name = "registroPaquete") Paquete registroPaquete) {
         String Alerta = "";
         try {
-            registroPaquete = ejbPaquete.ConsultarPaqueteXId(registroPaquete);
+            registroPaquete = ejbPaquete.ConsultarPaquete(registroPaquete.getIdpaq());
             if (registroPaquete.getFechaapaq() == new Date()) {
                 Alerta = "ALERTA";
             }
