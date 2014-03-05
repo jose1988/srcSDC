@@ -35,7 +35,7 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     }
 
     public List<Seguimiento> consultarSeguimientoXPaquete(Paquete idPaquete) {
-        
+
         List<Seguimiento> Resultado;
         Query Consulta = em.createNamedQuery("Seguimiento.findByIdpaq").setParameter("idpaq", idPaquete);
         Resultado = Consulta.getResultList();
@@ -43,12 +43,12 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     }
 
     public void insertarSeguimiento(Seguimiento RegSeguimiento) {
-        
+
         this.create(RegSeguimiento);
     }
-    
-    public List<Paquete> listaPaquetesXUsuarioYFechaProcesadas(Usuario idUsuario){
-    
+
+    public List<Paquete> listaPaquetesXUsuarioYFechaProcesadas(Usuario idUsuario) {
+
         List<Paquete> Resultado;
         Date fecha = new Date();
         Calendar cal = Calendar.getInstance();
@@ -59,22 +59,24 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         fecha = cal.getTime();
-        
+
         Query consulta = em.createNamedQuery("Seguimiento.findByFechasegYUsuario").setParameter("idusu", idUsuario).setParameter("fechaseg", fecha);
         Resultado = consulta.getResultList();
-        
+
         return Resultado;
     }
-     public List<Paquete> listaPaquetesProcesadosXUsuarioAlDia(Usuario idUsuario) {
+
+    public List<Paquete> listaPaquetesProcesadosXUsuarioAlDia(Usuario idUsuario) {
 
         List<Paquete> Resultado = null;
-          Query consulta = em.createNamedQuery("Seguimiento.findPaqByFechasegYUsuario").setParameter("idusu", idUsuario).setParameter("fechaseg", FechaActual());
-      
+        Query consulta = em.createNamedQuery("Seguimiento.findPaqByFechasegYUsuario").setParameter("idusu", idUsuario).setParameter("fechaseg", FechaActual());
+
         Resultado = consulta.getResultList();
 
         return Resultado;
     }
-     public Date FechaActual() {
+
+    public Date FechaActual() {
 
         Date fecha = new Date();
         Calendar cal = Calendar.getInstance();

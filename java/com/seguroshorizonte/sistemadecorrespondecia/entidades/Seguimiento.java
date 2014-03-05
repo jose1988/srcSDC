@@ -38,15 +38,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByIdpaq", query = "SELECT s FROM Seguimiento s WHERE s.idpaq = :idpaq"),
     @NamedQuery(name = "Seguimiento.findByFechaseg", query = "SELECT s FROM Seguimiento s WHERE s.fechaseg = :fechaseg"),
     @NamedQuery(name = "Seguimiento.findByStatusseg", query = "SELECT s FROM Seguimiento s WHERE s.statusseg = :statusseg"),
-   @NamedQuery(name = "Seguimiento.Temporal", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.idusu = :idusu "),
+    @NamedQuery(name = "Seguimiento.Temporal", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.idusu = :idusu "),
     @NamedQuery(name = "Seguimiento.findByFechasegYUsuario", query = "SELECT s FROM Seguimiento s WHERE s.idusu = :idusu AND s.fechaseg = :fechaseg")})
+
 public class Seguimiento implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
     @Column(name = "NIVELSEG")
     private String nivelseg;
-
     @Size(max = 20)
     @Column(name = "TIPOSEG")
     private String tiposeg;
