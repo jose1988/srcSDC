@@ -20,6 +20,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -31,26 +32,26 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
     public UsuariosedeFacade() {
         super(Usuariosede.class);
     }
- 
-   
-     public Usuariosede sedeRolXId(String idu, Sede sede){
-        
-       BigDecimal idusu=new BigDecimal(idu);
-       
-       Usuariosede sedeId=(Usuariosede) em.createNamedQuery("Usuariosede.findByIdusu").setParameter("idusu", idusu).setParameter("idsed", sede.getIdsed()).getSingleResult();
-       
-       return sedeId;
+
+    public Usuariosede sedeRolXId(String idu, Sede sede) {
+
+        BigDecimal idusu = new BigDecimal(idu);
+
+        Usuariosede sedeId = (Usuariosede) em.createNamedQuery("Usuariosede.findByIdusu").setParameter("idusu", idusu).setParameter("idsed", sede.getIdsed()).getSingleResult();
+
+        return sedeId;
     }
-     public List<Usuariosede> listaUsuarios(Sede idSede){
-        
+
+    public List<Usuariosede> listaUsuarios(Sede idSede) {
+
         List<Usuariosede> Resultado = null;
-        
+
         Query consulta = em.createNamedQuery("Usuariosede.findByIdsed").setParameter("idsed", idSede);
         Resultado = consulta.getResultList();
         return Resultado;
     }
-     
-         public Usuariosede sedeXId(BigDecimal sede) {
+
+    public Usuariosede sedeXId(BigDecimal sede) {
 
         Usuariosede sedeId = (Usuariosede) em.createNamedQuery("Usuariosede.findByIdsed").setParameter("Idsed", sede).getSingleResult();
 
@@ -71,11 +72,11 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
         return usuario;
     }
 
-    public Sede ConsultarSedeDeUsuario(Usuario Idusuario) {
-        Sede usuario;
-        usuario = (Sede) em.createNamedQuery("Usuariosede.findSedeByUsuario").setParameter("idusu", Idusuario).getSingleResult();
+    public List<Sede> ConsultarSedeDeUsuario(Usuario Idusuario) {
+        List<Sede> result;
+        result = em.createNamedQuery("Usuariosede.findSedeByUsuario").setParameter("idusu", Idusuario).getResultList();
 
-        return usuario;
+        return result;
     }
 
     public void insertarUsuarioSede(Usuariosede registroUsuSede) {
@@ -86,8 +87,8 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
 
         q.executeUpdate();
     }
-    
-    public void editarRol(BigDecimal idusu,String rol, BigDecimal idsede) {
+
+    public void editarRol(BigDecimal idusu, String rol, BigDecimal idsede) {
         Query q = em.createNativeQuery("UPDATE Usuariosede SET rol=? WHERE idusu=? AND idsed=?");
         q.setParameter(1, rol);
         q.setParameter(2, idusu);
