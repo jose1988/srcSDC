@@ -233,11 +233,11 @@ public class CorrespondenciaWS {
      * consultar
      * @return objeto de la entidad Permisologia
      *
-     * @WebMethod(operationName = "consultarPermisologia") public Permisologia consultarPermisologia(
+     * @WebMethod(operationName = "consultarPermisologia") public Permisologia
+     * consultarPermisologia(
      * @WebParam(name = "idUsuario") String idPer) { Permisologia Resultado; try
      * { Resultado = ejbPermisologia.consultarPermisologia(idPer); } catch
-     * (Exception e) { Resultado = null; } return Resultado; }      *
-     * /**
+     * (Exception e) { Resultado = null; } return Resultado; } * /**
      *
      * Método encargado de consultar un registro de Permisologia de acuerdo a su
      * id
@@ -249,7 +249,7 @@ public class CorrespondenciaWS {
      * @WebMethod(operationName = "listarPermisologia") public
      * List<Permisologia> listarPermisologia() { List<Permisologia> Resultado;
      * try { Resultado = ejbPermisologia.findAll(); } catch (Exception e) {
-     * Resultado = null; } return Resultado; }      *
+     * Resultado = null; } return Resultado; } *
      *
      *
      * /**
@@ -1648,6 +1648,17 @@ public class CorrespondenciaWS {
             Nuevo.setTipobuz("0");
             ejbBuzon.insertarBuzon(Nuevo);
             return Resultado;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "consultarBuzonXId")
+    public Buzon consultarBuzonXId(@WebParam(name = "idBuzon") String idBuzon) {
+        Buzon Resultado = null;
+        try {
+            Resultado = ejbBuzon.consultarBuzonXId(idBuzon);
+        } catch (Exception e) {
+            return null;
         }
         return Resultado;
     }

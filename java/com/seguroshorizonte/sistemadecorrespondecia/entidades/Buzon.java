@@ -39,9 +39,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Buzon.findByTipobuz", query = "SELECT b FROM Buzon b WHERE b.tipobuz = :tipobuz"),
     @NamedQuery(name = "Buzon.findByTelefonobuz", query = "SELECT b FROM Buzon b WHERE b.telefonobuz = :telefonobuz"),
     @NamedQuery(name = "Buzon.findByUsuario", query = "SELECT b FROM Buzon b WHERE b.idusu = :idusu"),
-       @NamedQuery(name = "Buzon.findByDuenoYContacto", query = "SELECT b FROM Buzon b WHERE b.idusubuz = :buzon AND b.idusu = :idusu AND b.idsed = :idsed"),
+    @NamedQuery(name = "Buzon.findByNombreUsuario", query = "SELECT b FROM Buzon b WHERE b.idusubuz.userusu = :user AND b.idusu = :idusu"),
+    @NamedQuery(name = "Buzon.findByDuenoYContacto", query = "SELECT b FROM Buzon b WHERE b.idusubuz = :buzon AND b.idusu = :idusu AND b.idsed = :idsed"),
     @NamedQuery(name = "Buzon.findByNombrebuz", query = "SELECT b FROM Buzon b WHERE b.nombrebuz = :nombrebuz")})
 public class Buzon implements Serializable {
+
     @JoinColumn(name = "IDSED", referencedColumnName = "IDSED")
     @ManyToOne
     private Sede idsed;
@@ -50,22 +52,17 @@ public class Buzon implements Serializable {
     private String direccionbuz;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
     private Collection<Paquete> paqueteCollection;
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BUZON")
     @SequenceGenerator(name = "SEQ_BUZON", sequenceName = "SEQ_BUZON", allocationSize = 1)
-   
     @Id
     @Basic(optional = false)
-
     @Column(name = "IDBUZ")
     private BigDecimal idbuz;
     @Size(max = 20)
     @Column(name = "TIPOBUZ")
     private String tipobuz;
-    
     @Size(max = 20)
     @Column(name = "TELEFONOBUZ")
     private String telefonobuz;
@@ -102,7 +99,6 @@ public class Buzon implements Serializable {
         this.tipobuz = tipobuz;
     }
 
-  
     public String getTelefonobuz() {
         return telefonobuz;
     }
