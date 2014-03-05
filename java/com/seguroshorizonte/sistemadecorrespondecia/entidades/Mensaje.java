@@ -10,10 +10,13 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -31,11 +34,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Mensaje.findAll", query = "SELECT m FROM Mensaje m"),
     @NamedQuery(name = "Mensaje.findByIdmen", query = "SELECT m FROM Mensaje m WHERE m.idmen = :idmen"),
     @NamedQuery(name = "Mensaje.findByNombremen", query = "SELECT m FROM Mensaje m WHERE m.nombremen = :nombremen"),
-    @NamedQuery(name = "Mensaje.findByDescripcionmen", query = "SELECT m FROM Mensaje m WHERE m.descripcionmen = :descripcionmen")})
+    @NamedQuery(name = "Mensaje.findByDescripcionmen", query = "SELECT m FROM Mensaje m WHERE m.descripcionmen = :descripcionmen"),
+    @NamedQuery(name = "Mensaje.findByMaximoIdmen", query = "SELECT MAX(m.idmen) FROM Mensaje m")})
 public class Mensaje implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MENSAJESEQ")
+    @SequenceGenerator(name = "MENSAJESEQ", sequenceName = "SEQ_MENSAJE", allocationSize = 1)    
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDMEN")

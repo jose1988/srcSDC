@@ -41,4 +41,16 @@ public class MensajeFacade extends AbstractFacade<Mensaje> {
         return maximoAuxiliar;
     }
     
+    public void insertarMensaje(Mensaje registroMensaje) {
+        
+        this.create(registroMensaje);
+    }
+    
+    public String ultimoMensaje() {
+        
+        Query query = em.createNamedQuery("Mensaje.findByMaximoIdmen");
+        Object resultList = query.getSingleResult();
+        String maximoAuxiliar = resultList.toString();
+        return maximoAuxiliar;
+    }
 }
