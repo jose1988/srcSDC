@@ -12,12 +12,15 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,23 +46,27 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
     @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.zoomval = :zoomval"),
     @NamedQuery(name = "Valija.findByNoProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval1 OR v.statusval = :statusval2"),
-    @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval")})
+    @NamedQuery(name = "Valija.maxVal", query = "SELECT MAX(v.idval) FROM Valija v WHERE v.idusu.idusu = :idusu"),
+    @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
+ @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval AND v.idusu = :idusu")})
 
 public class Valija implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "ORIGENVAL")
+    private BigDecimal origenval;
     @JoinColumn(name = "IDINC", referencedColumnName = "IDINC")
     @ManyToOne
     private Incidente idinc;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VALIJA")
+    @SequenceGenerator(name = "SEQ_VALIJA", sequenceName = "SEQ_VALIJA", allocationSize = 1)
     @Id
     @Basic(optional = false)
-    @NotNull
+    
     @Column(name = "IDVAL")
     private BigDecimal idval;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ORIGENVAL")
-    private BigInteger origenval;
     @Size(max = 20)
     @Column(name = "ASUNTOVAL")
     private String asuntoval;
@@ -93,7 +100,7 @@ public class Valija implements Serializable {
         this.idval = idval;
     }
 
-    public Valija(BigDecimal idval, BigInteger origenval, Date fechaval) {
+    public Valija(BigDecimal idval, BigDecimal origenval, Date fechaval) {
         this.idval = idval;
         this.origenval = origenval;
         this.fechaval = fechaval;
@@ -105,14 +112,6 @@ public class Valija implements Serializable {
 
     public void setIdval(BigDecimal idval) {
         this.idval = idval;
-    }
-
-    public BigInteger getOrigenval() {
-        return origenval;
-    }
-
-    public void setOrigenval(BigInteger origenval) {
-        this.origenval = origenval;
     }
 
     public String getAsuntoval() {
@@ -211,6 +210,14 @@ public class Valija implements Serializable {
 
     public void setIdinc(Incidente idinc) {
         this.idinc = idinc;
+    }
+
+    public BigDecimal getOrigenval() {
+        return origenval;
+    }
+
+    public void setOrigenval(BigDecimal origenval) {
+        this.origenval = origenval;
     }
     
 }

@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Incidente;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -33,9 +34,12 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         super(Valija.class);
     }
     
-     public void crearValija(Valija registro){
+     public BigDecimal crearValija(Valija registro){
        
-        this.create(registro);       
+        this.create(registro);
+        BigDecimal max = this.ultimaValija(registro.getIdusu().getIdusu());
+        
+       return max;
     }
      
      public void editarZoomValija(BigDecimal idValija, String codZoom){
@@ -93,4 +97,61 @@ public class ValijaFacade extends AbstractFacade<Valija> {
          q.executeUpdate();
     }
     
+     public BigDecimal ultimaValija( BigDecimal idusu){
+        
+     Query consulta = em.createNamedQuery("Valija.maxVal").setParameter("idusu", idusu);
+     BigDecimal Resultado = (BigDecimal) consulta.getSingleResult();
+         return Resultado;
+    }
+    
+     public void entregarValija(BigDecimal idValija, String Status){
+        
+         Query q = em.createNativeQuery("UPDATE valija SET statusval=? WHERE idval=?");
+         q.setParameter(1, Status);
+         q.setParameter(2, idValija);
+         q.executeUpdate();
+    }
+     
+      public void editarIncidenteValija(BigDecimal idValija, BigDecimal idIncidente){
+        
+         Query q = em.createNativeQuery("UPDATE valija SET idinc=? WHERE idval=?");
+         q.setParameter(1, idIncidente);
+         q.setParameter(2, idValija);
+         q.executeUpdate();
+    }
+    
+    
+    public void editarStatusValija(BigDecimal idValija, String status){
+        
+         Query q = em.createNativeQuery("UPDATE valija SET statusval=? WHERE idval=?");
+         q.setParameter(1, status);
+         q.setParameter(2, idValija);
+         q.executeUpdate();
+    }
+    public List<Valija> listarValijasXFechaYUsuario(Usuario idUsuario){
+    
+        List<Valija> Resultado = null;
+        Date fecha = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fecha);
+        System.out.print(cal);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        fecha = cal.getTime();
+        
+        Query consulta = em.createNamedQuery("Valija.findByFechavalYUsuario").setParameter("fechaval", fecha).setParameter("idusu", idUsuario);
+        Resultado = consulta.getResultList();
+        
+        return Resultado;
+    }
+    
+      public Valija consultarPaquete(BigDecimal idValija) {
+        
+        Valija Resultado;
+        Query consulta = em.createNamedQuery("Valija.findByIdval").setParameter("idval", idValija);
+        Resultado = (Valija) consulta.getSingleResult();
+        return Resultado;
+    }
 }

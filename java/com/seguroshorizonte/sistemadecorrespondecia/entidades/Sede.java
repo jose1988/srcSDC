@@ -37,6 +37,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Sede.findByTelefonosed", query = "SELECT s FROM Sede s WHERE s.telefonosed = :telefonosed"),
     @NamedQuery(name = "Sede.findByTelefono2sed", query = "SELECT s FROM Sede s WHERE s.telefono2sed = :telefono2sed")})
 public class Sede implements Serializable {
+    @OneToMany(mappedBy = "idsed")
+    private Collection<Bitacora> bitacoraCollection;
+    @OneToMany(mappedBy = "idsed")
+    private Collection<Paquete> paqueteCollection;
+    @OneToMany(mappedBy = "idsed")
+    private Collection<Buzon> buzonCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -160,6 +166,33 @@ public class Sede implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede[ idsed=" + idsed + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Buzon> getBuzonCollection() {
+        return buzonCollection;
+    }
+
+    public void setBuzonCollection(Collection<Buzon> buzonCollection) {
+        this.buzonCollection = buzonCollection;
+    }
+
+    @XmlTransient
+    public Collection<Bitacora> getBitacoraCollection() {
+        return bitacoraCollection;
+    }
+
+    public void setBitacoraCollection(Collection<Bitacora> bitacoraCollection) {
+        this.bitacoraCollection = bitacoraCollection;
+    }
+
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection() {
+        return paqueteCollection;
+    }
+
+    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
+        this.paqueteCollection = paqueteCollection;
     }
     
 }

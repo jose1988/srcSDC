@@ -30,7 +30,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Adjunto.findAll", query = "SELECT a FROM Adjunto a"),
     @NamedQuery(name = "Adjunto.findByIdadj", query = "SELECT a FROM Adjunto a WHERE a.idadj = :idadj"),
     @NamedQuery(name = "Adjunto.findByNombreadj", query = "SELECT a FROM Adjunto a WHERE a.nombreadj = :nombreadj"),
-    @NamedQuery(name = "Adjunto.findByUrladj", query = "SELECT a FROM Adjunto a WHERE a.urladj = :urladj")})
+    @NamedQuery(name = "Adjunto.findByUrladj", query = "SELECT a FROM Adjunto a WHERE a.urladj = :urladj"),
+    @NamedQuery(name = "Adjunto.findByIdpaq", query = "SELECT a FROM Adjunto a WHERE a.idpaq = :idpaq")})
 public class Adjunto implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation

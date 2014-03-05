@@ -47,9 +47,9 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         this.create(RegSeguimiento);
     }
     
-    public List<Seguimiento> listaPaquetesXUsuarioYFechaProcesadas(Usuario idUsuario){
+    public List<Paquete> listaPaquetesXUsuarioYFechaProcesadas(Usuario idUsuario){
     
-        List<Seguimiento> Resultado;
+        List<Paquete> Resultado;
         Date fecha = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(fecha);
@@ -64,5 +64,27 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         Resultado = consulta.getResultList();
         
         return Resultado;
+    }
+     public List<Paquete> listaPaquetesProcesadosXUsuarioAlDia(Usuario idUsuario) {
+
+        List<Paquete> Resultado = null;
+          Query consulta = em.createNamedQuery("Seguimiento.findPaqByFechasegYUsuario").setParameter("idusu", idUsuario).setParameter("fechaseg", FechaActual());
+      
+        Resultado = consulta.getResultList();
+
+        return Resultado;
+    }
+     public Date FechaActual() {
+
+        Date fecha = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fecha);
+        //  System.out.print(cal);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        fecha = cal.getTime();
+        return fecha;
     }
 }

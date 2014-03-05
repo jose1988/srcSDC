@@ -34,6 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Rol.findByNombrerol", query = "SELECT r FROM Rol r WHERE r.nombrerol = :nombrerol"),
     @NamedQuery(name = "Rol.findByDescripcionrol", query = "SELECT r FROM Rol r WHERE r.descripcionrol = :descripcionrol")})
 public class Rol implements Serializable {
+    @OneToMany(mappedBy = "idrol")
+    private Collection<Usuariosede> usuariosedeCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -47,8 +49,7 @@ public class Rol implements Serializable {
     @Size(max = 2000)
     @Column(name = "DESCRIPCIONROL")
     private String descripcionrol;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idrol")
-    private Collection<Usuario> usuarioCollection;
+ 
 
     public Rol() {
     }
@@ -81,14 +82,7 @@ public class Rol implements Serializable {
         this.descripcionrol = descripcionrol;
     }
 
-    @XmlTransient
-    public Collection<Usuario> getUsuarioCollection() {
-        return usuarioCollection;
-    }
-
-    public void setUsuarioCollection(Collection<Usuario> usuarioCollection) {
-        this.usuarioCollection = usuarioCollection;
-    }
+   
 
     @Override
     public int hashCode() {
@@ -113,6 +107,15 @@ public class Rol implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Rol[ idrol=" + idrol + " ]";
+    }
+
+    @XmlTransient
+    public Collection<Usuariosede> getUsuariosedeCollection() {
+        return usuariosedeCollection;
+    }
+
+    public void setUsuariosedeCollection(Collection<Usuariosede> usuariosedeCollection) {
+        this.usuariosedeCollection = usuariosedeCollection;
     }
     
 }

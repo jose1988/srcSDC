@@ -9,11 +9,14 @@ import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,14 +31,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Bandeja.findAll", query = "SELECT b FROM Bandeja b"),
-    @NamedQuery(name = "Bandeja.findByIdban", query = "SELECT b FROM Bandeja b WHERE b.idban = :idban"),
+    @NamedQuery(name = "Bandeja.findByIdban", query = "SELECT b FROM Bandeja b WHERE b.idpaq.idpaq = :idpaq AND b.idusu.idusu= :idusu"),
     @NamedQuery(name = "Bandeja.findByLeidoban", query = "SELECT b FROM Bandeja b WHERE b.leidoban = :leidoban")})
 public class Bandeja implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BANDEJA")
+    @SequenceGenerator(name = "SEQ_BANDEJA", sequenceName = "SEQ_BANDEJA", allocationSize = 1)
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "IDBAN")
     private BigDecimal idban;
     @Basic(optional = false)

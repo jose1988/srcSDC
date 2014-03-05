@@ -11,12 +11,15 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -41,15 +44,32 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByTelefonousu", query = "SELECT u FROM Usuario u WHERE u.telefonousu = :telefonousu"),
     @NamedQuery(name = "Usuario.findByTelefono2usu", query = "SELECT u FROM Usuario u WHERE u.telefono2usu = :telefono2usu"),
     @NamedQuery(name = "Usuario.findByDireccionusu", query = "SELECT u FROM Usuario u WHERE u.direccionusu = :direccionusu"),
+     @NamedQuery(name = "Usuario.findByUsuxSede", query = "SELECT u FROM Usuario u, Usuariosede s WHERE u.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede"),
     @NamedQuery(name = "Usuario.findByDireccion2usu", query = "SELECT u FROM Usuario u WHERE u.direccion2usu = :direccion2usu")})
 public class Usuario implements Serializable {
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "TIPOUSU")
+    private String tipousu;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
+    private Collection<Seguimiento> seguimientoCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
+    private Collection<Bitacora> bitacoraCollection;
+    @OneToMany(mappedBy = "idusubuz")
+    private Collection<Buzon> buzonCollection;
+    @OneToMany(mappedBy = "idusu")
+    private Collection<Buzon> buzonCollection1;
     @OneToMany(mappedBy = "idusu")
     private Collection<Usuariosede> usuariosedeCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+   
+     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
+    @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", allocationSize = 1)
+     
     @Id
     @Basic(optional = false)
-    @NotNull
     @Column(name = "IDUSU")
     private BigDecimal idusu;
     @Basic(optional = false)
@@ -87,17 +107,14 @@ public class Usuario implements Serializable {
     @Size(max = 2500)
     @Column(name = "DIRECCION2USU")
     private String direccion2usu;
-    @JoinColumn(name = "IDROL", referencedColumnName = "IDROL")
-    @ManyToOne(optional = false)
-    private Rol idrol;
+    
     @OneToMany(mappedBy = "idusu")
     private Collection<Bandeja> bandejaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
     private Collection<Valija> valijaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")
     private Collection<Paquete> paqueteCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
-    private Collection<Paquete> paqueteCollection1;
+   
 
     public Usuario() {
     }
@@ -194,13 +211,7 @@ public class Usuario implements Serializable {
         this.direccion2usu = direccion2usu;
     }
 
-    public Rol getIdrol() {
-        return idrol;
-    }
-
-    public void setIdrol(Rol idrol) {
-        this.idrol = idrol;
-    }
+   
 
     @XmlTransient
     public Collection<Bandeja> getBandejaCollection() {
@@ -229,14 +240,7 @@ public class Usuario implements Serializable {
         this.paqueteCollection = paqueteCollection;
     }
 
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection1() {
-        return paqueteCollection1;
-    }
-
-    public void setPaqueteCollection1(Collection<Paquete> paqueteCollection1) {
-        this.paqueteCollection1 = paqueteCollection1;
-    }
+ 
 
     @Override
     public int hashCode() {
@@ -270,6 +274,50 @@ public class Usuario implements Serializable {
 
     public void setUsuariosedeCollection(Collection<Usuariosede> usuariosedeCollection) {
         this.usuariosedeCollection = usuariosedeCollection;
+    }
+
+    @XmlTransient
+    public Collection<Buzon> getBuzonCollection() {
+        return buzonCollection;
+    }
+
+    public void setBuzonCollection(Collection<Buzon> buzonCollection) {
+        this.buzonCollection = buzonCollection;
+    }
+
+    @XmlTransient
+    public Collection<Buzon> getBuzonCollection1() {
+        return buzonCollection1;
+    }
+
+    public void setBuzonCollection1(Collection<Buzon> buzonCollection1) {
+        this.buzonCollection1 = buzonCollection1;
+    }
+
+    @XmlTransient
+    public Collection<Seguimiento> getSeguimientoCollection() {
+        return seguimientoCollection;
+    }
+
+    public void setSeguimientoCollection(Collection<Seguimiento> seguimientoCollection) {
+        this.seguimientoCollection = seguimientoCollection;
+    }
+
+    @XmlTransient
+    public Collection<Bitacora> getBitacoraCollection() {
+        return bitacoraCollection;
+    }
+
+    public void setBitacoraCollection(Collection<Bitacora> bitacoraCollection) {
+        this.bitacoraCollection = bitacoraCollection;
+    }
+
+    public String getTipousu() {
+        return tipousu;
+    }
+
+    public void setTipousu(String tipousu) {
+        this.tipousu = tipousu;
     }
     
 }

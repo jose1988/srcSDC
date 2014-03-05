@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Buzon;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -34,5 +35,23 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         List<Buzon> lista;
         lista = em.createNamedQuery("Buzon.findByUsuario").setParameter("idusu", idUsuario).getResultList();
         return lista;
+    }
+    
+    public void insertarBuzon(Buzon BuzonI){
+     
+        this.create(BuzonI);
+    
+        }
+  
+    public Buzon ConsultarBuzonXNombreUsuario(String userUsu, Usuario usuario) {
+        Buzon Resultado;
+        Resultado = (Buzon) em.createNamedQuery("Buzon.findByNombreUsuario").setParameter("user", userUsu).setParameter("idusu", usuario).getSingleResult();
+        return Resultado;
+    }
+    
+	  public Buzon verficarBuzon(Usuario dueno, Usuario contacto,Sede idSed) {
+        Buzon Resultado;
+        Resultado = (Buzon) em.createNamedQuery("Buzon.findByDuenoYContacto").setParameter("buzon", contacto).setParameter("idusu", dueno).setParameter("idsed", idSed).getSingleResult();
+        return Resultado;
     }
 }

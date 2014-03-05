@@ -5,7 +5,6 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Infobandeja;
-import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,7 +26,6 @@ public class InfobandejaFacade extends AbstractFacade<Infobandeja> {
     public InfobandejaFacade() {
         super(Infobandeja.class);
     }
-    
     public Infobandeja consultarBandejaXNombre(String nombre){
         Infobandeja Info;
         try{

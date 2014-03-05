@@ -27,8 +27,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Usuariosede.findAll", query = "SELECT u FROM Usuariosede u"),
-    @NamedQuery(name = "Usuariosede.findByIduse", query = "SELECT u FROM Usuariosede u WHERE u.iduse = :iduse")})
+    @NamedQuery(name = "Usuariosede.findByIduse", query = "SELECT u FROM Usuariosede u WHERE u.iduse = :iduse"),
+    @NamedQuery(name = "Usuariosede.findByIdusu", query = "SELECT u FROM Usuariosede u WHERE u.idusu.idusu = :idusu AND u.idsed.idsed = :idsed"),
+    @NamedQuery(name = "Usuariosede.findByIdsed", query = "SELECT u FROM Usuariosede u WHERE u.idsed = :idsed"),
+    @NamedQuery(name = "Usuariosede.findByUsuarioYSede", query = "SELECT u FROM Usuariosede u WHERE u.idusu = :idusu AND u.idsed = :idsed"),
+    @NamedQuery(name = "Usuariosede.findSedeByUsuario", query = "SELECT u.idsed FROM Usuariosede u WHERE u.idusu = :idusu"),
+    @NamedQuery(name = "Usuariosede.findByRolYSedeOrigen", query = "SELECT u.idusu FROM Usuariosede u WHERE (u.idrol.idrol = 1 OR u.idrol.idrol = 2) AND u.idsed = :idsed"),
+    @NamedQuery(name = "Usuariosede.findMaxId", query = "SELECT MAX(u.idusu) FROM Usuariosede u ")})
 public class Usuariosede implements Serializable {
+    @JoinColumn(name = "IDROL", referencedColumnName = "IDROL")
+    @ManyToOne
+    private Rol idrol;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -97,6 +106,14 @@ public class Usuariosede implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede[ iduse=" + iduse + " ]";
+    }
+
+    public Rol getIdrol() {
+        return idrol;
+    }
+
+    public void setIdrol(Rol idrol) {
+        this.idrol = idrol;
     }
     
 }
