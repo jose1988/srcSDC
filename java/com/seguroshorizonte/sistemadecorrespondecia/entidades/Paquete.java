@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "PAQUETE")
 @XmlRootElement
 @NamedQueries({
-      @NamedQuery(name = "Paquete.findAll", query = "SELECT p FROM Paquete p"),
+    @NamedQuery(name = "Paquete.findAll", query = "SELECT p FROM Paquete p"),
     @NamedQuery(name = "Paquete.findByIdpaq", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq"),
     @NamedQuery(name = "Paquete.findByAsuntopaq", query = "SELECT p FROM Paquete p WHERE p.asuntopaq = :asuntopaq"),
     @NamedQuery(name = "Paquete.findByTextopaq", query = "SELECT p FROM Paquete p WHERE p.textopaq = :textopaq"),
@@ -51,15 +51,17 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByIdval", query = "SELECT p FROM Paquete p, Valija v WHERE p.idval.idval = :idval  AND v.destinoval.nombresed = :sede AND v.statusval <> :status"),
     @NamedQuery(name = "Paquete.findByRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq"),
     @NamedQuery(name = "Paquete.findByFechaenviopaYOrigen", query = "SELECT p FROM Paquete p WHERE p.origenpaq = :origenpaq AND p.fechaenviopaq =:fechaenviopaq"),
+    @NamedQuery(name = "Paquete.findByFechapaqYOrigen", query = "SELECT p FROM Paquete p WHERE p.origenpaq = :origenpaq AND p.fechapaq =:fechapaq"),
     @NamedQuery(name = "Paquete.findByPaqYValija", query = "SELECT p FROM Paquete p WHERE p.idval = :idval"),
-     @NamedQuery(name = "Paquete.findByOrigenYRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq AND p.origenpaq = :origenpaq"),
+    @NamedQuery(name = "Paquete.findByOrigenYRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq AND p.origenpaq = :origenpaq"),
     @NamedQuery(name = "Paquete.findByStatuspaqYRespaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq AND p.respaq = :respaq"),
-    @NamedQuery(name = "Paquete.paqBySede", query = "SELECT p FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed" ),
-    @NamedQuery(name = "Paquete.SedeByValija", query = "SELECT DISTINCT p.destinopaq.idsed.nombresed FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed" ),
+    @NamedQuery(name = "Paquete.paqBySede", query = "SELECT p FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed"),
+    @NamedQuery(name = "Paquete.SedeByValija", query = "SELECT DISTINCT p.destinopaq.idsed.nombresed FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed"),
     @NamedQuery(name = "Paquete.findByidPaqueteYSedeDeValija", query = "SELECT p FROM Paquete p WHERE p.idval.destinoval = :idSede AND p.idpaq =:idpaq"),
     @NamedQuery(name = "Paquete.findMaxPaqXOrigen", query = "SELECT MAX(p.idpaq) FROM Paquete p WHERE p.origenpaq = :origenpaq")})
 
 public class Paquete implements Serializable {
+
     @OneToMany(mappedBy = "idpaqres")
     private Collection<Paquete> paqueteCollection;
     @JoinColumn(name = "IDPAQRES", referencedColumnName = "IDPAQ")
@@ -102,7 +104,6 @@ public class Paquete implements Serializable {
     @Size(max = 250)
     @Column(name = "LOCALIZACIONPAQ")
     private String localizacionpaq;
-    
     @Size(max = 20)
     @Column(name = "RESPAQ")
     private String respaq;
@@ -195,8 +196,6 @@ public class Paquete implements Serializable {
     public void setLocalizacionpaq(String localizacionpaq) {
         this.localizacionpaq = localizacionpaq;
     }
-
-   
 
     public String getRespaq() {
         return respaq;
@@ -330,5 +329,4 @@ public class Paquete implements Serializable {
     public void setIdpaqres(Paquete idpaqres) {
         this.idpaqres = idpaqres;
     }
-    
 }

@@ -48,9 +48,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByNoProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval1 OR v.statusval = :statusval2"),
     @NamedQuery(name = "Valija.maxVal", query = "SELECT MAX(v.idval) FROM Valija v WHERE v.idusu.idusu = :idusu"),
     @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
- @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval AND v.idusu = :idusu")})
+    @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval AND v.idusu = :idusu")})
 
 public class Valija implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "ORIGENVAL")
@@ -64,7 +65,6 @@ public class Valija implements Serializable {
     @SequenceGenerator(name = "SEQ_VALIJA", sequenceName = "SEQ_VALIJA", allocationSize = 1)
     @Id
     @Basic(optional = false)
-    
     @Column(name = "IDVAL")
     private BigDecimal idval;
     @Size(max = 20)
@@ -219,5 +219,4 @@ public class Valija implements Serializable {
     public void setOrigenval(BigDecimal origenval) {
         this.origenval = origenval;
     }
-    
 }
