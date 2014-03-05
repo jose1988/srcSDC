@@ -217,6 +217,8 @@ public class CorrespondenciaWS {
         ejbUsuario.habilitar(idUsuario);
     }
 
+    
+    
      /**
      *
      * Método encargado de consultar un registro de Usuario de acuerdo a su id
@@ -611,7 +613,20 @@ public class CorrespondenciaWS {
         return Resultado;
     }  
  
-   
+    @WebMethod(operationName = "editarRol")
+    public int editarRol(@WebParam(name = "idusu") String idusu,@WebParam(name = "rol") String rol,@WebParam(name = "sede") String sede) {
+       int Resultado = 0;
+       BigDecimal idu=new BigDecimal(idusu);
+       BigDecimal ids=new BigDecimal(sede);
+        try {
+            ejbUsuariosede.editarRol(idu, rol, ids);
+            Resultado = 1;
+        } catch (Exception e) {
+            return 0;
+        }
+        return Resultado;
+    }  
+ 
    
    //////////////// inicio niuska
    

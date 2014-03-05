@@ -116,4 +116,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         BigDecimal Id = (BigDecimal) em.createNamedQuery("Usuario.findMaxId").getSingleResult();
         return Id;
     }
+  
+  
+
 }

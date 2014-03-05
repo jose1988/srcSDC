@@ -110,13 +110,7 @@ public class ValijaFacade extends AbstractFacade<Valija> {
          q.executeUpdate();
     }
      
-      public void editarIncidenteValija(BigDecimal idValija, BigDecimal idIncidente){
-        
-         Query q = em.createNativeQuery("UPDATE valija SET idinc=? WHERE idval=?");
-         q.setParameter(1, idIncidente);
-         q.setParameter(2, idValija);
-         q.executeUpdate();
-    }
+     
     
     
     public void editarStatusValija(BigDecimal idValija, String status){
