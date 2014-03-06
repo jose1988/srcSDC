@@ -517,10 +517,10 @@ public class CorrespondenciaWS {
     }
 
     @WebMethod(operationName = "actualizacionLocalizacionRecibidoPaquete")
-    public int actualizacionLocalizacionRecibidoPaquete(@WebParam(name = "localizacion") String Localizacion, @WebParam(name = "idpaq") String idpaq) {
+    public int actualizacionLocalizacionRecibidoPaquete(@WebParam(name = "idpaq") String idpaq) {
         int Resultado = 0;
         try {
-            ejbPaquete.ActualizacionLocalizacionRecibidoPaquete(Localizacion, idpaq);
+            ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido(idpaq);
             Resultado = 1;
         } catch (Exception e) {
             return 0;
@@ -539,19 +539,19 @@ public class CorrespondenciaWS {
 
             if ("0".equals(paq.getRespaq())) {
 
-                ejbPaquete.ActualizacionLocalizacionRecibidoPaquete("entregado", idpaq);
-                ejbBandeja.actualizacionBandeja(usu.getIdusu(), usud.getIdusu(), idpaq);
+                ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido(idpaq);
+                ejbBandeja.actualizacionBandeja(usu, usud, paq);
 
             }
             if ("1".equals(paq.getRespaq())) {
-                ejbPaquete.ActualizacionLocalizacionRecibidoPaquete("entregado aun sin respuesta", idpaq);
-                ejbBandeja.actualizacionBandeja(usu.getIdusu(), usud.getIdusu(), idpaq);
+                ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido(idpaq);
+                ejbBandeja.actualizacionBandeja(usu, usud, paq);
             }
             if ("2".equals(paq.getRespaq())) {
 
-                ejbPaquete.ActualizacionLocalizacionRecibidoPaquete("entregado con respuesta", paq.getIdpaqres().toString());
-                ejbPaquete.ActualizacionLocalizacionRecibidoPaquete("entregado la respuesta", idpaq);
-                ejbBandeja.actualizacionBandeja(usu.getIdusu(), usud.getIdusu(), idpaq);
+                //ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido("entregado con respuesta", paq.getIdpaqres().toString());
+                ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido(idpaq);
+                ejbBandeja.actualizacionBandeja(usu, usud, paq);
             }
 
             Resultado = 1;
@@ -560,6 +560,7 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+
 
     @WebMethod(operationName = "entregarValija")
     public int entregarValija(@WebParam(name = "idval") String idval, @WebParam(name = "status") String status) {

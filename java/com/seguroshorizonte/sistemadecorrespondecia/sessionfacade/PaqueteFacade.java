@@ -161,11 +161,15 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
     }
 
-    public void ActualizacionLocalizacionRecibidoPaquete(String Localizacion, String idPaq) {
+     public void ActualizacionLocalizacionyDelPaqueteRecibido(String idPaq) {
+         
+         BigDecimal id=new BigDecimal(idPaq);
+        Paquete paq = this.find(id);
 
-        Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=? WHERE idpaq=?");
-        q.setParameter(1, Localizacion);
-        q.setParameter(2, idPaq);
+        Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=?, statuspaq=?  WHERE idpaq=?");
+        q.setParameter(1, paq.getDestinopaq().getIdusubuz().getNombreusu());
+        q.setParameter(2, "1");
+        q.setParameter(3, paq.getIdpaq());
         q.executeUpdate();
 
     }
