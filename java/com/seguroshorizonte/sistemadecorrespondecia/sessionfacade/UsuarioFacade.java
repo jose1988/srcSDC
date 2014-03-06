@@ -4,9 +4,7 @@
  */
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;

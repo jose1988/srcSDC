@@ -44,9 +44,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByTelefonousu", query = "SELECT u FROM Usuario u WHERE u.telefonousu = :telefonousu"),
     @NamedQuery(name = "Usuario.findByTelefono2usu", query = "SELECT u FROM Usuario u WHERE u.telefono2usu = :telefono2usu"),
     @NamedQuery(name = "Usuario.findByDireccionusu", query = "SELECT u FROM Usuario u WHERE u.direccionusu = :direccionusu"),
-     @NamedQuery(name = "Usuario.findByUsuxSede", query = "SELECT u FROM Usuario u, Usuariosede s WHERE u.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede"),
+    @NamedQuery(name = "Usuario.findByUsuxSede", query = "SELECT u FROM Usuario u, Usuariosede s WHERE u.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede"),
+    @NamedQuery(name = "Usuario.findMaxId", query = "SELECT MAX(u.idusu) FROM Usuario u "),
     @NamedQuery(name = "Usuario.findByDireccion2usu", query = "SELECT u FROM Usuario u WHERE u.direccion2usu = :direccion2usu")})
 public class Usuario implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -64,10 +66,8 @@ public class Usuario implements Serializable {
     private Collection<Usuariosede> usuariosedeCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-   
-     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", allocationSize = 1)
-     
     @Id
     @Basic(optional = false)
     @Column(name = "IDUSU")
@@ -107,14 +107,12 @@ public class Usuario implements Serializable {
     @Size(max = 2500)
     @Column(name = "DIRECCION2USU")
     private String direccion2usu;
-    
     @OneToMany(mappedBy = "idusu")
     private Collection<Bandeja> bandejaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
     private Collection<Valija> valijaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")
     private Collection<Paquete> paqueteCollection;
-   
 
     public Usuario() {
     }
@@ -211,8 +209,6 @@ public class Usuario implements Serializable {
         this.direccion2usu = direccion2usu;
     }
 
-   
-
     @XmlTransient
     public Collection<Bandeja> getBandejaCollection() {
         return bandejaCollection;
@@ -239,8 +235,6 @@ public class Usuario implements Serializable {
     public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
         this.paqueteCollection = paqueteCollection;
     }
-
- 
 
     @Override
     public int hashCode() {
@@ -319,5 +313,4 @@ public class Usuario implements Serializable {
     public void setTipousu(String tipousu) {
         this.tipousu = tipousu;
     }
-    
 }

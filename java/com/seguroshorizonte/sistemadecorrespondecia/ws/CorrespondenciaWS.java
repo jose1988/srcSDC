@@ -585,24 +585,24 @@ public class CorrespondenciaWS {
         } catch (Exception e) {
             return 0;
         }
-       return Resultado;
+        return Resultado;
     }
-    
-     @WebMethod(operationName = "editarTipoUsuario")
+
+    @WebMethod(operationName = "editarTipoUsuario")
     public int editarTipoUsuario(@WebParam(name = "idusu") String idusu, @WebParam(name = "tipo") String tipo) {
         int Resultado = 0;
         BigDecimal idu = new BigDecimal(idusu);
         try {
-            ejbPaquete.editarTipo(idu,tipo);
+            ejbPaquete.editarTipo(idu, tipo);
             Resultado = 1;
         } catch (Exception e) {
             return 0;
         }
-       return Resultado;
+        return Resultado;
     }
-    
-     @WebMethod(operationName = "asignarSede")
-     public int asignarSede(@WebParam(name = "idusu") String idusu, @WebParam(name = "rol") String rol, @WebParam(name = "sede") String sede) {
+
+    @WebMethod(operationName = "asignarSede")
+    public int asignarSede(@WebParam(name = "idusu") String idusu, @WebParam(name = "rol") String rol, @WebParam(name = "sede") String sede) {
         int Resultado = 0;
         BigDecimal idu = new BigDecimal(idusu);
         BigDecimal ids = new BigDecimal(sede);
@@ -616,7 +616,7 @@ public class CorrespondenciaWS {
         } catch (Exception e) {
             return 0;
         }
-       return Resultado;
+        return Resultado;
     }
 
     //////////////// inicio niuska
@@ -950,34 +950,34 @@ public class CorrespondenciaWS {
 
     //Lista de Valijas que esten Procesadas
     @WebMethod(operationName = "listarValijasProcesadas")
-    public List<Valija> listarValijasProcesadas(@WebParam(name = "registroSede") String registroSede){
-    
+    public List<Valija> listarValijasProcesadas(@WebParam(name = "registroSede") String registroSede) {
+
         List<Valija> Resultado = null;
         List<Valija> valijas;
         Valija val;
-        
-        try{
+
+        try {
             valijas = listarValijasXFechaYUsuarioSede(registroSede);
-            Resultado = new ArrayList<Valija>();            
+            Resultado = new ArrayList<Valija>();
             int j = 0;
-                
-            if(valijas.isEmpty()){
+
+            if (valijas.isEmpty()) {
                 Resultado = null;
-            }                
-            while (valijas.size()>j){
-                if(valijas.get(j).getStatusval().compareTo("1")==0){
+            }
+            while (valijas.size() > j) {
+                if (valijas.get(j).getStatusval().compareTo("1") == 0) {
                     val = valijas.get(j);
                     Resultado.add(val);
                 }
                 j++;
             }
-            
-        }catch(Exception e){
+
+        } catch (Exception e) {
             Resultado = null;
-        }        
+        }
         return Resultado;
     }
-    
+
     //Lista de Correspondencias Enviados por el Usuario con Fecha Hoy
     @WebMethod(operationName = "listarEnviadoUsuarioXFecha")
     public List<Paquete> listarEnviadoUsuarioXFecha(@WebParam(name = "idUsuario") String idUsuario) {
@@ -1029,36 +1029,36 @@ public class CorrespondenciaWS {
 
     //Lista de Paquetes que No esten Procesados por Respuesta
     @WebMethod(operationName = "listarPaquetesNoProcesadosXRespuesta")
-    public List<Paquete> listarPaquetesNoProcesados(@WebParam(name = "idUsuario") String idUsuario, @WebParam(name = "respuesta") String respuesta){
-    
+    public List<Paquete> listarPaquetesNoProcesados(@WebParam(name = "idUsuario") String idUsuario, @WebParam(name = "respuesta") String respuesta) {
+
         List<Paquete> Resultado = null;
         List<Paquete> paquetes;
         Paquete paq;
-        
-        try{
+
+        try {
             Usuario idUsu = new Usuario();
             idUsu.setIdusu(new BigDecimal(idUsuario));
             paquetes = ejbPaquete.listarPaquetesXOrigenYRespuesta(idUsu, respuesta);
-            
-            Resultado = new ArrayList<Paquete>();            
+
+            Resultado = new ArrayList<Paquete>();
             int j = 0;
-                
-            if(paquetes.isEmpty()){
+
+            if (paquetes.isEmpty()) {
                 Resultado = null;
-            }                
-            while (paquetes.size()>j){
-                if(paquetes.get(j).getStatuspaq().compareTo("2")==0 || paquetes.get(j).getStatuspaq().compareTo("3")==0 || paquetes.get(j).getStatuspaq().compareTo("4")==0){
+            }
+            while (paquetes.size() > j) {
+                if (paquetes.get(j).getStatuspaq().compareTo("2") == 0 || paquetes.get(j).getStatuspaq().compareTo("3") == 0 || paquetes.get(j).getStatuspaq().compareTo("4") == 0) {
                     paq = paquetes.get(j);
                     Resultado.add(paq);
                 }
                 j++;
-            }        
-        }catch(Exception e){
+            }
+        } catch (Exception e) {
             Resultado = null;
-        }        
+        }
         return Resultado;
     }
-    
+
     //Consulta de Sede por Id
     @WebMethod(operationName = "consultarSedeXId")
     public Sede consultarSedeXId(@WebParam(name = "idSede") String idSede) {
@@ -1619,6 +1619,7 @@ public class CorrespondenciaWS {
         try {
             Resul = ejbUsuario.consultarUsuarioXUser(user);
         } catch (Exception e) {
+            return null;
         }
         return Resul;
     }
@@ -1755,7 +1756,5 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-    
     //////////////// fin mariela 
 }
