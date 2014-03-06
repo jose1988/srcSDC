@@ -585,7 +585,38 @@ public class CorrespondenciaWS {
         } catch (Exception e) {
             return 0;
         }
-        return Resultado;
+       return Resultado;
+    }
+    
+     @WebMethod(operationName = "editarTipoUsuario")
+    public int editarTipoUsuario(@WebParam(name = "idusu") String idusu, @WebParam(name = "tipo") String tipo) {
+        int Resultado = 0;
+        BigDecimal idu = new BigDecimal(idusu);
+        try {
+            ejbPaquete.editarTipo(idu,tipo);
+            Resultado = 1;
+        } catch (Exception e) {
+            return 0;
+        }
+       return Resultado;
+    }
+    
+     @WebMethod(operationName = "asignarSede")
+     public int asignarSede(@WebParam(name = "idusu") String idusu, @WebParam(name = "rol") String rol, @WebParam(name = "sede") String sede) {
+        int Resultado = 0;
+        BigDecimal idu = new BigDecimal(idusu);
+        BigDecimal ids = new BigDecimal(sede);
+        BigDecimal idr = new BigDecimal(rol);
+        Usuario usu = ejbUsuario.find(idu);
+        Sede sed = ejbSede.find(ids);
+        Rol ro = ejbRol.find(idr);
+        try {
+            ejbUsuariosede.asignarSede(usu, ro, sed);
+            Resultado = 1;
+        } catch (Exception e) {
+            return 0;
+        }
+       return Resultado;
     }
 
     //////////////// inicio niuska
@@ -1724,5 +1755,7 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+    
+    
     //////////////// fin mariela 
 }

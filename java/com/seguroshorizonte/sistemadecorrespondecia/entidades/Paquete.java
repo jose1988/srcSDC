@@ -13,12 +13,15 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -48,7 +51,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByFechaapaq", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq"),
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),
     @NamedQuery(name = "Paquete.findByLocalizacionpaq", query = "SELECT p FROM Paquete p WHERE p.localizacionpaq = :localizacionpaq"),
-    @NamedQuery(name = "Paquete.findByIdval", query = "SELECT p FROM Paquete p, Valija v WHERE p.idval.idval = :idval  AND v.destinoval.nombresed = :sede AND v.statusval <> :status"),
+    @NamedQuery(name = "Paquete.findByIdval", query = "SELECT p FROM Paquete p, Valija v WHERE p.idval.idval = :idval  AND v.destinoval.nombresed = :sede AND v.statusval = :status OR v.statusval = :status2"),
     @NamedQuery(name = "Paquete.findByRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq"),
     @NamedQuery(name = "Paquete.findByFechaenviopaYOrigen", query = "SELECT p FROM Paquete p WHERE p.origenpaq = :origenpaq AND p.fechaenviopaq =:fechaenviopaq"),
     @NamedQuery(name = "Paquete.findByFechapaqYOrigen", query = "SELECT p FROM Paquete p WHERE p.origenpaq = :origenpaq AND p.fechapaq =:fechapaq"),
@@ -78,9 +81,10 @@ public class Paquete implements Serializable {
     private Collection<Bandeja> bandejaCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Id
+   @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAQUETESEQ")
+    @SequenceGenerator(name = "PAQUETESEQ", sequenceName = "SEQ_PAQUETE", allocationSize = 1)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "IDPAQ")
     private BigDecimal idpaq;
     @Size(max = 200)

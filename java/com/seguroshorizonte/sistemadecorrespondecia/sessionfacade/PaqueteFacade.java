@@ -40,8 +40,9 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
         List<Paquete> lista;
         BigDecimal idval = new BigDecimal(idValija);
-        String status = "entregado";
-        Query consulta = em.createNamedQuery("Paquete.findByIdval").setParameter("idval", idval).setParameter("sede", sede).setParameter("status", status);
+        String status = "0";
+        String status2 = "4";
+        Query consulta = em.createNamedQuery("Paquete.findByIdval").setParameter("idval", idval).setParameter("sede", sede).setParameter("status", status).setParameter("status2", status2);
         lista = consulta.getResultList();
         return lista;
     }
@@ -267,9 +268,16 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     public int ConsultarMaxId() {
 
         int Resultado;
-        Query consulta = em.createNamedQuery("Paquete.MaxId");
+        Query consulta = em.createNamedQuery("Paquete.findMaxPaqXOrigen");
         BigDecimal id = (BigDecimal) consulta.getSingleResult();
         Resultado = id.intValue();
         return Resultado;
+    }
+    
+     public void editarTipo(BigDecimal idusu, String tipo) {
+        Query q = em.createNativeQuery("UPDATE Usuariosede SET tipousu=? WHERE idusu=?");
+        q.setParameter(1, tipo);
+        q.setParameter(2, idusu);
+        q.executeUpdate();
     }
 }

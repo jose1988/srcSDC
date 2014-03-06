@@ -4,6 +4,7 @@
  */
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Rol;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede;
@@ -89,10 +90,20 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
     }
 
     public void editarRol(BigDecimal idusu, String rol, BigDecimal idsede) {
-        Query q = em.createNativeQuery("UPDATE Usuariosede SET rol=? WHERE idusu=? AND idsed=?");
+        Query q = em.createNativeQuery("UPDATE Usuariosede SET idrol=? WHERE idusu=? AND idsed=?");
         q.setParameter(1, rol);
         q.setParameter(2, idusu);
         q.setParameter(3, idsede);
         q.executeUpdate();
+    }
+     public void asignarSede(Usuario idusu, Rol rol, Sede sede) {
+         
+         Usuariosede Usede=new Usuariosede();
+         Usede.setIdrol(rol);
+         Usede.setIdsed(sede);
+         Usede.setIdusu(idusu);
+         
+         this.create(Usede);
+       
     }
 }
