@@ -69,7 +69,7 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     public List<Paquete> listaPaquetesProcesadosXUsuarioAlDia(Usuario idUsuario) {
 
         List<Paquete> Resultado = null;
-        Query consulta = em.createNamedQuery("Seguimiento.findPaqByFechasegYUsuario").setParameter("idusu", idUsuario).setParameter("fechaseg", FechaActual());
+        Query consulta = em.createNamedQuery("Seguimiento.Temporal").setParameter("idusu", idUsuario);
 
         Resultado = consulta.getResultList();
 
