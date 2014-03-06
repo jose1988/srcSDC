@@ -120,19 +120,37 @@ public class CorrespondenciaWS {
     public List<Paquete> consultarPaquetesXBandeja(@WebParam(name = "user") String idUser, @WebParam(name = "ban") String ban) {
 
         BigDecimal id = new BigDecimal(idUser);
+        BigDecimal b1 = new BigDecimal("1");
+        BigDecimal b2 = new BigDecimal("2");
+        BigDecimal b3 = new BigDecimal("3"); 
+        BigDecimal b4 = new BigDecimal("4");
+           
+           
         List<Paquete> Registro = new ArrayList<Paquete>();
 
         Infobandeja inBandeja = ejbInfobandeja.consultarBandejaXNombre(ban);
         Usuario usuario = ejbUsuario.find(id);
-
+        BigDecimal banj = inBandeja.getIdiba();
         Iterator<Bandeja> iterator = inBandeja.getBandejaCollection().iterator();
         while (iterator.hasNext()) {
             Bandeja aux = iterator.next();
-            if ((aux.getIdpaq().getOrigenpaq().getIdusu() == usuario.getIdusu() || aux.getIdpaq().getDestinopaq().getIdusu().getIdusu() == usuario.getIdusu()) && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
+            
+            if(banj.equals(b1) || banj.equals(b2)){
+            if (aux.getIdpaq().getOrigenpaq().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
                 Registro.add(aux.getIdpaq());
             } else {
                 iterator.remove();
             }
+            }
+            
+             if(banj.equals(b3) || banj.equals(b4)){
+            if ( aux.getIdpaq().getDestinopaq().getIdusu().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
+                Registro.add(aux.getIdpaq());
+            } else {
+                iterator.remove();
+            }
+            }
+            
 
         }
 
