@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Buzon.findByIdbuz", query = "SELECT b FROM Buzon b WHERE b.idbuz = :idbuz"),
     @NamedQuery(name = "Buzon.findByTipobuz", query = "SELECT b FROM Buzon b WHERE b.tipobuz = :tipobuz"),
     @NamedQuery(name = "Buzon.findByTelefonobuz", query = "SELECT b FROM Buzon b WHERE b.telefonobuz = :telefonobuz"),
-    @NamedQuery(name = "Buzon.findByUsuario", query = "SELECT b FROM Buzon b WHERE b.idusu = :idusu"),
+    @NamedQuery(name = "Buzon.findByUsuarioYSede", query = "SELECT b FROM Buzon b WHERE b.idusu = :idusu AND b.idsed != :idsede"),
     @NamedQuery(name = "Buzon.findByNombreUsuario", query = "SELECT b FROM Buzon b WHERE b.idusubuz.userusu = :user AND b.idusu = :idusu"),
     @NamedQuery(name = "Buzon.findByDuenoYContacto", query = "SELECT b FROM Buzon b WHERE b.idusubuz = :buzon AND b.idusu = :idusu AND b.idsed = :idsed"),
     @NamedQuery(name = "Buzon.findByNombrebuz", query = "SELECT b FROM Buzon b WHERE b.nombrebuz = :nombrebuz")})

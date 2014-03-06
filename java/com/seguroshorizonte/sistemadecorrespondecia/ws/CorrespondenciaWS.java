@@ -1495,10 +1495,10 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "consultarBuzonXUsuario")
-    public List<Buzon> consultarBuzonXUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
+    public List<Buzon> consultarBuzonXUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario,@WebParam(name = "registroSede") Sede registroSede) {
         List<Buzon> Resultado = null;
         try {
-            Resultado = ejbBuzon.ConsultarBuzonXUsuario(registroUsuario);
+            Resultado = ejbBuzon.ConsultarBuzonXUsuario(registroUsuario,registroSede);
         } catch (Exception e) {
             return null;
         }
@@ -1746,11 +1746,22 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-    @WebMethod(operationName = "consultarBuzonXId")
-    public Buzon consultarBuzonXId(@WebParam(name = "idBuzon") String idBuzon) {
-        Buzon Resultado = null;
+    @WebMethod(operationName = "valijasXFechaVencidaXUsuarioOrigen")
+    public List<Valija> valijasXFechaVencidaXUsuarioOrigen(@WebParam(name = "idSede") String idSede) {
+        List<Valija> Resultado = null;
         try {
-            Resultado = ejbBuzon.consultarBuzonXId(idBuzon);
+            Resultado = ejbValija.listarValijasXFechaVencimientoOrigen(new BigDecimal(idSede));
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "valijasXFechaVencidaXUsuarioDestino")
+    public List<Valija> valijasXFechaVencidaXUsuarioDestino(@WebParam(name = "registroSede") Sede registroSede) {
+        List<Valija> Resultado = null;
+        try {
+            Resultado = ejbValija.listarValijasXFechaVencimientoDestino(registroSede);
         } catch (Exception e) {
             return null;
         }

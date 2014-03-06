@@ -32,9 +32,9 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         super(Buzon.class);
     }
 
-    public List<Buzon> ConsultarBuzonXUsuario(Usuario idUsuario) {
+    public List<Buzon> ConsultarBuzonXUsuario(Usuario idUsuario, Sede idSede) {
         List<Buzon> lista;
-        lista = em.createNamedQuery("Buzon.findByUsuario").setParameter("idusu", idUsuario).getResultList();
+        lista = em.createNamedQuery("Buzon.findByUsuarioYSede").setParameter("idusu", idUsuario).setParameter("idsede", idSede).getResultList();
         return lista;
     }
 

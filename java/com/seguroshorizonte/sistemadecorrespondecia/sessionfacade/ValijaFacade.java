@@ -5,6 +5,7 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Incidente;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import java.math.BigDecimal;
@@ -144,5 +145,35 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         Query consulta = em.createNamedQuery("Valija.findByIdval").setParameter("idval", idValija);
         Resultado = (Valija) consulta.getSingleResult();
         return Resultado;
+    }
+
+    public List<Valija> listarValijasXFechaVencimientoOrigen(BigDecimal idSedeOrigen) {
+        List<Valija> Resultado;
+        Query consulta = em.createNamedQuery("Valija.findByFechaVencimientoOrigen").setParameter("fechaalerval", FechaActual()).setParameter("origen", idSedeOrigen);
+        Resultado = consulta.getResultList();
+
+        return Resultado;
+    }
+
+    public List<Valija> listarValijasXFechaVencimientoDestino(Sede idSede) {
+        List<Valija> Resultado;
+        Query consulta = em.createNamedQuery("Valija.findByFechaVencimientoDestino").setParameter("fechaalerval", FechaActual()).setParameter("destinoval", idSede);
+        Resultado = consulta.getResultList();
+
+        return Resultado;
+    }
+
+    public Date FechaActual() {
+
+        Date fecha = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fecha);
+        //System.out.print(cal);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        fecha = cal.getTime();
+        return fecha;
     }
 }
