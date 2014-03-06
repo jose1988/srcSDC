@@ -561,7 +561,6 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-
     @WebMethod(operationName = "entregarValija")
     public int entregarValija(@WebParam(name = "idval") String idval, @WebParam(name = "status") String status) {
         int Resultado = 0;
@@ -1496,10 +1495,10 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "consultarBuzonXUsuario")
-    public List<Buzon> consultarBuzonXUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario,@WebParam(name = "registroSede") Sede registroSede) {
+    public List<Buzon> consultarBuzonXUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario, @WebParam(name = "registroSede") Sede registroSede) {
         List<Buzon> Resultado = null;
         try {
-            Resultado = ejbBuzon.ConsultarBuzonXUsuario(registroUsuario,registroSede);
+            Resultado = ejbBuzon.ConsultarBuzonXUsuario(registroUsuario, registroSede);
         } catch (Exception e) {
             return null;
         }
@@ -1643,21 +1642,6 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-    /**
-     * busca el ultimo id de paquete
-     *
-     * @return
-     */
-    @WebMethod(operationName = "maxPaquete")
-    public int maxPaquete() {
-        int Resultado = 0;
-        try {
-            Resultado = ejbPaquete.ConsultarMaxId();
-        } catch (Exception e) {
-            return 0;
-        }
-        return Resultado;
-    }
 
     /**
      * lista todas las sedes
@@ -1765,6 +1749,32 @@ public class CorrespondenciaWS {
             Resultado = ejbValija.listarValijasXFechaVencimientoDestino(registroSede);
         } catch (Exception e) {
             return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "insertarBandeja")
+    public int insertarBandeja(@WebParam(name = "idpaq") Paquete idpaq) {
+        int Resultado;
+        try {
+            Usuario usuOrigen = ejbUsuario.find(idpaq.getOrigenpaq().getIdusu());
+            Usuario usuDestino = ejbUsuario.find(idpaq.getDestinopaq().getIdusubuz().getIdusu());
+            Bandeja nuevo = new Bandeja();
+            Infobandeja registroInfoB;
+            registroInfoB = new Infobandeja(new BigDecimal("1"));
+            nuevo.setIdiba(registroInfoB);
+            nuevo.setIdpaq(idpaq);
+            nuevo.setLeidoban("0");
+            nuevo.setIdusu(usuOrigen);
+            ejbBandeja.insertarBandeja(nuevo);
+            registroInfoB = new Infobandeja(new BigDecimal("3"));
+            nuevo.setIdiba(registroInfoB);
+            nuevo.setLeidoban("0");
+            nuevo.setIdusu(usuDestino);
+            ejbBandeja.insertarBandeja(nuevo);
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
         }
         return Resultado;
     }

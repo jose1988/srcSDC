@@ -36,22 +36,9 @@ public class BandejaFacade extends AbstractFacade<Bandeja> {
         super(Bandeja.class);
     }
     
-    public void insertarBandeja(Paquete idpaq, Usuario idusuO, Usuario idusuD){
-        
-       Bandeja ban=new Bandeja();
-       Infobandeja info = ejbInfo.find("1");
-       ban.setIdpaq(idpaq);
-       ban.setIdusu(idusuO);
-       ban.setIdiba(info);
-       ban.setLeidoban("0");
+    public void insertarBandeja(Bandeja registroBandeja){
        
-       this.create(ban);
-       
-       info = ejbInfo.find("3");
-       ban.setIdusu(idusuD);
-       ban.setIdiba(info);
-       
-       this.create(ban);
+       this.create(registroBandeja);
            
         
     }

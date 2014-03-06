@@ -269,14 +269,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         return Resultado;
     }
 
-    public int ConsultarMaxId() {
-
-        int Resultado;
-        Query consulta = em.createNamedQuery("Paquete.findMaxPaqXOrigen");
-        BigDecimal id = (BigDecimal) consulta.getSingleResult();
-        Resultado = id.intValue();
-        return Resultado;
-    }
     
      public void editarTipo(BigDecimal idusu, String tipo) {
         Query q = em.createNativeQuery("UPDATE Usuariosede SET tipousu=? WHERE idusu=?");
