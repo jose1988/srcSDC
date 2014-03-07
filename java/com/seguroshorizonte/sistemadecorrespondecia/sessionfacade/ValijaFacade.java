@@ -152,8 +152,8 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         Valija Resultado;
         String status1="0";
         String status2="4";
-        String zoom=null;
-        Query consulta = em.createNamedQuery("Valija.findByIdvalXentregar").setParameter("idval", idValija).setParameter("zoom", zoom).setParameter("sede", sede).setParameter("status1", status1).setParameter("status2", status2);
+        String zoom="";
+        Query consulta = em.createNamedQuery("Valija.findByIdvalXentregar").setParameter("idval", idValija).setParameter("sede", sede).setParameter("status1", status1).setParameter("status2", status2);
         Resultado = (Valija) consulta.getSingleResult();
         return Resultado;
     }
