@@ -389,13 +389,13 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
+
     @WebMethod(operationName = "ConsultarValija")
     public Valija ConsultarValija(@WebParam(name = "registroValija") String registroValija, @WebParam(name = "sede") String sede) {
         Valija valija = null;
-        BigDecimal val=new BigDecimal(registroValija);
+        BigDecimal val = new BigDecimal(registroValija);
         try {
-            valija = ejbValija.consultarValija(val,sede);
+            valija = ejbValija.consultarValija(val, sede);
         } catch (Exception e) {
             return null;
         }
@@ -1217,29 +1217,28 @@ public class CorrespondenciaWS {
                 nivelSeg = "Valija";
             }
 
-            if (RegistrosSeguimiento.isEmpty() && (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0 || Tipo.compareTo("0") == 0)) {
-                nuevoSeg = new Seguimiento();
-                nuevoSeg.setFechaseg(new Date());
-                nuevoSeg.setIdpaq(registroPaquete);
-                nuevoSeg.setIdusu(registroUsuario);
-                nuevoSeg.setTiposeg(Tipo);
-                nuevoSeg.setNivelseg(nivelSeg);
-                nuevoSeg.setStatusseg("0");
-                ejbSeguimiento.insertarSeguimiento(nuevoSeg);
-                ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), nivelSeg);
-                if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Area de trabajo");
-                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0) {
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Sede");
-                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
+            if (RegistrosSeguimiento.isEmpty()) {
+                if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0 || Tipo.compareTo("0") == 0) {
+                    nuevoSeg = new Seguimiento();
+                    nuevoSeg.setFechaseg(new Date());
+                    nuevoSeg.setIdpaq(registroPaquete);
+                    nuevoSeg.setIdusu(registroUsuario);
+                    nuevoSeg.setTiposeg(Tipo);
+                    nuevoSeg.setNivelseg(nivelSeg);
+                    nuevoSeg.setStatusseg("0");
+                    ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+                    ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), nivelSeg);
+                    if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
+                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Area de trabajo");
+                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0) {
+                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Sede");
+                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
+                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
+                    }
+                    return 1;
+                } else {
+                    return 2;
                 }
-                return 1;
-            } else {
-                aunNo = true;
-            }
-            if (aunNo) {
-                return 2;
             }
 
             for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
