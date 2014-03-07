@@ -389,6 +389,18 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+    
+    @WebMethod(operationName = "ConsultarValija")
+    public Valija ConsultarValija(@WebParam(name = "registroValija") String registroValija, @WebParam(name = "sede") String sede) {
+        Valija valija = null;
+        BigDecimal val=new BigDecimal(registroValija);
+        try {
+            valija = ejbValija.consultarValija(val,sede);
+        } catch (Exception e) {
+            return null;
+        }
+        return valija;
+    }
 
     @WebMethod(operationName = "ConsultarPaquetesParaValija")
     public List<Paquete> ConsultarPaquetesParaValija(@WebParam(name = "sede") String sede, @WebParam(name = "sedeDestino") String sedeDestino) {
