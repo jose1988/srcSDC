@@ -84,19 +84,19 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public Usuario consultarUsuario(String idUsuario) {
         Usuario Registro;
-        BigDecimal id=new BigDecimal(idUsuario);
+        BigDecimal id = new BigDecimal(idUsuario);
         Registro = this.find(id);
         return Registro;
     }
-    
-      public List<Usuario> consultarUsuariosXSede(String sede) {
+
+    public List<Usuario> consultarUsuariosXSede(String sede) {
         List<Usuario> c = null;
 
         c = (List<Usuario>) em.createNamedQuery("Usuario.findByUsuxSede").setParameter("sede", sede).getResultList();
         return c;
     }
 
- public void editarUsuario(Usuario Registro) {
+    public void editarUsuario(Usuario Registro) {
         Query q = em.createNativeQuery("UPDATE USUARIO "
                 + "SET APELLIDOUSU=?,CORREOUSU=?,DIRECCIONUSU=?,DIRECCION2USU=?,NOMBREUSU=?,TELEFONOUSU=?,TELEFONO2USU=? WHERE IDUSU=?");
         q.setParameter(1, Registro.getApellidousu());
@@ -109,12 +109,9 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         q.setParameter(8, Registro.getIdusu());
         q.executeUpdate();
     }
- 
-  public BigDecimal consultarMAXId() {
-        BigDecimal Id = (BigDecimal) em.createNamedQuery("Usuario.findMaxId").getSingleResult();
+
+    public BigDecimal consultarMAXId(String userUsu) {
+        BigDecimal Id = (BigDecimal) em.createNamedQuery("Usuario.findMaxIdXuserUsu").setParameter("userusu", userUsu).getSingleResult();
         return Id;
     }
-  
-  
-
 }

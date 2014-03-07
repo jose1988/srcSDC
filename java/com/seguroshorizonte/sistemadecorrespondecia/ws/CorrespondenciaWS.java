@@ -122,10 +122,10 @@ public class CorrespondenciaWS {
         BigDecimal id = new BigDecimal(idUser);
         BigDecimal b1 = new BigDecimal("1");
         BigDecimal b2 = new BigDecimal("2");
-        BigDecimal b3 = new BigDecimal("3"); 
+        BigDecimal b3 = new BigDecimal("3");
         BigDecimal b4 = new BigDecimal("4");
-           
-           
+
+
         List<Paquete> Registro = new ArrayList<Paquete>();
 
         Infobandeja inBandeja = ejbInfobandeja.consultarBandejaXNombre(ban);
@@ -134,23 +134,23 @@ public class CorrespondenciaWS {
         Iterator<Bandeja> iterator = inBandeja.getBandejaCollection().iterator();
         while (iterator.hasNext()) {
             Bandeja aux = iterator.next();
-            
-            if(banj.equals(b1) || banj.equals(b2)){
-            if (aux.getIdpaq().getOrigenpaq().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
-                Registro.add(aux.getIdpaq());
-            } else {
-                iterator.remove();
+
+            if (banj.equals(b1) || banj.equals(b2)) {
+                if (aux.getIdpaq().getOrigenpaq().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
+                    Registro.add(aux.getIdpaq());
+                } else {
+                    iterator.remove();
+                }
             }
+
+            if (banj.equals(b3) || banj.equals(b4)) {
+                if (aux.getIdpaq().getDestinopaq().getIdusu().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
+                    Registro.add(aux.getIdpaq());
+                } else {
+                    iterator.remove();
+                }
             }
-            
-             if(banj.equals(b3) || banj.equals(b4)){
-            if ( aux.getIdpaq().getDestinopaq().getIdusu().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
-                Registro.add(aux.getIdpaq());
-            } else {
-                iterator.remove();
-            }
-            }
-            
+
 
         }
 
@@ -1181,7 +1181,8 @@ public class CorrespondenciaWS {
     /////////////// fin niuska
     //////////////// inicio mariela
     /**
-     * Registra el seguimiento del paquete
+     * Registra el seguimiento del paquete retorna 0 si ya fue confirmado
+     * retorna 1 si confirmo retorna 2 si aún no le corresponde confirmar
      *
      * @param registroPaquete
      * @param registroUsuario
@@ -1191,7 +1192,7 @@ public class CorrespondenciaWS {
     @WebMethod(operationName = "registroSeguimiento")
     public int registroSeguimiento(@WebParam(name = "registroPaquete") Paquete registroPaquete, @WebParam(name = "registroUsuario") Usuario registroUsuario, @WebParam(name = "registroSede") Sede registroSede) {
         int Resultado = 0;
-        boolean reenvio = false;
+        boolean reenvio = false, aunNo = false;
         String nivelSeg = "", Tipo;
         Seguimiento nuevoSeg = new Seguimiento();
         Usuariosede usuarioSede = null;
@@ -1216,7 +1217,7 @@ public class CorrespondenciaWS {
                 nivelSeg = "Valija";
             }
 
-            if (RegistrosSeguimiento.isEmpty()) {
+            if (RegistrosSeguimiento.isEmpty() && (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0 || Tipo.compareTo("0") == 0)) {
                 nuevoSeg = new Seguimiento();
                 nuevoSeg.setFechaseg(new Date());
                 nuevoSeg.setIdpaq(registroPaquete);
@@ -1234,15 +1235,19 @@ public class CorrespondenciaWS {
                     ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
                 }
                 return 1;
+            } else {
+                aunNo = true;
             }
-
+            if (aunNo) {
+                return 2;
+            }
 
             for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                 //pregunto ya un envajilador habia tocado el paquete y el q recibo como parametro es envajilador quiere decir que es un reenvio de paquete
-                if (RegistrosSeguimiento.get(i).getIdpaq().getOrigenpaq().getIdusu().toString().compareTo(registroPaquete.getOrigenpaq().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(registroPaquete.getLocalizacionpaq()) == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") == 0) {
+                if (RegistrosSeguimiento.get(i).getNivelseg().compareTo(registroPaquete.getLocalizacionpaq()) == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") == 0) {
                     reenvio = true;
                 } else {
-                    if (RegistrosSeguimiento.get(i).getIdpaq().getOrigenpaq().getIdusu().toString().compareTo(registroPaquete.getOrigenpaq().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(registroPaquete.getLocalizacionpaq()) == 0 && RegistrosSeguimiento.get(i).getIdusu().getIdusu().toString().compareTo(registroUsuario.getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") != 0) {
+                    if (RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(registroPaquete.getLocalizacionpaq()) == 0 && RegistrosSeguimiento.get(i).getIdusu().getIdusu().toString().compareTo(registroUsuario.getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") != 0) {
                         return Resultado;
                     }
                 }
@@ -1250,7 +1255,7 @@ public class CorrespondenciaWS {
             //Caso  Receptor nivel 1 Origen o Receptor nivel 3 Origen
             if ((usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) && Tipo.compareTo("0") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdpaq().getOrigenpaq().getIdusu().toString().compareTo(registroPaquete.getOrigenpaq().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
+                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
                         return Resultado;
                     }
                 }
@@ -1270,37 +1275,51 @@ public class CorrespondenciaWS {
             } //Caso  Empaquetador 
             else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("0") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdpaq().getOrigenpaq().getIdusu().toString().compareTo(registroPaquete.getOrigenpaq().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
+                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
                         Resultado = 1;
+                        aunNo = true;
                         break;
                     }
+                }
+                if (!aunNo) {
+                    return 2;
                 }
             }//Caso  Desenvalijador 
             else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("1") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdpaq().getOrigenpaq().getIdusu().toString().compareTo(registroPaquete.getOrigenpaq().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
-                        if (registroPaquete.getIdval().getZoomval() != null) {
-                            Resultado = 1;
-                        }
+                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0 && registroPaquete.getIdval().getZoomval() != null) {
+                        Resultado = 1;
+                        aunNo = true;
                         break;
                     }
+                }
+                if (!aunNo) {
+                    return 2;
                 }
             }//Caso  Receptor nivel 1 Destino o Caso  Receptor nivel 3 Destino
             else if ((usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) && Tipo.compareTo("1") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdpaq().getOrigenpaq().getIdusu().toString().compareTo(registroPaquete.getOrigenpaq().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
+                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
                         Resultado = 1;
+                        aunNo = true;
                         break;
                     }
+                }
+                if (!aunNo) {
+                    return 2;
                 }
 
             } //Caso  Receptor nivel 2 Destino
             else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 && Tipo.compareTo("1") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getIdpaq().getOrigenpaq().getIdusu().toString().compareTo(registroPaquete.getOrigenpaq().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
+                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
                         Resultado = 1;
+                        aunNo = true;
                         break;
                     }
+                }
+                if (!aunNo) {
+                    return 2;
                 }
             }//Caso  MultiRol Destino
             else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 && Tipo.compareTo("0") == 0) {
@@ -1672,7 +1691,6 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-
     /**
      * lista todas las sedes
      *
@@ -1696,10 +1714,10 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "insertarUsuarioSedeXDefecto")
-    public int insertarUsuarioSedeXDefecto(@WebParam(name = "registroUsuSede") Usuariosede registroUsuSede) {
+    public int insertarUsuarioSedeXDefecto(@WebParam(name = "registroUsuSede") Usuariosede registroUsuSede, @WebParam(name = "userUsu") String userUsu) {
         int Resultado = 0;
         try {
-            Usuario RegUsu = new Usuario(ejbUsuario.consultarMAXId());
+            Usuario RegUsu = new Usuario(ejbUsuario.consultarMAXId(userUsu));
             registroUsuSede.setIdusu(RegUsu);
             ejbUsuariosede.insertarUsuarioSede(registroUsuSede);
             Resultado = 1;
@@ -1783,24 +1801,38 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-    @WebMethod(operationName = "insertarBandeja")
-    public int insertarBandeja(@WebParam(name = "idpaq") Paquete idpaq) {
+    @WebMethod(operationName = "insertarBandejaOrigen")
+    public int insertarBandejaOrigen(@WebParam(name = "idpaq") String idpaq) {
         int Resultado;
         try {
-            Usuario usuOrigen = ejbUsuario.find(idpaq.getOrigenpaq().getIdusu());
-            Usuario usuDestino = ejbUsuario.find(idpaq.getDestinopaq().getIdusubuz().getIdusu());
+            Paquete paquete = ejbPaquete.find(new BigDecimal(idpaq));
             Bandeja nuevo = new Bandeja();
             Infobandeja registroInfoB;
             registroInfoB = new Infobandeja(new BigDecimal("1"));
             nuevo.setIdiba(registroInfoB);
-            nuevo.setIdpaq(idpaq);
+            nuevo.setIdpaq(paquete);
             nuevo.setLeidoban("0");
-            nuevo.setIdusu(usuOrigen);
+            nuevo.setIdusu(paquete.getOrigenpaq());
             ejbBandeja.insertarBandeja(nuevo);
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "insertarBandejaDestino")
+    public int insertarBandejaDestino(@WebParam(name = "idpaq") String idpaq) {
+        int Resultado;
+        try {
+            Paquete paquete = ejbPaquete.find(new BigDecimal(idpaq));
+            Bandeja nuevo = new Bandeja();
+            Infobandeja registroInfoB;
             registroInfoB = new Infobandeja(new BigDecimal("3"));
             nuevo.setIdiba(registroInfoB);
+            nuevo.setIdpaq(paquete);
             nuevo.setLeidoban("0");
-            nuevo.setIdusu(usuDestino);
+            nuevo.setIdusu(paquete.getDestinopaq().getIdusubuz());
             ejbBandeja.insertarBandeja(nuevo);
             Resultado = 1;
         } catch (Exception e) {
