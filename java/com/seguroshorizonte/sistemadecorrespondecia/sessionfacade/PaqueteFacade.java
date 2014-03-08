@@ -40,9 +40,8 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
         List<Paquete> lista;
         BigDecimal idval = new BigDecimal(idValija);
-        String status = "0";
-        String status2 = "4";
-        Query consulta = em.createNamedQuery("Paquete.findByIdval").setParameter("idval", idval).setParameter("sede", sede).setParameter("status", status).setParameter("status2", status2);
+       
+        Query consulta = em.createNamedQuery("Paquete.findByIdval").setParameter("idval", idval);
         lista = consulta.getResultList();
         return lista;
     }
