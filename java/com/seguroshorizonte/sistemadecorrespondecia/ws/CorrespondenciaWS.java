@@ -1194,17 +1194,29 @@ public class CorrespondenciaWS {
     }
     
     //Consulta del paquete por id y usuario Origen
-    @WebMethod(operationName = "consultarPaqueteXIdYOrigen")
-    public Paquete consultarPaqueteXIdYOrigen(@WebParam(name = "idPaquete") String idPaquete, @WebParam(name = "idUsuarioOrigen") String idUsuarioOrigen) {
+    @WebMethod(operationName = "consultarPaqueteXIdYOrigenODestino")
+    public Paquete consultarPaqueteXIdYOrigenODestino(@WebParam(name = "idPaquete") String idPaquete, @WebParam(name = "idUsuario") String idUsuario) {
         
         Paquete Resultado = null;
-        Usuario idOrigen;
+        Paquete datosPaq;
+        Usuario idUsua;
         BigDecimal idPaq = new BigDecimal(idPaquete);
         
         try {
-            idOrigen = new Usuario();
-            idOrigen.setIdusu(new BigDecimal(idUsuarioOrigen));
-            Resultado = ejbPaquete.consultarPaqueteXIdYOrigen(idPaq, idOrigen);
+            idUsua = new Usuario();
+            idUsua.setIdusu(new BigDecimal(idUsuario));
+            
+            datosPaq = new Paquete();
+            datosPaq = ejbPaquete.ConsultarPaqueteXId(idPaq);       
+            
+            if(datosPaq.getOrigenpaq().getIdusu().compareTo(idUsua.getIdusu()) == 0){
+                Resultado = ejbPaquete.consultarPaqueteXIdYOrigen(idPaq, idUsua);
+            }
+            
+            if(datosPaq.getDestinopaq().getIdusubuz().getIdusu().compareTo(idUsua.getIdusu()) == 0){
+                Resultado = ejbPaquete.consultarPaqueteXIdYDestino(idPaq, idUsua);
+            }            
+            
         } catch (Exception e) {
             Resultado = null;
         }

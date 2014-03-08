@@ -61,7 +61,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.SedeByValija", query = "SELECT DISTINCT p.destinopaq.idsed.nombresed FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed"),
     @NamedQuery(name = "Paquete.findByidPaqueteYSedeDeValija", query = "SELECT p FROM Paquete p WHERE p.idval.destinoval = :idSede AND p.idpaq =:idpaq"),
     @NamedQuery(name = "Paquete.findMaxPaqXOrigen", query = "SELECT MAX(p.idpaq) FROM Paquete p WHERE p.origenpaq = :origenpaq"),
-    @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq")})
+    @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq"),
+    @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusubuz = :destinopaq")})
 
 public class Paquete implements Serializable {
 
