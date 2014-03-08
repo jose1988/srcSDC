@@ -7,8 +7,10 @@ package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -68,11 +70,20 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
 
     public List<Paquete> listaPaquetesProcesadosXUsuarioAlDia(Usuario idUsuario) {
 
-        List<Paquete> Resultado = null;
-        Query consulta = em.createNamedQuery("Seguimiento.findPaqByFechasegYUsuario").setParameter("idusu", idUsuario).setParameter("fechaseg", FechaActual());
+        List<Paquete> Resultado = new LinkedList<Paquete>();
+        List<Seguimiento> seguimiento = null;
+        Query consulta = em.createNamedQuery("Seguimiento.findPaqByUsuario").setParameter("idusu", idUsuario);
+        String formato, actual;
+        SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
 
-        Resultado = consulta.getResultList();
-
+        seguimiento = consulta.getResultList();
+        for (int i = 0; i < seguimiento.size(); i++) {
+            formato = formateador.format(seguimiento.get(i).getFechaseg());
+            actual = formateador.format(new Date());
+            if (formato.compareTo(actual) == 0) {
+                Resultado.add(seguimiento.get(i).getIdpaq());
+            }
+        }
         return Resultado;
     }
 
