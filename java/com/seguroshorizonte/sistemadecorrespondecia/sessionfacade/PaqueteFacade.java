@@ -275,4 +275,12 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.setParameter(2, idusu);
         q.executeUpdate();
     }
+     
+     public Paquete consultarPaqueteXIdYOrigen(BigDecimal idPaquete, Usuario idUsuarioOrigen) {
+
+        Paquete Resultado;
+        Query consulta = em.createNamedQuery("Paquete.findPaqXOrigen").setParameter("idpaq", idPaquete).setParameter("origenpaq", idUsuarioOrigen);
+        Resultado = (Paquete) consulta.getSingleResult();
+        return Resultado;
+    }
 }

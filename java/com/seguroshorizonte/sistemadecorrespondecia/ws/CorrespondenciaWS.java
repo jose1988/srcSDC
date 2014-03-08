@@ -706,7 +706,8 @@ public class CorrespondenciaWS {
         try {
             Usuario idUsu = new Usuario();
             idUsu.setIdusu(new BigDecimal(idUsuario));
-            Resultado = ejbSeguimiento.listaPaquetesXUsuarioYFechaProcesadas(idUsu);
+            //Resultado = ejbSeguimiento.listaPaquetesXUsuarioYFechaProcesadas(idUsu);
+            Resultado = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(idUsu);
 
         } catch (Exception e) {
             Resultado = null;
@@ -764,7 +765,6 @@ public class CorrespondenciaWS {
             registroPaq = new Paquete();
             idPaq = new BigDecimal(registroPaquete);
             registroPaq = ejbPaquete.consultarPaquete(idPaq);
-            idVal = registroPaq.getIdval().getIdval();
             registroUsua = new Usuario();
             registroUsua.setIdusu(new BigDecimal(registroUsuario));
             nuevoSeg = new Seguimiento();
@@ -783,13 +783,17 @@ public class CorrespondenciaWS {
 
             idIncidente = ejbIncidente.ultimoIncidente();
             idMaxInci = new BigDecimal(idIncidente);
-            ejbValija.editarIncidenteValija(idVal, idMaxInci);
-
+            
             //Cambio de Status de Paquete a Reenviado (3)
             ejbPaquete.editarStatusPaquete(idPaq, "3");
-
-            //Cambio de Status de Valija con Paquete Excedente (3)
-            ejbValija.editarStatusValija(idVal, "3");
+            
+            if(registroPaq.getIdval()!=null){
+                idVal = registroPaq.getIdval().getIdval();
+                ejbValija.editarIncidenteValija(idVal, idMaxInci);
+                
+                //Cambio de Status de Valija con Paquete Excedente (3)
+                ejbValija.editarStatusValija(idVal, "3");
+            }            
             Resultado = 1;
 
         } catch (Exception e) {
@@ -813,36 +817,43 @@ public class CorrespondenciaWS {
         Paquete registroPaq;
         Mensaje nuevoMensaje;
 
-        try {
+        try {            
             idPaq = new BigDecimal(registroPaquete);
             registroPaq = new Paquete();
             registroPaq = ejbPaquete.consultarPaquete(idPaq);
-            idVal = registroPaq.getIdval().getIdval();
+            
+            if(registroPaq.getIdval()!=null){
+                idVal = registroPaq.getIdval().getIdval();
 
-            nuevoIncidente = new Incidente();
-            nuevoIncidente.setNombreinc("Paquete Ausente");
-            nuevoIncidente.setDescripcioninc("Reporte de paquete ausente");
-            ejbIncidente.insertarIncidente(nuevoIncidente);
+                nuevoIncidente = new Incidente();
+                nuevoIncidente.setNombreinc("Paquete Ausente");
+                nuevoIncidente.setDescripcioninc("Reporte de paquete ausente");
+                ejbIncidente.insertarIncidente(nuevoIncidente);
 
-            nuevoMensaje = new Mensaje();
-            nuevoMensaje.setNombremen("Paquete Ausente");
-            nuevoMensaje.setDescripcionmen(datosPaquete);
-            ejbMensaje.insertarMensaje(nuevoMensaje);
+                nuevoMensaje = new Mensaje();
+                nuevoMensaje.setNombremen("Paquete Ausente");
+                nuevoMensaje.setDescripcionmen(datosPaquete);
+                ejbMensaje.insertarMensaje(nuevoMensaje);
 
-            idIncidente = ejbIncidente.ultimoIncidente();
-            idMaxInci = new BigDecimal(idIncidente);
-            ejbValija.editarIncidenteValija(idVal, idMaxInci);
+                idIncidente = ejbIncidente.ultimoIncidente();
+                idMaxInci = new BigDecimal(idIncidente);
+                ejbValija.editarIncidenteValija(idVal, idMaxInci);
 
-            idMensaje = ejbMensaje.ultimoMensaje();
-            idMaxMens = new BigDecimal(idMensaje);
-            ejbPaquete.editarMensajePaquete(idPaq, idMaxMens);
+                idMensaje = ejbMensaje.ultimoMensaje();
+                idMaxMens = new BigDecimal(idMensaje);
+                ejbPaquete.editarMensajePaquete(idPaq, idMaxMens);
 
-            //Cambio de Status de Paquete a Ausente (4)
-            ejbPaquete.editarStatusPaquete(idPaq, "4");
+                //Cambio de Status de Paquete a Ausente (4)
+                ejbPaquete.editarStatusPaquete(idPaq, "4");
 
-            //Cambio de Status de Valija con Paquete Ausente(2)
-            ejbValija.editarStatusValija(idVal, "2");
-            Resultado = 1;
+                //Cambio de Status de Valija con Paquete Ausente(2)
+                ejbValija.editarStatusValija(idVal, "2");
+                Resultado = 1;
+                
+            }else{
+                //Si el paquete no esta registrado en una valija no se puede reportar como ausente
+                Resultado = 2;
+            }
 
         } catch (Exception e) {
             Resultado = 0;
@@ -1133,8 +1144,10 @@ public class CorrespondenciaWS {
     //Consulta del paquete por id
     @WebMethod(operationName = "consultarPaqueteXId")
     public Paquete consultarPaqueteXId(@WebParam(name = "idPaquete") String idPaquete) {
+        
         Paquete Resultado = null;
         BigDecimal idPaq = new BigDecimal(idPaquete);
+        
         try {
             Resultado = ejbPaquete.consultarPaquete(idPaq);
         } catch (Exception e) {
@@ -1166,12 +1179,32 @@ public class CorrespondenciaWS {
     //Consulta adjunto por id del paquete
     @WebMethod(operationName = "consultarAdjuntoXPaquete")
     public Adjunto consultarAdjuntoXPaquete(@WebParam(name = "idPaquete") String idPaquete) {
+        
         Adjunto Resultado = null;
         Paquete idPaq;
+        
         try {
             idPaq = new Paquete();
             idPaq.setIdpaq(new BigDecimal(idPaquete));
             Resultado = ejbAdjunto.consultarAdjuntoXPaquete(idPaq);
+        } catch (Exception e) {
+            Resultado = null;
+        }
+        return Resultado;
+    }
+    
+    //Consulta del paquete por id y usuario Origen
+    @WebMethod(operationName = "consultarPaqueteXIdYOrigen")
+    public Paquete consultarPaqueteXIdYOrigen(@WebParam(name = "idPaquete") String idPaquete, @WebParam(name = "idUsuarioOrigen") String idUsuarioOrigen) {
+        
+        Paquete Resultado = null;
+        Usuario idOrigen;
+        BigDecimal idPaq = new BigDecimal(idPaquete);
+        
+        try {
+            idOrigen = new Usuario();
+            idOrigen.setIdusu(new BigDecimal(idUsuarioOrigen));
+            Resultado = ejbPaquete.consultarPaqueteXIdYOrigen(idPaq, idOrigen);
         } catch (Exception e) {
             Resultado = null;
         }
