@@ -104,7 +104,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
         List<Paquete> Resultado = null;
         try {
-            Query consulta = em.createNamedQuery("Paquete.findByAlertaXUsuarioDestino").setParameter("fechaapaq", FechaActual()).setParameter("destino", usuarioId).setParameter("idsed", idSede);
+            Query consulta = em.createNamedQuery("Paquete.findByAlertaXUsuarioDestino").setParameter("fechaapaq", FechaActual()).setParameter("destino", usuarioId.getIdusu()).setParameter("idsed", idSede);
             Resultado = consulta.getResultList();
         } catch (Exception e) {
             return null;

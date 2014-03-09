@@ -6,7 +6,6 @@ package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -25,7 +24,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -44,9 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByTextopaq", query = "SELECT p FROM Paquete p WHERE p.textopaq = :textopaq"),
     @NamedQuery(name = "Paquete.findByFechapaq", query = "SELECT p FROM Paquete p WHERE p.fechapaq = :fechapaq"),
     @NamedQuery(name = "Paquete.findByVencimientoXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND p.origenpaq = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
-    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND p.destinopaq.idusubuz = :destino AND p.destinopaq.idsed = :idsede AND p.statuspaq = '0'"),
+    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND p.destinopaq.idusubuz = :destino AND p.destinopaq.idsed = :idsed AND p.statuspaq = '0'"),
     @NamedQuery(name = "Paquete.findByAlertaXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq And p.origenpaq = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
-    @NamedQuery(name = "Paquete.findByAlertaXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq And p.destinopaq.idusubuz = :destino AND p.destinopaq.idsed = :idsede AND p.statuspaq = '0'"),
+    @NamedQuery(name = "Paquete.findByAlertaXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq AND p.destinopaq.idusubuz.idusu = :destino AND p.destinopaq.idsed = :idsed AND p.statuspaq = '0'"),
     @NamedQuery(name = "Paquete.findByFechaenviopaq", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq = :fechaenviopaq"),
     @NamedQuery(name = "Paquete.findByFechaapaq", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq"),
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),

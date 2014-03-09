@@ -8,6 +8,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -70,7 +71,7 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
 
     public List<Paquete> listaPaquetesProcesadosXUsuarioAlDia(Usuario idUsuario) {
 
-        List<Paquete> Resultado = new LinkedList<Paquete>();
+        List<Paquete> Resultado = new ArrayList<Paquete>();
         List<Seguimiento> seguimiento = null;
         Query consulta = em.createNamedQuery("Seguimiento.findPaqByUsuario").setParameter("idusu", idUsuario);
         String formato, actual;
