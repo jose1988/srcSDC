@@ -783,17 +783,17 @@ public class CorrespondenciaWS {
 
             idIncidente = ejbIncidente.ultimoIncidente();
             idMaxInci = new BigDecimal(idIncidente);
-            
+
             //Cambio de Status de Paquete a Reenviado (3)
             ejbPaquete.editarStatusPaquete(idPaq, "3");
-            
-            if(registroPaq.getIdval()!=null){
+
+            if (registroPaq.getIdval() != null) {
                 idVal = registroPaq.getIdval().getIdval();
                 ejbValija.editarIncidenteValija(idVal, idMaxInci);
-                
+
                 //Cambio de Status de Valija con Paquete Excedente (3)
                 ejbValija.editarStatusValija(idVal, "3");
-            }            
+            }
             Resultado = 1;
 
         } catch (Exception e) {
@@ -817,12 +817,12 @@ public class CorrespondenciaWS {
         Paquete registroPaq;
         Mensaje nuevoMensaje;
 
-        try {            
+        try {
             idPaq = new BigDecimal(registroPaquete);
             registroPaq = new Paquete();
             registroPaq = ejbPaquete.consultarPaquete(idPaq);
-            
-            if(registroPaq.getIdval()!=null){
+
+            if (registroPaq.getIdval() != null) {
                 idVal = registroPaq.getIdval().getIdval();
 
                 nuevoIncidente = new Incidente();
@@ -849,8 +849,8 @@ public class CorrespondenciaWS {
                 //Cambio de Status de Valija con Paquete Ausente(2)
                 ejbValija.editarStatusValija(idVal, "2");
                 Resultado = 1;
-                
-            }else{
+
+            } else {
                 //Si el paquete no esta registrado en una valija no se puede reportar como ausente
                 Resultado = 2;
             }
@@ -1144,10 +1144,10 @@ public class CorrespondenciaWS {
     //Consulta del paquete por id
     @WebMethod(operationName = "consultarPaqueteXId")
     public Paquete consultarPaqueteXId(@WebParam(name = "idPaquete") String idPaquete) {
-        
+
         Paquete Resultado = null;
         BigDecimal idPaq = new BigDecimal(idPaquete);
-        
+
         try {
             Resultado = ejbPaquete.consultarPaquete(idPaq);
         } catch (Exception e) {
@@ -1179,10 +1179,10 @@ public class CorrespondenciaWS {
     //Consulta adjunto por id del paquete
     @WebMethod(operationName = "consultarAdjuntoXPaquete")
     public Adjunto consultarAdjuntoXPaquete(@WebParam(name = "idPaquete") String idPaquete) {
-        
+
         Adjunto Resultado = null;
         Paquete idPaq;
-        
+
         try {
             idPaq = new Paquete();
             idPaq.setIdpaq(new BigDecimal(idPaquete));
@@ -1192,31 +1192,31 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
+
     //Consulta del paquete por id y usuario Origen
     @WebMethod(operationName = "consultarPaqueteXIdYOrigenODestino")
     public Paquete consultarPaqueteXIdYOrigenODestino(@WebParam(name = "idPaquete") String idPaquete, @WebParam(name = "idUsuario") String idUsuario) {
-        
+
         Paquete Resultado = null;
         Paquete datosPaq;
         Usuario idUsua;
         BigDecimal idPaq = new BigDecimal(idPaquete);
-        
+
         try {
             idUsua = new Usuario();
             idUsua.setIdusu(new BigDecimal(idUsuario));
-            
+
             datosPaq = new Paquete();
-            datosPaq = ejbPaquete.ConsultarPaqueteXId(idPaq);       
-            
-            if(datosPaq.getOrigenpaq().getIdusu().compareTo(idUsua.getIdusu()) == 0){
+            datosPaq = ejbPaquete.ConsultarPaqueteXId(idPaq);
+
+            if (datosPaq.getOrigenpaq().getIdusu().compareTo(idUsua.getIdusu()) == 0) {
                 Resultado = ejbPaquete.consultarPaqueteXIdYOrigen(idPaq, idUsua);
             }
-            
-            if(datosPaq.getDestinopaq().getIdusubuz().getIdusu().compareTo(idUsua.getIdusu()) == 0){
+
+            if (datosPaq.getDestinopaq().getIdusubuz().getIdusu().compareTo(idUsua.getIdusu()) == 0) {
                 Resultado = ejbPaquete.consultarPaqueteXIdYDestino(idPaq, idUsua);
-            }            
-            
+            }
+
         } catch (Exception e) {
             Resultado = null;
         }
@@ -1552,7 +1552,7 @@ public class CorrespondenciaWS {
         boolean noEsta = false;
         try {
             ResultadoAlerta = ejbPaquete.consultarPaqueteXAlertaXUsuarioDestino(registroUsuario, registroSede);
-            ResultadoVencidas = ejbPaquete.consultarPaqueteXFechaVencimientoXDestino(registroUsuario);
+            ResultadoVencidas = ejbPaquete.consultarPaqueteXFechaVencimientoXDestino(registroUsuario, registroSede);
             if (ResultadoAlerta != null && ResultadoVencidas != null) {
                 for (int i = 0; i < ResultadoAlerta.size(); i++) {
                     noEsta = false;

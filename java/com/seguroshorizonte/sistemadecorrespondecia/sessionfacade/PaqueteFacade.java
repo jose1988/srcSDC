@@ -40,7 +40,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
         List<Paquete> lista;
         BigDecimal idval = new BigDecimal(idValija);
-       
+
         Query consulta = em.createNamedQuery("Paquete.findByIdval").setParameter("idval", idval);
         lista = consulta.getResultList();
         return lista;
@@ -62,20 +62,11 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         return Resultado;
     }
 
-    public List<Paquete> consultarPaqueteXAlertaXUsuarioOrigen(Usuario usuarioId) {
-
-        List<Paquete> Resultado;
-        Query consulta = em.createNamedQuery("Paquete.findByAlertaXUsuarioOrigen").setParameter("fechaapaq", FechaActual()).setParameter("origen", usuarioId);
-        Resultado = consulta.getResultList();
-        return Resultado;
-    }
-
     public Date FechaActual() {
 
         Date fecha = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(fecha);
-        System.out.print(cal);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);
@@ -84,19 +75,52 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         return fecha;
     }
 
-    public List<Paquete> consultarPaqueteXFechaVencimientoXOrigen(Usuario usuarioId) {
+    public List<Paquete> consultarPaqueteXAlertaXUsuarioOrigen(Usuario usuarioId, Sede idSede) {
 
-        List<Paquete> Resultado;
-        Query consulta = em.createNamedQuery("Paquete.findByVencimientoXUsuarioOrigen").setParameter("fechaenviopaq", FechaActual()).setParameter("origen", usuarioId);
-        Resultado = consulta.getResultList();
+        List<Paquete> Resultado = null;
+        try {
+            Query consulta = em.createNamedQuery("Paquete.findByAlertaXUsuarioOrigen").setParameter("fechaapaq", FechaActual()).setParameter("origen", usuarioId).setParameter("idsed", idSede);
+            Resultado = consulta.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+
         return Resultado;
     }
 
-    public List<Paquete> consultarPaqueteXFechaVencimientoXDestino(Usuario usuarioId) {
+    public List<Paquete> consultarPaqueteXFechaVencimientoXOrigen(Usuario usuarioId, Sede idSede) {
 
-        List<Paquete> Resultado;
-        Query consulta = em.createNamedQuery("Paquete.findByVencimientoXUsuarioDestino").setParameter("fechaenviopaq", FechaActual()).setParameter("origen", usuarioId);
-        Resultado = consulta.getResultList();
+        List<Paquete> Resultado = null;
+        try {
+            Query consulta = em.createNamedQuery("Paquete.findByVencimientoXUsuarioOrigen").setParameter("fechaenviopaq", FechaActual()).setParameter("origen", usuarioId).setParameter("idsed", idSede);
+            Resultado = consulta.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    public List<Paquete> consultarPaqueteXAlertaXUsuarioDestino(Usuario usuarioId, Sede idSede) {
+
+        List<Paquete> Resultado = null;
+        try {
+            Query consulta = em.createNamedQuery("Paquete.findByAlertaXUsuarioDestino").setParameter("fechaapaq", FechaActual()).setParameter("destino", usuarioId).setParameter("idsed", idSede);
+            Resultado = consulta.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    public List<Paquete> consultarPaqueteXFechaVencimientoXDestino(Usuario usuarioId, Sede idSede) {
+
+        List<Paquete> Resultado = null;
+        try {
+            Query consulta = em.createNamedQuery("Paquete.findByVencimientoXUsuarioDestino").setParameter("fechaenviopaq", FechaActual()).setParameter("destino", usuarioId).setParameter("idsed", idSede);
+            Resultado = consulta.getResultList();
+        } catch (Exception e) {
+            return null;
+        }
         return Resultado;
     }
 
@@ -160,9 +184,9 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
     }
 
-     public void ActualizacionLocalizacionyDelPaqueteRecibido(String idPaq) {
-         
-         BigDecimal id=new BigDecimal(idPaq);
+    public void ActualizacionLocalizacionyDelPaqueteRecibido(String idPaq) {
+
+        BigDecimal id = new BigDecimal(idPaq);
         Paquete paq = this.find(id);
 
         Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=?, statuspaq=?  WHERE idpaq=?");
@@ -231,60 +255,22 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         return Resultado;
     }
 
-    public List<Paquete> consultarPaqueteXAlertaXUsuarioDestino(Usuario usuarioId, Sede idSede) {
-
-        List<Paquete> Resultado = null;
-        try {
-            Query consulta = em.createNamedQuery("Paquete.findByAlertaXUsuarioDestino").setParameter("fechaapaq", FechaActual()).setParameter("destino", usuarioId).setParameter("idsed", idSede);
-            Resultado = consulta.getResultList();
-        } catch (Exception e) {
-            return null;
-        }
-        return Resultado;
-    }
-
-    public List<Paquete> consultarPaqueteXAlertaXUsuarioOrigen(Usuario usuarioId, Sede idSede) {
-
-        List<Paquete> Resultado = null;
-        try {
-            Query consulta = em.createNamedQuery("Paquete.findByAlertaXUsuarioOrigen").setParameter("fechaapaq", FechaActual()).setParameter("origen", usuarioId).setParameter("idsed", idSede);
-            Resultado = consulta.getResultList();
-        } catch (Exception e) {
-            return null;
-        }
-
-        return Resultado;
-    }
-
-    public List<Paquete> consultarPaqueteXFechaVencimientoXOrigen(Usuario usuarioId, Sede idSede) {
-
-        List<Paquete> Resultado = null;
-        try {
-            Query consulta = em.createNamedQuery("Paquete.findByVencimientoXUsuarioOrigen").setParameter("fechaenviopaq", FechaActual()).setParameter("origen", usuarioId).setParameter("idsed", idSede);
-            Resultado = consulta.getResultList();
-        } catch (Exception e) {
-            return null;
-        }
-        return Resultado;
-    }
-
-    
-     public void editarTipo(BigDecimal idusu, String tipo) {
+    public void editarTipo(BigDecimal idusu, String tipo) {
         Query q = em.createNativeQuery("UPDATE Usuariosede SET tipousu=? WHERE idusu=?");
         q.setParameter(1, tipo);
         q.setParameter(2, idusu);
         q.executeUpdate();
     }
-     
-     public Paquete consultarPaqueteXIdYOrigen(BigDecimal idPaquete, Usuario idUsuarioOrigen) {
+
+    public Paquete consultarPaqueteXIdYOrigen(BigDecimal idPaquete, Usuario idUsuarioOrigen) {
 
         Paquete Resultado;
         Query consulta = em.createNamedQuery("Paquete.findPaqXOrigen").setParameter("idpaq", idPaquete).setParameter("origenpaq", idUsuarioOrigen);
         Resultado = (Paquete) consulta.getSingleResult();
         return Resultado;
     }
-     
-     public Paquete consultarPaqueteXIdYDestino(BigDecimal idPaquete, Usuario idUsuarioDestino) {
+
+    public Paquete consultarPaqueteXIdYDestino(BigDecimal idPaquete, Usuario idUsuarioDestino) {
 
         Paquete Resultado;
         Query consulta = em.createNamedQuery("Paquete.findPaqXDestino").setParameter("idpaq", idPaquete).setParameter("destinopaq", idUsuarioDestino);
