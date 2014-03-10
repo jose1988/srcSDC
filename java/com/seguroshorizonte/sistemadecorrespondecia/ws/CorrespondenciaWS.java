@@ -396,6 +396,11 @@ public class CorrespondenciaWS {
         BigDecimal val = new BigDecimal(registroValija);
         try {
             valija = ejbValija.consultarValija(val, sede);
+            
+           if( valija.getZoomval()==null){
+             valija=null;  
+           }
+            
         } catch (Exception e) {
             return null;
         }
@@ -428,6 +433,15 @@ public class CorrespondenciaWS {
         List<Paquete> Resultado = null;
         try {
             Resultado = ejbPaquete.ConsultarSedeParaValija(sede);
+             Iterator<Paquete> lista = Resultado.iterator();
+            while (lista.hasNext()) {
+                Paquete aux = lista.next();
+                if (aux.getIdval()!=null && "Sede".equals(aux.getLocalizacionpaq())) {
+                    Resultado.add(aux);
+                } else {
+                    lista.remove();
+                }
+            }
 
         } catch (Exception e) {
             return null;
@@ -557,6 +571,19 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+    
+    @WebMethod(operationName = "actualizacionLocalizacionRecibidoValija")
+    public int actualizacionLocalizacionRecibidoValija(@WebParam(name = "idpaq") String idpaq, String Localizacion) {
+        int Resultado = 0;
+        try {
+             BigDecimal idu = new BigDecimal(idpaq);
+            ejbPaquete.editarLocalizacionPaquete(idu, Localizacion);
+            Resultado = 1;
+        } catch (Exception e) {
+            return 0;
+        }
+        return Resultado;
+    }
 
     @WebMethod(operationName = "actualizarBandeja")
     public int actualizarBandeja(@WebParam(name = "idpaq") String idpaq) {
@@ -596,7 +623,7 @@ public class CorrespondenciaWS {
         int Resultado = 0;
         BigDecimal id = new BigDecimal(idval);
         try {
-            ejbValija.entregarValija(id, status);
+             ejbValija.entregarValija(id, status);
             Resultado = 1;
         } catch (Exception e) {
             return 0;
