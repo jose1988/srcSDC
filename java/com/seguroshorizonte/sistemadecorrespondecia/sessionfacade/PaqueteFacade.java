@@ -165,10 +165,10 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         return Resultado;
     }
 
-    public List<Paquete> ConsultarSedeParaValija(String sede) {
+    public List<String> ConsultarSedeParaValija(String sede) {
 
         String sed = "Sede";
-        List<Paquete> Resultado = null;
+        List<String> Resultado = null;
         Query consulta = em.createNamedQuery("Paquete.SedeByValija").setParameter("sede", sede).setParameter("sed", sed);
         Resultado = consulta.getResultList();
         return Resultado;

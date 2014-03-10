@@ -429,14 +429,15 @@ public class CorrespondenciaWS {
     }
 
     @WebMethod(operationName = "ConsultarSedeParaValija")
-    public List<Paquete> ConsultarSedeParaValija(@WebParam(name = "sede") String sede) {
-        List<Paquete> Resultado = null;
+    public List<String> ConsultarSedeParaValija(@WebParam(name = "sede") String sede) {
+        List<String> Resultado = new ArrayList();
+        List<String> Resultad = null;
         try {
-            Resultado = ejbPaquete.ConsultarSedeParaValija(sede);
-             Iterator<Paquete> lista = Resultado.iterator();
+            Resultad= ejbPaquete.ConsultarSedeParaValija(sede);
+             Iterator<String> lista = Resultad.iterator();
             while (lista.hasNext()) {
-                Paquete aux = lista.next();
-                if (aux.getIdval()!=null && "Sede".equals(aux.getLocalizacionpaq())) {
+                String aux = lista.next();
+                if (!sede.equals(aux)) {
                     Resultado.add(aux);
                 } else {
                     lista.remove();
@@ -476,10 +477,10 @@ public class CorrespondenciaWS {
     }
 
     @WebMethod(operationName = "ConsultarSedeXNombre")
-    public List<Paquete> ConsultarSedeXNombre(@WebParam(name = "sede") String sede) {
-        List<Paquete> Resultado = null;
+    public Sede ConsultarSedeXNombre(@WebParam(name = "sede") String sede) {
+        Sede Resultado = null;
         try {
-            Resultado = ejbPaquete.ConsultarSedeParaValija(sede);
+            Resultado = ejbSede.ConsultarSedeXNombre(sede);
 
         } catch (Exception e) {
             return null;
