@@ -144,7 +144,7 @@ public class CorrespondenciaWS {
             }
 
             if (banj.equals(b3) || banj.equals(b4)) {
-                if (aux.getIdpaq().getDestinopaq().getIdusu().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
+                if (aux.getIdpaq().getDestinopaq().getIdusubuz().getIdusu()== usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
                     Registro.add(aux.getIdpaq());
                 } else {
                     iterator.remove();
@@ -573,7 +573,7 @@ public class CorrespondenciaWS {
     }
     
     @WebMethod(operationName = "actualizacionLocalizacionRecibidoValija")
-    public int actualizacionLocalizacionRecibidoValija(@WebParam(name = "idpaq") String idpaq, String Localizacion) {
+    public int actualizacionLocalizacionRecibidoValija(@WebParam(name = "idpaq") String idpaq,@WebParam(name = "Localizacion") String Localizacion) {
         int Resultado = 0;
         try {
              BigDecimal idu = new BigDecimal(idpaq);
