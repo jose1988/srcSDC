@@ -949,35 +949,40 @@ public class CorrespondenciaWS {
     //Lista de Valijas con Fecha Hoy
 
     @WebMethod(operationName = "listarValijasXFechaYUsuarioSede")
-    public List<Valija> listarValijasXFechaYUsuarioSede(@WebParam(name = "registroSede") String registroSede) {
+    public List<Valija> listarValijasXFechaYUsuarioSede(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario) {
 
         List<Valija> Resultado = null;
         List<Usuariosede> idUsuario;
         List<Valija> valijas;
         Sede idSede;
         Usuario idUsu;
+        Usuario regUsuario;
         Valija val;
 
         try {
             idSede = new Sede();
             idSede.setIdsed(new BigDecimal(registroSede));
             idUsuario = ejbUsuariosede.listaUsuarios(idSede);
+            regUsuario = new Usuario();
+            regUsuario.setIdusu(new BigDecimal(registroUsuario));
+            Resultado = new ArrayList<Valija>();
 
             for (int i = 0; i < idUsuario.size(); i++) {
                 idUsu = new Usuario();
                 idUsu = idUsuario.get(i).getIdusu();
                 valijas = ejbValija.listarValijasXFechaYUsuario(idUsu);
-                Resultado = new ArrayList<Valija>();
                 int j = 0;
-
-                if (valijas.isEmpty()) {
-                    Resultado = null;
-                }
-                while (valijas.size() > j) {
-                    val = valijas.get(j);
-                    Resultado.add(val);
-                    j++;
-                }
+                
+                if(idUsu.getIdusu().compareTo(regUsuario.getIdusu())==0){                    
+                    if (valijas.isEmpty()) {
+                        Resultado = null;
+                    }                    
+                    while (valijas.size() > j) {
+                        val = valijas.get(j);
+                        Resultado.add(val);
+                        j++;
+                    }
+                }                
             }
 
         } catch (Exception e) {
@@ -988,14 +993,14 @@ public class CorrespondenciaWS {
 
     //Lista de Valijas que No esten Procesadas
     @WebMethod(operationName = "listarValijasNoProcesadas")
-    public List<Valija> listarValijasNoProcesadas(@WebParam(name = "registroSede") String registroSede) {
+    public List<Valija> listarValijasNoProcesadas(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario) {
 
         List<Valija> Resultado = null;
         List<Valija> valijas;
         Valija val;
 
         try {
-            valijas = listarValijasXFechaYUsuarioSede(registroSede);
+            valijas = listarValijasXFechaYUsuarioSede(registroSede, registroUsuario);
             Resultado = new ArrayList<Valija>();
             int j = 0;
 
@@ -1018,14 +1023,14 @@ public class CorrespondenciaWS {
 
     //Lista de Valijas que esten Procesadas
     @WebMethod(operationName = "listarValijasProcesadas")
-    public List<Valija> listarValijasProcesadas(@WebParam(name = "registroSede") String registroSede) {
+    public List<Valija> listarValijasProcesadas(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario) {
 
         List<Valija> Resultado = null;
         List<Valija> valijas;
         Valija val;
 
         try {
-            valijas = listarValijasXFechaYUsuarioSede(registroSede);
+            valijas = listarValijasXFechaYUsuarioSede(registroSede, registroUsuario);
             Resultado = new ArrayList<Valija>();
             int j = 0;
 
