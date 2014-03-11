@@ -371,7 +371,8 @@ public class CorrespondenciaWS {
 
         try {
             Resultado = ejbValija.crearValija(registroValija);
-
+            ejbBitacora.insertarBitacora(destino, usu,"INSERCIÓN" ,"Creacion de Valija");
+            
         } catch (Exception e) {
             Resultado = new BigDecimal(0);
         }
@@ -620,11 +621,14 @@ public class CorrespondenciaWS {
     }
 
     @WebMethod(operationName = "entregarValija")
-    public int entregarValija(@WebParam(name = "idval") String idval, @WebParam(name = "status") String status) {
+    public int entregarValija(@WebParam(name = "idval") String idval, @WebParam(name = "status") String status,@WebParam(name = "idusu") String idusu,@WebParam(name = "sede") String sede) {
         int Resultado = 0;
         BigDecimal id = new BigDecimal(idval);
+        Sede destino = ejbSede.ConsultarSedeXNombre(sede);
+        Usuario usu = ejbUsuario.consultarUsuario(idusu);
         try {
             ejbValija.entregarValija(id, status);
+            ejbBitacora.insertarBitacora(destino, usu,"DESGLOSAR" ,"Desglozar Valija");
             Resultado = 1;
         } catch (Exception e) {
             return 0;
