@@ -37,6 +37,8 @@ import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.UsuarioFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.UsuariosedeFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.ValijaFacade;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -354,7 +356,7 @@ public class CorrespondenciaWS {
     }
 
     @WebMethod(operationName = "insertarValija")
-    public String insertarValija(@WebParam(name = "idusu") String idusu, @WebParam(name = "sorigen") String IdsedeO, @WebParam(name = "sdestino") String sedeD) {
+    public String insertarValija(@WebParam(name = "idusu") String idusu, @WebParam(name = "sorigen") String IdsedeO, @WebParam(name = "sdestino") String sedeD, @WebParam(name = "fechaapaq") String fechapaq) throws ParseException {
         BigDecimal Resultado;
         BigDecimal id = new BigDecimal(IdsedeO);
         Valija registroValija = new Valija();
@@ -365,10 +367,11 @@ public class CorrespondenciaWS {
         registroValija.setOrigenval(id);
         registroValija.setIdusu(usu);
         registroValija.setFechaval(hoy);
-        registroValija.setFechaalerval(hoy);
+        
         registroValija.setStatusval("0");
-
-
+        SimpleDateFormat sdf= new SimpleDateFormat("dd-MM-yyyy"); 
+        java.util.Date d=sdf.parse(fechapaq); 
+        registroValija.setFechaalerval(d);
         try {
             Resultado = ejbValija.crearValija(registroValija);
             ejbBitacora.insertarBitacora(destino, usu,"INSERCIÓN" ,"Creacion de Valija");
@@ -417,7 +420,7 @@ public class CorrespondenciaWS {
             Iterator<Paquete> lista = Resul.iterator();
             while (lista.hasNext()) {
                 Paquete aux = lista.next();
-                if (aux.getDestinopaq().getIdsed().getNombresed().equals(sedeDestino)) {
+                if (aux.getDestinopaq().getIdsed().getNombresed().equals(sedeDestino) && aux.getIdval()==null) {
                     Resultado.add(aux);
                 } else {
                     lista.remove();
