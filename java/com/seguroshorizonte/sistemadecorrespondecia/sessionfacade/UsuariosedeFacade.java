@@ -66,9 +66,9 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
         return sedeId;
     }
 
-    public List<Usuario> ConsultarXRolYSede(Sede sede) {
+    public List<Usuario> ConsultarUsuariosXSede(Sede sede) {
         List<Usuario> usuario;
-        usuario = (List<Usuario>) em.createNamedQuery("Usuariosede.findByRolYSedeOrigen").setParameter("idsed", sede).getResultList();
+        usuario = (List<Usuario>) em.createNamedQuery("Usuariosede.findUsuarioBySede").setParameter("idsed", sede).getResultList();
 
         return usuario;
     }

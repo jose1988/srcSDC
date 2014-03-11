@@ -144,7 +144,7 @@ public class CorrespondenciaWS {
             }
 
             if (banj.equals(b3) || banj.equals(b4)) {
-                if (aux.getIdpaq().getDestinopaq().getIdusubuz().getIdusu()== usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
+                if (aux.getIdpaq().getDestinopaq().getIdusubuz().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
                     Registro.add(aux.getIdpaq());
                 } else {
                     iterator.remove();
@@ -396,11 +396,11 @@ public class CorrespondenciaWS {
         BigDecimal val = new BigDecimal(registroValija);
         try {
             valija = ejbValija.consultarValija(val, sede);
-            
-           if( valija.getZoomval()==null){
-             valija=null;  
-           }
-            
+
+            if (valija.getZoomval() == null) {
+                valija = null;
+            }
+
         } catch (Exception e) {
             return null;
         }
@@ -433,8 +433,8 @@ public class CorrespondenciaWS {
         List<String> Resultado = new ArrayList();
         List<String> Resultad = null;
         try {
-            Resultad= ejbPaquete.ConsultarSedeParaValija(sede);
-             Iterator<String> lista = Resultad.iterator();
+            Resultad = ejbPaquete.ConsultarSedeParaValija(sede);
+            Iterator<String> lista = Resultad.iterator();
             while (lista.hasNext()) {
                 String aux = lista.next();
                 if (!sede.equals(aux)) {
@@ -572,12 +572,12 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
+
     @WebMethod(operationName = "actualizacionLocalizacionRecibidoValija")
-    public int actualizacionLocalizacionRecibidoValija(@WebParam(name = "idpaq") String idpaq,@WebParam(name = "Localizacion") String Localizacion) {
+    public int actualizacionLocalizacionRecibidoValija(@WebParam(name = "idpaq") String idpaq, @WebParam(name = "Localizacion") String Localizacion) {
         int Resultado = 0;
         try {
-             BigDecimal idu = new BigDecimal(idpaq);
+            BigDecimal idu = new BigDecimal(idpaq);
             ejbPaquete.editarLocalizacionPaquete(idu, Localizacion);
             Resultado = 1;
         } catch (Exception e) {
@@ -624,7 +624,7 @@ public class CorrespondenciaWS {
         int Resultado = 0;
         BigDecimal id = new BigDecimal(idval);
         try {
-             ejbValija.entregarValija(id, status);
+            ejbValija.entregarValija(id, status);
             Resultado = 1;
         } catch (Exception e) {
             return 0;
@@ -973,17 +973,17 @@ public class CorrespondenciaWS {
                 idUsu = idUsuario.get(i).getIdusu();
                 valijas = ejbValija.listarValijasXFechaYUsuario(idUsu);
                 int j = 0;
-                
-                if(idUsu.getIdusu().compareTo(regUsuario.getIdusu())==0){                    
+
+                if (idUsu.getIdusu().compareTo(regUsuario.getIdusu()) == 0) {
                     if (valijas.isEmpty()) {
                         Resultado = null;
-                    }                    
+                    }
                     while (valijas.size() > j) {
                         val = valijas.get(j);
                         Resultado.add(val);
                         j++;
                     }
-                }                
+                }
             }
 
         } catch (Exception e) {
@@ -1293,10 +1293,26 @@ public class CorrespondenciaWS {
                 nivelSeg = "Emisario";
             } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0) {
                 nivelSeg = "Valija";
+            } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0) {//caso del multirol
+                if (Tipo.compareTo("0") == 0) {
+                    if (registroPaquete.getLocalizacionpaq().compareTo("Sede") == 0) {//REVISAR LOCALIZACION
+                        nivelSeg = "Valija";
+                    } else {
+                        nivelSeg = "Sede";
+                    }
+                } else {//destino 
+                    if (registroPaquete.getLocalizacionpaq().compareTo("Valija") == 0) {//REVISAR LOCALIZACION
+                        nivelSeg = "Sede";
+                    } else {
+                        nivelSeg = "Valija";
+                    }
+                }
+
             }
 
+
             if (RegistrosSeguimiento.isEmpty()) {
-                if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0 || Tipo.compareTo("0") == 0) {
+                if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0 || Tipo.compareTo("0") == 0) {
                     nuevoSeg = new Seguimiento();
                     nuevoSeg.setFechaseg(new Date());
                     nuevoSeg.setIdpaq(registroPaquete);
@@ -1308,7 +1324,7 @@ public class CorrespondenciaWS {
                     ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), nivelSeg);
                     if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
                         ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Area de trabajo");
-                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0) {
+                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0) {
                         ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Sede");
                     } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
                         ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
@@ -1324,7 +1340,7 @@ public class CorrespondenciaWS {
                 if (RegistrosSeguimiento.get(i).getNivelseg().compareTo(registroPaquete.getLocalizacionpaq()) == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") == 0) {
                     reenvio = true;
                 } else {
-                    if (RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(registroPaquete.getLocalizacionpaq()) == 0 && RegistrosSeguimiento.get(i).getIdusu().getIdusu().toString().compareTo(registroUsuario.getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") != 0) {
+                    if (RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(registroPaquete.getLocalizacionpaq()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") != 0) {
                         return Resultado;
                     }
                 }
@@ -1343,11 +1359,6 @@ public class CorrespondenciaWS {
                 Resultado = 1;
             } //Caso  MultiRol Origen
             else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 && Tipo.compareTo("0") == 0) {
-                if (registroPaquete.getLocalizacionpaq().compareTo("Sede") == 0) {
-                    nivelSeg = "Valija";
-                } else {
-                    nivelSeg = "Sede";
-                }
                 Resultado = 1;
             } //Caso  Empaquetador 
             else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("0") == 0) {
@@ -1400,11 +1411,30 @@ public class CorrespondenciaWS {
                 }
             }//Caso  MultiRol Destino
             else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 && Tipo.compareTo("0") == 0) {
-                if (registroPaquete.getLocalizacionpaq().compareTo("Valija") == 0) {
-                    nivelSeg = "Sede";
-                } else {
-                    nivelSeg = "Valija";
+                if (nivelSeg.compareTo("Sede") == 0) { //si es sede 
+                    for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                        if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
+                            Resultado = 1;
+                            aunNo = true;
+                            break;
+                        }
+                    }
+                    if (!aunNo) {
+                        return 2;
+                    }
+                } else { // si es desenvajilador
+                    for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                        if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0 && registroPaquete.getIdval().getZoomval() != null) {
+                            Resultado = 1;
+                            aunNo = true;
+                            break;
+                        }
+                    }
+                    if (!aunNo) {
+                        return 2;
+                    }
                 }
+
                 Resultado = 1;
             }
 
@@ -1692,7 +1722,7 @@ public class CorrespondenciaWS {
         List<Usuario> resultadoUsuarios = null;
         boolean noAdd = false;
         try {
-            resultadoUsuarios = ejbUsuariosede.ConsultarXRolYSede(registroSede);
+            resultadoUsuarios = ejbUsuariosede.ConsultarUsuariosXSede(registroSede);
             for (int i = 0; i < resultadoUsuarios.size(); i++) {
                 paquetesXUsuario = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(resultadoUsuarios.get(i));
                 for (int j = 0; j < paquetesXUsuario.size(); j++) {
