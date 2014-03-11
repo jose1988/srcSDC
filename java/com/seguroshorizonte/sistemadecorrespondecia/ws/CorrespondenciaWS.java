@@ -371,8 +371,8 @@ public class CorrespondenciaWS {
 
         try {
             Resultado = ejbValija.crearValija(registroValija);
-            ejbBitacora.insertarBitacora(destino, usu,"INSERCIÓN" ,"Creacion de Valija");
-            
+            ejbBitacora.insertarBitacora(destino, usu, "INSERCIÓN", "Creacion de Valija");
+
         } catch (Exception e) {
             Resultado = new BigDecimal(0);
         }
@@ -621,14 +621,14 @@ public class CorrespondenciaWS {
     }
 
     @WebMethod(operationName = "entregarValija")
-    public int entregarValija(@WebParam(name = "idval") String idval, @WebParam(name = "status") String status,@WebParam(name = "idusu") String idusu,@WebParam(name = "sede") String sede) {
+    public int entregarValija(@WebParam(name = "idval") String idval, @WebParam(name = "status") String status, @WebParam(name = "idusu") String idusu, @WebParam(name = "sede") String sede) {
         int Resultado = 0;
         BigDecimal id = new BigDecimal(idval);
         Sede destino = ejbSede.ConsultarSedeXNombre(sede);
         Usuario usu = ejbUsuario.consultarUsuario(idusu);
         try {
             ejbValija.entregarValija(id, status);
-            ejbBitacora.insertarBitacora(destino, usu,"DESGLOSAR" ,"Desglozar Valija");
+            ejbBitacora.insertarBitacora(destino, usu, "DESGLOSAR", "Desglozar Valija");
             Resultado = 1;
         } catch (Exception e) {
             return 0;
@@ -1341,10 +1341,10 @@ public class CorrespondenciaWS {
 
             for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                 //pregunto ya un envajilador habia tocado el paquete y el q recibo como parametro es envajilador quiere decir que es un reenvio de paquete
-                if (RegistrosSeguimiento.get(i).getNivelseg().compareTo(registroPaquete.getLocalizacionpaq()) == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") == 0) {
+                if (RegistrosSeguimiento.get(i).getNivelseg().compareTo(nivelSeg) == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") == 0) {
                     reenvio = true;
                 } else {
-                    if (RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(registroPaquete.getLocalizacionpaq()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") != 0) {
+                    if (RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(nivelSeg) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") != 0) {
                         return Resultado;
                     }
                 }
@@ -1414,7 +1414,7 @@ public class CorrespondenciaWS {
                     return 2;
                 }
             }//Caso  MultiRol Destino
-            else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 && Tipo.compareTo("0") == 0) {
+            else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 && Tipo.compareTo("1") == 0) {
                 if (nivelSeg.compareTo("Sede") == 0) { //si es sede 
                     for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                         if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
@@ -1945,6 +1945,18 @@ public class CorrespondenciaWS {
             nuevo.setLeidoban("0");
             nuevo.setIdusu(paquete.getDestinopaq().getIdusubuz());
             ejbBandeja.insertarBandeja(nuevo);
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "editarEstatusPaquete")
+    public int editarEstatusPaquete(@WebParam(name = "idpaq") String idpaq, @WebParam(name = "status") String status) {
+        int Resultado;
+        try {
+            ejbPaquete.editarStatusPaquete(new BigDecimal(idpaq), status);
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
