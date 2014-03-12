@@ -244,40 +244,7 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-    /**
-     *
-     * Método encargado de consultar un registro de Permisologia de acuerdo a su
-     * id
-     *
-     * @param idPermisologia string que contiene el id del Permisologia a
-     * consultar
-     * @return objeto de la entidad Permisologia
-     *
-     * @WebMethod(operationName = "consultarPermisologia") public Permisologia
-     * consultarPermisologia(
-     * @WebParam(name = "idUsuario") String idPer) { Permisologia Resultado; try
-     * { Resultado = ejbPermisologia.consultarPermisologia(idPer); } catch
-     * (Exception e) { Resultado = null; } return Resultado; } * /**
-     *
-     * Método encargado de consultar un registro de Permisologia de acuerdo a su
-     * id
-     *
-     * @param idPermisologia string que contiene el id del Permisologia a
-     * consultar
-     * @return objeto de la entidad Permisologia
-     *
-     * @WebMethod(operationName = "listarPermisologia") public
-     * List<Permisologia> listarPermisologia() { List<Permisologia> Resultado;
-     * try { Resultado = ejbPermisologia.findAll(); } catch (Exception e) {
-     * Resultado = null; } return Resultado; } *
-     *
-     *
-     * /**
-     * Método encargado de insertar registros de la entidad Documento
-     *
-     * @param registroDocumento objeto de la entidad Documento , debe tener como
-     * mínimo los campos obligatorios para poder insertar
-     */
+    
     @WebMethod(operationName = "insertarDocumento")
     public int insertarDocumento(@WebParam(name = "registroDocumento") Documento registroDocumento) {
         int Resultado;
@@ -564,6 +531,35 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+    
+    @WebMethod(operationName = "ConsultarSedesParaAsignar")
+    public List<Sede> ConsultarSedesParaAsignar(@WebParam(name = "idusu") String idusu) {
+        List<Sede> Resultado = null;
+        BigDecimal id=new BigDecimal(idusu);
+        Usuario usu=new Usuario();
+        usu.setIdusu(id);
+        List<Sede> sed = consultarSedeDeUsuario(usu);
+        try {
+            Resultado = ejbSede.findAll();
+            Iterator<Sede> lista = sed.iterator();
+            Iterator<Sede> lista2 = Resultado.iterator();
+            while (lista.hasNext()) {
+                Sede aux = lista.next();
+                 while (lista2.hasNext()) {
+                   Sede aux2= lista2.next();
+                if (aux.getIdsed()==aux2.getIdsed()) {
+                    Resultado.add(aux);
+                } else {
+                    lista.remove();
+                }
+                 }
+            }
+            
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
 
     @WebMethod(operationName = "actualizacionLocalizacionRecibidoPaquete")
     public int actualizacionLocalizacionRecibidoPaquete(@WebParam(name = "idpaq") String idpaq) {
@@ -665,13 +661,14 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+    
 
     @WebMethod(operationName = "asignarSede")
-    public int asignarSede(@WebParam(name = "idusu") String idusu, @WebParam(name = "rol") String rol, @WebParam(name = "sede") String sede) {
+    public int asignarSede(@WebParam(name = "idusu") String idusu, @WebParam(name = "sede") String sede) {
         int Resultado = 0;
         BigDecimal idu = new BigDecimal(idusu);
         BigDecimal ids = new BigDecimal(sede);
-        BigDecimal idr = new BigDecimal(rol);
+        BigDecimal idr = new BigDecimal("6");
         Usuario usu = ejbUsuario.find(idu);
         Sede sed = ejbSede.find(ids);
         Rol ro = ejbRol.find(idr);
