@@ -35,48 +35,37 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
     }
 
     public Usuariosede sedeRolXId(String idu, Sede sede) {
-
         BigDecimal idusu = new BigDecimal(idu);
-
         Usuariosede sedeId = (Usuariosede) em.createNamedQuery("Usuariosede.findByIdusu").setParameter("idusu", idusu).setParameter("idsed", sede.getIdsed()).getSingleResult();
-
         return sedeId;
     }
 
     public List<Usuariosede> listaUsuarios(Sede idSede) {
-
         List<Usuariosede> Resultado = null;
-
         Query consulta = em.createNamedQuery("Usuariosede.findByIdsed").setParameter("idsed", idSede);
         Resultado = consulta.getResultList();
         return Resultado;
     }
 
     public Usuariosede sedeXId(BigDecimal sede) {
-
         Usuariosede sedeId = (Usuariosede) em.createNamedQuery("Usuariosede.findByIdsed").setParameter("Idsed", sede).getSingleResult();
-
         return sedeId;
     }
 
     public Usuariosede ConsultarXUsuarioYSede(Usuario usuario, Sede sede) {
-
         Usuariosede sedeId = (Usuariosede) em.createNamedQuery("Usuariosede.findByUsuarioYSede").setParameter("idusu", usuario).setParameter("idsed", sede).getSingleResult();
-
         return sedeId;
     }
 
     public List<Usuario> ConsultarUsuariosXSede(Sede sede) {
         List<Usuario> usuario;
         usuario = (List<Usuario>) em.createNamedQuery("Usuariosede.findUsuarioBySede").setParameter("idsed", sede).getResultList();
-
         return usuario;
     }
 
     public List<Sede> ConsultarSedeDeUsuario(Usuario Idusuario) {
         List<Sede> result;
         result = em.createNamedQuery("Usuariosede.findSedeByUsuario").setParameter("idusu", Idusuario).getResultList();
-
         return result;
     }
 
@@ -85,7 +74,6 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
         q.setParameter(1, registroUsuSede.getIdusu().getIdusu());
         q.setParameter(2, registroUsuSede.getIdsed().getIdsed());
         q.setParameter(3, registroUsuSede.getIdrol().getIdrol());
-
         q.executeUpdate();
     }
 
@@ -96,14 +84,13 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
         q.setParameter(3, idsede);
         q.executeUpdate();
     }
-     public void asignarSede(Usuario idusu, Rol rol, Sede sede) {
-         
-         Usuariosede Usede=new Usuariosede();
-         Usede.setIdrol(rol);
-         Usede.setIdsed(sede);
-         Usede.setIdusu(idusu);
-         
-         this.create(Usede);
-       
+
+    public void asignarSede(Usuario idusu, Rol rol, Sede sede) {
+        Usuariosede Usede = new Usuariosede();
+        Usede.setIdrol(rol);
+        Usede.setIdsed(sede);
+        Usede.setIdusu(idusu);
+        this.create(Usede);
+
     }
 }

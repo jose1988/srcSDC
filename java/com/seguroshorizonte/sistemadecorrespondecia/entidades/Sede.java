@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Sede.findByTelefonosed", query = "SELECT s FROM Sede s WHERE s.telefonosed = :telefonosed"),
     @NamedQuery(name = "Sede.findByTelefono2sed", query = "SELECT s FROM Sede s WHERE s.telefono2sed = :telefono2sed")})
 public class Sede implements Serializable {
+
     @OneToMany(mappedBy = "idsed")
     private Collection<Bitacora> bitacoraCollection;
     @OneToMany(mappedBy = "idsed")
@@ -194,5 +195,4 @@ public class Sede implements Serializable {
     public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
         this.paqueteCollection = paqueteCollection;
     }
-    
 }

@@ -36,13 +36,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Incidente.findByNombreinc", query = "SELECT i FROM Incidente i WHERE i.nombreinc = :nombreinc"),
     @NamedQuery(name = "Incidente.findByDescripcioninc", query = "SELECT i FROM Incidente i WHERE i.descripcioninc = :descripcioninc"),
     @NamedQuery(name = "Incidente.findByMaximoIdinc", query = "SELECT MAX(i.idinc) FROM Incidente i")})
-
 public class Incidente implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INCIDENTESEQ")
-    @SequenceGenerator(name = "INCIDENTESEQ", sequenceName = "SEQ_INCIDENTE", allocationSize = 1)    
+    @SequenceGenerator(name = "INCIDENTESEQ", sequenceName = "SEQ_INCIDENTE", allocationSize = 1)
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDINC")
@@ -120,5 +120,4 @@ public class Incidente implements Serializable {
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Incidente[ idinc=" + idinc + " ]";
     }
-    
 }

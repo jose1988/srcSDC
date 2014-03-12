@@ -16,6 +16,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class MensajeFacade extends AbstractFacade<Mensaje> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -27,19 +28,15 @@ public class MensajeFacade extends AbstractFacade<Mensaje> {
     public MensajeFacade() {
         super(Mensaje.class);
     }
-      public void insertarMensaje(Mensaje registroMensaje) {
-        
+
+    public void insertarMensaje(Mensaje registroMensaje) {
         this.create(registroMensaje);
     }
-    
-    // Este es mio
+
     public String ultimoMensaje() {
-        
         Query query = em.createNamedQuery("Mensaje.findByMaximoIdmen");
         Object resultList = query.getSingleResult();
         String maximoAuxiliar = resultList.toString();
         return maximoAuxiliar;
     }
-    
-   
 }

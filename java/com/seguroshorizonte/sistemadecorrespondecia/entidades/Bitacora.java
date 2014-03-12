@@ -39,33 +39,28 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Bitacora.findByFechabit", query = "SELECT b FROM Bitacora b WHERE b.fechabit = :fechabit"),
     @NamedQuery(name = "Bitacora.findByObservacionbit", query = "SELECT b FROM Bitacora b WHERE b.observacionbit = :observacionbit")})
 public class Bitacora implements Serializable {
-   
+
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_BITACORA")
     @SequenceGenerator(name = "SEQ_BITACORA", sequenceName = "SEQ_BITACORA", allocationSize = 1)
-   @Id
+    @Id
     @Basic(optional = false)
     @Column(name = "IDBIT")
     private BigDecimal idbit;
-    
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHABIT")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechabit;
-    
     @JoinColumn(name = "IDSED", referencedColumnName = "IDSED")
     @ManyToOne
     private Sede idsed;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 200)
     @Column(name = "ACCIONBIT")
     private String accionbit;
-    
- 
     @Size(max = 2000)
     @Column(name = "OBSERVACIONBIT")
     private String observacionbit;
@@ -102,9 +97,6 @@ public class Bitacora implements Serializable {
         this.accionbit = accionbit;
     }
 
-    
-
-    
     public String getObservacionbit() {
         return observacionbit;
     }
@@ -161,5 +153,4 @@ public class Bitacora implements Serializable {
     public void setFechabit(Date fechabit) {
         this.fechabit = fechabit;
     }
-    
 }

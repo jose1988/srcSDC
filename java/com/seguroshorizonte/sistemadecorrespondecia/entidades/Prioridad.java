@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Prioridad.findByNombrepri", query = "SELECT p FROM Prioridad p WHERE p.nombrepri = :nombrepri"),
     @NamedQuery(name = "Prioridad.findByDescripcionpri", query = "SELECT p FROM Prioridad p WHERE p.descripcionpri = :descripcionpri")})
 public class Prioridad implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -120,5 +121,4 @@ public class Prioridad implements Serializable {
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Prioridad[ idpri=" + idpri + " ]";
     }
-    
 }

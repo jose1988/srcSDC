@@ -5,12 +5,10 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Documento;
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Documento;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -38,15 +36,11 @@ public class DocumentoFacade extends AbstractFacade<Documento> {
     }
 
     public void insertar(Documento registro) {
-
         this.create(registro);
-
     }
 
     public void editar(Documento registro) {
-
         this.edit(registro);
-
     }
 
     public void eliminar(String ID) {
@@ -67,8 +61,6 @@ public class DocumentoFacade extends AbstractFacade<Documento> {
         } catch (Exception e) {
             return null;
         }
-
-
         return Registro;
     }
 }

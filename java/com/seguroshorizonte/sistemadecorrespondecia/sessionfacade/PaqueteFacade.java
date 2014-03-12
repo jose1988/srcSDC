@@ -37,17 +37,14 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public List<Paquete> ConsultarPaquetesXValija(String idValija, String sede) {
-
         List<Paquete> lista;
         BigDecimal idval = new BigDecimal(idValija);
-
         Query consulta = em.createNamedQuery("Paquete.findByIdval").setParameter("idval", idval);
         lista = consulta.getResultList();
         return lista;
     }
 
     public Paquete ConsultarPaqueteXId(BigDecimal idPaquete) {
-
         Paquete Resultado;
         Query consulta = em.createNamedQuery("Paquete.findByIdpaq").setParameter("idpaq", idPaquete);
         Resultado = (Paquete) consulta.getSingleResult();
@@ -55,7 +52,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public Paquete consultarPaquete(BigDecimal idPaquete) {
-
         Paquete Resultado;
         Query consulta = em.createNamedQuery("Paquete.findByIdpaq").setParameter("idpaq", idPaquete);
         Resultado = (Paquete) consulta.getSingleResult();
@@ -63,7 +59,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public Date FechaActual() {
-
         Date fecha = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(fecha);
@@ -76,7 +71,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public List<Paquete> consultarPaqueteXAlertaXUsuarioOrigen(Usuario usuarioId, Sede idSede) {
-
         List<Paquete> Resultado = null;
         try {
             Query consulta = em.createNamedQuery("Paquete.findByAlertaXUsuarioOrigen").setParameter("fechaapaq", FechaActual()).setParameter("origen", usuarioId).setParameter("idsed", idSede);
@@ -89,7 +83,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public List<Paquete> consultarPaqueteXFechaVencimientoXOrigen(Usuario usuarioId, Sede idSede) {
-
         List<Paquete> Resultado = null;
         try {
             Query consulta = em.createNamedQuery("Paquete.findByVencimientoXUsuarioOrigen").setParameter("fechaenviopaq", FechaActual()).setParameter("origen", usuarioId).setParameter("idsed", idSede);
@@ -101,7 +94,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public List<Paquete> consultarPaqueteXAlertaXUsuarioDestino(Usuario usuarioId, Sede idSede) {
-
         List<Paquete> Resultado = null;
         try {
             Query consulta = em.createNamedQuery("Paquete.findByAlertaXUsuarioDestino").setParameter("fechaapaq", FechaActual()).setParameter("destino", usuarioId.getIdusu()).setParameter("idsed", idSede);
@@ -113,7 +105,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public List<Paquete> consultarPaqueteXFechaVencimientoXDestino(Usuario usuarioId, Sede idSede) {
-
         List<Paquete> Resultado = null;
         try {
             Query consulta = em.createNamedQuery("Paquete.findByVencimientoXUsuarioDestino").setParameter("fechaenviopaq", FechaActual()).setParameter("destino", usuarioId).setParameter("idsed", idSede);
@@ -125,12 +116,10 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public void crearPaquete(Paquete registro) {
-
         this.create(registro);
     }
 
     public List<Paquete> listarEnviadoUsuarioXFecha(Usuario idUsuario) {
-
         List<Paquete> Resultado;
         Date fecha = new Date();
         Calendar cal = Calendar.getInstance();
@@ -141,17 +130,13 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         fecha = cal.getTime();
-
         Query consulta = em.createNamedQuery("Paquete.findByFechapaqYOrigen").setParameter("origenpaq", idUsuario).setParameter("fechapaq", fecha);
         Resultado = consulta.getResultList();
-
         return Resultado;
     }
 
     public List<Paquete> listarPaquetesXValija(Valija idValija) {
-
         List<Paquete> Resultado = null;
-
         Query consulta = em.createNamedQuery("Paquete.findByPaqYValija").setParameter("idval", idValija);
         Resultado = consulta.getResultList();
         return Resultado;
@@ -166,7 +151,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public List<String> ConsultarSedeParaValija(String sede) {
-
         String sed = "Sede";
         List<String> Resultado = null;
         Query consulta = em.createNamedQuery("Paquete.SedeByValija").setParameter("sede", sede).setParameter("sed", sed);
@@ -175,7 +159,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public void ActualizacionLocalizacionyValijaDelPaquete(String Localizacion, String idPaq, String idVal) {
-
         Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=?, idval=?  WHERE idpaq=?");
         q.setParameter(1, Localizacion);
         q.setParameter(2, idVal);
@@ -185,10 +168,8 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public void ActualizacionLocalizacionyDelPaqueteRecibido(String idPaq) {
-
         BigDecimal id = new BigDecimal(idPaq);
         Paquete paq = this.find(id);
-
         Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=?, statuspaq=?  WHERE idpaq=?");
         q.setParameter(1, paq.getDestinopaq().getIdusubuz().getNombreusu());
         q.setParameter(2, "1");
@@ -198,7 +179,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public void actualizacionPaqueteDeVuelta(String idPaq, String idRes) {
-
         Query q = em.createNativeQuery("UPDATE paquete SET idpaqres=?,  WHERE paquete.idpaq=?");
         q.setParameter(1, idPaq);
         q.setParameter(2, idRes);
@@ -207,7 +187,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public void editarLocalizacionPaquete(BigDecimal idPaquete, String localizacion) {
-
         Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=? WHERE idpaq=?");
         q.setParameter(1, localizacion);
         q.setParameter(2, idPaquete);
@@ -215,7 +194,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public void editarStatusPaquete(BigDecimal idPaquete, String status) {
-
         Query q = em.createNativeQuery("UPDATE paquete SET statuspaq=? WHERE idpaq=?");
         q.setParameter(1, status);
         q.setParameter(2, idPaquete);
@@ -223,7 +201,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public void editarMensajePaquete(BigDecimal idPaquete, BigDecimal idMensaje) {
-
         Query q = em.createNativeQuery("UPDATE paquete SET idmen=? WHERE idpaq=?");
         q.setParameter(1, idMensaje);
         q.setParameter(2, idPaquete);
@@ -231,16 +208,13 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public List<Paquete> listarPaquetesXOrigenYRespuesta(Usuario idUsuario, String respuesta) {
-
         List<Paquete> Resultado = null;
-
         Query consulta = em.createNamedQuery("Paquete.findByOrigenYRespaq").setParameter("respaq", respuesta).setParameter("origenpaq", idUsuario);
         Resultado = consulta.getResultList();
         return Resultado;
     }
 
     public String ultimoPaqueteXOrigen(Usuario idUsuario) {
-
         String Resultado;
         Query consulta = em.createNamedQuery("Paquete.findMaxPaqXOrigen").setParameter("origenpaq", idUsuario);
         Resultado = consulta.getSingleResult().toString();
@@ -248,7 +222,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public Paquete ConsultarPaqueteXIdPaqueteYSedeDeValija(Sede sede, BigDecimal idPaq) {
-
         Paquete Resultado;
         Query consulta = em.createNamedQuery("Paquete.findByidPaqueteYSedeDeValija").setParameter("idSede", sede).setParameter("idpaq", idPaq);
         Resultado = (Paquete) consulta.getSingleResult();
@@ -263,7 +236,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public Paquete consultarPaqueteXIdYOrigen(BigDecimal idPaquete, Usuario idUsuarioOrigen) {
-
         Paquete Resultado;
         Query consulta = em.createNamedQuery("Paquete.findPaqXOrigen").setParameter("idpaq", idPaquete).setParameter("origenpaq", idUsuarioOrigen);
         Resultado = (Paquete) consulta.getSingleResult();
@@ -271,7 +243,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public Paquete consultarPaqueteXIdYDestino(BigDecimal idPaquete, Usuario idUsuarioDestino) {
-
         Paquete Resultado;
         Query consulta = em.createNamedQuery("Paquete.findPaqXDestino").setParameter("idpaq", idPaquete).setParameter("destinopaq", idUsuarioDestino);
         Resultado = (Paquete) consulta.getSingleResult();

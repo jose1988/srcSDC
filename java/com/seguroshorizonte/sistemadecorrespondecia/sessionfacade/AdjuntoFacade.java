@@ -17,6 +17,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class AdjuntoFacade extends AbstractFacade<Adjunto> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -28,16 +29,15 @@ public class AdjuntoFacade extends AbstractFacade<Adjunto> {
     public AdjuntoFacade() {
         super(Adjunto.class);
     }
-    
+
     public Adjunto consultarAdjuntoXPaquete(Paquete idPaquete) {
-        
         Adjunto Resultado;
         Query Consulta = em.createNamedQuery("Adjunto.findByIdpaq").setParameter("idpaq", idPaquete);
         Resultado = (Adjunto) Consulta.getSingleResult();
         return Resultado;
     }
-     public void insertarAdjunto(Adjunto registroAdj) {
+
+    public void insertarAdjunto(Adjunto registroAdj) {
         this.create(registroAdj);
     }
-    
 }

@@ -16,6 +16,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class IncidenteFacade extends AbstractFacade<Incidente> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -27,14 +28,12 @@ public class IncidenteFacade extends AbstractFacade<Incidente> {
     public IncidenteFacade() {
         super(Incidente.class);
     }
-    
+
     public void insertarIncidente(Incidente registroIncidente) {
-        
         this.create(registroIncidente);
     }
-    
+
     public String ultimoIncidente() {
-        
         Query query = em.createNamedQuery("Incidente.findByMaximoIdinc");
         Object resultList = query.getSingleResult();
         String maximoAuxiliar = resultList.toString();

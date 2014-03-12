@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class InfobandejaFacade extends AbstractFacade<Infobandeja> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -26,14 +27,14 @@ public class InfobandejaFacade extends AbstractFacade<Infobandeja> {
     public InfobandejaFacade() {
         super(Infobandeja.class);
     }
-    public Infobandeja consultarBandejaXNombre(String nombre){
+
+    public Infobandeja consultarBandejaXNombre(String nombre) {
         Infobandeja Info;
-        try{
-            Info = (Infobandeja) em.createNamedQuery("Infobandeja.findByNombreiba").setParameter("nombreiba", nombre).getSingleResult();    
-        }catch(Exception e){
-            Info=null;
+        try {
+            Info = (Infobandeja) em.createNamedQuery("Infobandeja.findByNombreiba").setParameter("nombreiba", nombre).getSingleResult();
+        } catch (Exception e) {
+            Info = null;
         }
-    return Info;
+        return Info;
     }
-    
 }

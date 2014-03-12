@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Documento.findByNombredoc", query = "SELECT d FROM Documento d WHERE d.nombredoc = :nombredoc"),
     @NamedQuery(name = "Documento.findByDescripciondoc", query = "SELECT d FROM Documento d WHERE d.descripciondoc = :descripciondoc")})
 public class Documento implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -121,5 +122,4 @@ public class Documento implements Serializable {
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Documento[ iddoc=" + iddoc + " ]";
     }
-    
 }

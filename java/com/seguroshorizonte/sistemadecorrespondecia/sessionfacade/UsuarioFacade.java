@@ -36,12 +36,8 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         try {
             Registro = (Usuario) (em.createNamedQuery("Usuario.findByUserusu").setParameter("userusu", user).getSingleResult());
         } catch (Exception e) {
-
-
             return Registro;
         }
-
-
         return Registro;
     }
 
@@ -53,21 +49,16 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public List<Usuario> listar() {
         List<Usuario> c = null;
-
         c = (List<Usuario>) em.createNamedQuery("Usuario.findAll").getResultList();
         return c;
     }
 
     public void insertar(Usuario registro) {
-
         this.create(registro);
-
     }
 
     public void editar(Usuario registro) {
-
         this.edit(registro);
-
     }
 
     public void deshabilitar(String ID) {
@@ -91,7 +82,6 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public List<Usuario> consultarUsuariosXSede(String sede) {
         List<Usuario> c = null;
-
         c = (List<Usuario>) em.createNamedQuery("Usuario.findByUsuxSede").setParameter("sede", sede).getResultList();
         return c;
     }

@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -38,7 +37,6 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     }
 
     public List<Seguimiento> consultarSeguimientoXPaquete(Paquete idPaquete) {
-
         List<Seguimiento> Resultado;
         Query Consulta = em.createNamedQuery("Seguimiento.findByIdpaq").setParameter("idpaq", idPaquete);
         Resultado = Consulta.getResultList();
@@ -46,12 +44,10 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     }
 
     public void insertarSeguimiento(Seguimiento RegSeguimiento) {
-
         this.create(RegSeguimiento);
     }
 
     public List<Paquete> listaPaquetesXUsuarioYFechaProcesadas(Usuario idUsuario) {
-
         List<Paquete> Resultado;
         Date fecha = new Date();
         Calendar cal = Calendar.getInstance();
@@ -62,21 +58,17 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         fecha = cal.getTime();
-
         Query consulta = em.createNamedQuery("Seguimiento.findByFechasegYUsuario").setParameter("idusu", idUsuario).setParameter("fechaseg", fecha);
         Resultado = consulta.getResultList();
-
         return Resultado;
     }
 
     public List<Paquete> listaPaquetesProcesadosXUsuarioAlDia(Usuario idUsuario) {
-
         List<Paquete> Resultado = new ArrayList<Paquete>();
         List<Seguimiento> seguimiento = null;
         Query consulta = em.createNamedQuery("Seguimiento.findPaqByUsuario").setParameter("idusu", idUsuario);
         String formato, actual;
         SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
-
         seguimiento = consulta.getResultList();
         for (int i = 0; i < seguimiento.size(); i++) {
             formato = formateador.format(seguimiento.get(i).getFechaseg());
@@ -89,11 +81,9 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     }
 
     public Date FechaActual() {
-
         Date fecha = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(fecha);
-        //  System.out.print(cal);
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.SECOND, 0);

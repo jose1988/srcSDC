@@ -39,9 +39,7 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
     }
 
     public void insertarBuzon(Buzon BuzonI) {
-
         this.create(BuzonI);
-
     }
 
     public Buzon ConsultarBuzonXNombreUsuario(String userUsu, Usuario usuario) {

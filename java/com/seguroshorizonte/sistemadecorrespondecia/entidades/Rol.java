@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -34,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Rol.findByNombrerol", query = "SELECT r FROM Rol r WHERE r.nombrerol = :nombrerol"),
     @NamedQuery(name = "Rol.findByDescripcionrol", query = "SELECT r FROM Rol r WHERE r.descripcionrol = :descripcionrol")})
 public class Rol implements Serializable {
+
     @OneToMany(mappedBy = "idrol")
     private Collection<Usuariosede> usuariosedeCollection;
     private static final long serialVersionUID = 1L;
@@ -49,7 +49,6 @@ public class Rol implements Serializable {
     @Size(max = 2000)
     @Column(name = "DESCRIPCIONROL")
     private String descripcionrol;
- 
 
     public Rol() {
     }
@@ -81,8 +80,6 @@ public class Rol implements Serializable {
     public void setDescripcionrol(String descripcionrol) {
         this.descripcionrol = descripcionrol;
     }
-
-   
 
     @Override
     public int hashCode() {
@@ -117,5 +114,4 @@ public class Rol implements Serializable {
     public void setUsuariosedeCollection(Collection<Usuariosede> usuariosedeCollection) {
         this.usuariosedeCollection = usuariosedeCollection;
     }
-    
 }

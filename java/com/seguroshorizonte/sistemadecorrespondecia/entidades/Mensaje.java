@@ -37,11 +37,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Mensaje.findByDescripcionmen", query = "SELECT m FROM Mensaje m WHERE m.descripcionmen = :descripcionmen"),
     @NamedQuery(name = "Mensaje.findByMaximoIdmen", query = "SELECT MAX(m.idmen) FROM Mensaje m")})
 public class Mensaje implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MENSAJESEQ")
-    @SequenceGenerator(name = "MENSAJESEQ", sequenceName = "SEQ_MENSAJE", allocationSize = 1)    
+    @SequenceGenerator(name = "MENSAJESEQ", sequenceName = "SEQ_MENSAJE", allocationSize = 1)
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDMEN")
@@ -129,5 +130,4 @@ public class Mensaje implements Serializable {
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Mensaje[ idmen=" + idmen + " ]";
     }
-    
 }
