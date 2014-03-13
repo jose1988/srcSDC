@@ -276,7 +276,6 @@ public class CorrespondenciaWS {
 
         int Resultado;
         try {
-
             ejbDocumento.editar(registroDocumento);
             Resultado = 1;
         } catch (Exception e) {
@@ -374,7 +373,6 @@ public class CorrespondenciaWS {
         try {
             Resultado = ejbValija.crearValija(registroValija);
             ejbBitacora.insertarBitacora(destino, usu, "INSERCIÓN", "Creacion de Valija");
-
         } catch (Exception e) {
             Resultado = new BigDecimal(0);
         }
@@ -416,7 +414,6 @@ public class CorrespondenciaWS {
             if (valija.getZoomval() == null) {
                 valija = null;
             }
-
         } catch (Exception e) {
             return null;
         }
@@ -471,7 +468,6 @@ public class CorrespondenciaWS {
                     lista.remove();
                 }
             }
-
         } catch (Exception e) {
             return null;
         }
@@ -490,7 +486,6 @@ public class CorrespondenciaWS {
         BigDecimal id = new BigDecimal(idSede);
         try {
             Resultado = ejbSede.find(id);
-
         } catch (Exception e) {
             return null;
         }
@@ -508,7 +503,6 @@ public class CorrespondenciaWS {
         List<Usuario> Resultado = null;
         try {
             Resultado = ejbUsuario.consultarUsuariosXSede(sede);
-
         } catch (Exception e) {
             return null;
         }
@@ -526,7 +520,6 @@ public class CorrespondenciaWS {
         Sede Resultado = null;
         try {
             Resultado = ejbSede.ConsultarSedeXNombre(sede);
-
         } catch (Exception e) {
             return null;
         }
@@ -546,7 +539,6 @@ public class CorrespondenciaWS {
         List<Paquete> Resultado = null;
         try {
             ejbPaquete.ActualizacionLocalizacionyValijaDelPaquete(Localizacion, idpaq, idval);
-
         } catch (Exception e) {
             return null;
         }
@@ -589,7 +581,6 @@ public class CorrespondenciaWS {
         List<Rol> Resultado = new ArrayList<Rol>();
         try {
             Resultado = ejbRol.findAll();
-
         } catch (Exception e) {
             Resultado = null;
         }
@@ -609,7 +600,6 @@ public class CorrespondenciaWS {
         Sede sed = ejbSede.ConsultarSedeXNombre(sede);
         try {
             Resultado = ejbUsuariosede.sedeRolXId(idusu, sed);
-
         } catch (Exception e) {
             Resultado = null;
         }
@@ -626,7 +616,6 @@ public class CorrespondenciaWS {
         List<Sede> Resultado = null;
         try {
             Resultado = ejbSede.findAll();
-
         } catch (Exception e) {
             return null;
         }
@@ -642,7 +631,6 @@ public class CorrespondenciaWS {
     public List<Sede> ConsultarSedesParaAsignar(@WebParam(name = "user") String idusu) {
 
         List<Sede> Resultado = new ArrayList<Sede>();
-
         Usuario usu = ejbUsuario.consultarUsuarioXUser(idusu);
         List<Sede> sed = consultarSedeDeUsuario(usu);
         try {
@@ -658,13 +646,10 @@ public class CorrespondenciaWS {
                     }
                 }
             }
-
             Resultado.addAll((Collection<? extends Sede>) lista2);
-
         } catch (Exception e) {
             return null;
         }
-
         return Resultado;
     }
 
@@ -819,7 +804,6 @@ public class CorrespondenciaWS {
     public int asignarSede(@WebParam(name = "idusu") String idusu, @WebParam(name = "sede") String sede) {
 
         int Resultado = 0;
-
         BigDecimal idr = new BigDecimal("6");
         Usuario usu = ejbUsuario.consultarUsuarioXUser(idusu);
         Sede sed = ejbSede.ConsultarSedeXNombre(sede);
@@ -917,7 +901,6 @@ public class CorrespondenciaWS {
             idUsu.setIdusu(new BigDecimal(idUsuario));
             //Resultado = ejbSeguimiento.listaPaquetesXUsuarioYFechaProcesadas(idUsu);
             Resultado = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(idUsu);
-
         } catch (Exception e) {
             Resultado = null;
         }
@@ -1204,7 +1187,6 @@ public class CorrespondenciaWS {
                 }
                 j++;
             }
-
         } catch (Exception e) {
             Resultado = null;
         }
@@ -1238,7 +1220,6 @@ public class CorrespondenciaWS {
                 }
                 j++;
             }
-
         } catch (Exception e) {
             Resultado = null;
         }
@@ -1260,7 +1241,6 @@ public class CorrespondenciaWS {
             Usuario idUsu = new Usuario();
             idUsu.setIdusu(new BigDecimal(idUsuario));
             Resultado = ejbPaquete.listarEnviadoUsuarioXFecha(idUsu);
-
         } catch (Exception e) {
             Resultado = null;
         }
@@ -1471,8 +1451,10 @@ public class CorrespondenciaWS {
             if (datosPaq.getOrigenpaq().getIdusu().compareTo(idUsua.getIdusu()) == 0) {
                 Resultado = ejbPaquete.consultarPaqueteXIdYOrigen(idPaq, idUsua);
             }
-            if (datosPaq.getDestinopaq().getIdusubuz().getIdusu().compareTo(idUsua.getIdusu()) == 0) {
-                Resultado = ejbPaquete.consultarPaqueteXIdYDestino(idPaq, idUsua);
+            if (datosPaq.getDestinopaq().getTipobuz().compareTo("0") == 0) {
+                if (datosPaq.getDestinopaq().getIdusubuz().getIdusu().compareTo(idUsua.getIdusu()) == 0) {
+                    Resultado = ejbPaquete.consultarPaqueteXIdYDestino(idPaq, idUsua);
+                }
             }
         } catch (Exception e) {
             Resultado = null;
@@ -1616,7 +1598,6 @@ public class CorrespondenciaWS {
                 if (!aunNo) {
                     return 2;
                 }
-
             } //Caso  Receptor nivel 2 Destino
             else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 && Tipo.compareTo("1") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
@@ -1818,7 +1799,7 @@ public class CorrespondenciaWS {
     }
 
     /**
-     *     * lista paquetes que se pasaron de fecha limite o si la fecha alerta es
+     * lista paquetes que se pasaron de fecha limite o si la fecha alerta es
      * igual a la actualy el paquete no ha llegado de los paquetes que debetria
      * recibir
      *
@@ -2121,6 +2102,7 @@ public class CorrespondenciaWS {
      */
     @WebMethod(operationName = "verificarExistenciaBuzon")
     public int verificarExistenciaBuzon(@WebParam(name = "dueno") Usuario dueno, @WebParam(name = "contacto") Usuario contacto, @WebParam(name = "idSede") Sede idSede) {
+        
         int Resultado = 0;
         try {
             Buzon Result = ejbBuzon.verficarBuzon(dueno, contacto, idSede);
