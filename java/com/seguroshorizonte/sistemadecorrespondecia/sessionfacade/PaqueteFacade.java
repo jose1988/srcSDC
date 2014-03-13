@@ -229,7 +229,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public void editarTipo(BigDecimal idusu, String tipo) {
-        Query q = em.createNativeQuery("UPDATE Usuariosede SET tipousu=? WHERE idusu=?");
+        Query q = em.createNativeQuery("UPDATE Usuario SET tipousu=? WHERE idusu=?");
         q.setParameter(1, tipo);
         q.setParameter(2, idusu);
         q.executeUpdate();

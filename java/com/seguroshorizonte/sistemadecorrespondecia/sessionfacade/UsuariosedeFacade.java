@@ -77,7 +77,7 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
         q.executeUpdate();
     }
 
-    public void editarRol(BigDecimal idusu, String rol, BigDecimal idsede) {
+    public void editarRol(BigDecimal idusu, BigDecimal rol, BigDecimal idsede) {
         Query q = em.createNativeQuery("UPDATE Usuariosede SET idrol=? WHERE idusu=? AND idsed=?");
         q.setParameter(1, rol);
         q.setParameter(2, idusu);

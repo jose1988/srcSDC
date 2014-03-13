@@ -40,6 +40,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -637,31 +638,32 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "ConsultarSedesParaAsignar")
-    public List<Sede> ConsultarSedesParaAsignar(@WebParam(name = "idusu") String idusu) {
+    public List<Sede> ConsultarSedesParaAsignar(@WebParam(name = "user") String idusu) {
         
-        List<Sede> Resultado = null;
-        BigDecimal id = new BigDecimal(idusu);
-        Usuario usu = new Usuario();
-        usu.setIdusu(id);
+        List<Sede> Resultado =new ArrayList<Sede>();
+      
+        Usuario usu = ejbUsuario.consultarUsuarioXUser(idusu);
         List<Sede> sed = consultarSedeDeUsuario(usu);
         try {
-            Resultado = ejbSede.findAll();
+            List<Sede> Resultad = ejbSede.findAll();
             Iterator<Sede> lista = sed.iterator();
-            Iterator<Sede> lista2 = Resultado.iterator();
+            Iterator<Sede> lista2 = Resultad.iterator();
             while (lista.hasNext()) {
                 Sede aux = lista.next();
                 while (lista2.hasNext()) {
                     Sede aux2 = lista2.next();
                     if (aux.getIdsed() == aux2.getIdsed()) {
-                        Resultado.add(aux);
-                    } else {
-                        lista.remove();
-                    }
+                        lista2.remove();
+                    } 
                 }
             }
+            
+             Resultado.addAll((Collection<? extends Sede>) lista2);
+                
         } catch (Exception e) {
             return null;
         }
+        
         return Resultado;
     }
 
@@ -773,10 +775,12 @@ public class CorrespondenciaWS {
     public int editarRol(@WebParam(name = "idusu") String idusu, @WebParam(name = "rol") String rol, @WebParam(name = "sede") String sede) {
         
         int Resultado = 0;
+        Sede sed = ejbSede.ConsultarSedeXNombre(sede);
         BigDecimal idu = new BigDecimal(idusu);
-        BigDecimal ids = new BigDecimal(sede);
+         BigDecimal ro = new BigDecimal(rol);
+       
         try {
-            ejbUsuariosede.editarRol(idu, rol, ids);
+            ejbUsuariosede.editarRol(idu, ro, sed.getIdsed());
             Resultado = 1;
         } catch (Exception e) {
             return 0;
@@ -794,9 +798,9 @@ public class CorrespondenciaWS {
     public int editarTipoUsuario(@WebParam(name = "idusu") String idusu, @WebParam(name = "tipo") String tipo) {
         
         int Resultado = 0;
-        BigDecimal idu = new BigDecimal(idusu);
+        Usuario usu = ejbUsuario.consultarUsuarioXUser(idusu);
         try {
-            ejbPaquete.editarTipo(idu, tipo);
+            ejbPaquete.editarTipo(usu.getIdusu(), tipo);
             Resultado = 1;
         } catch (Exception e) {
             return 0;
@@ -814,11 +818,10 @@ public class CorrespondenciaWS {
     public int asignarSede(@WebParam(name = "idusu") String idusu, @WebParam(name = "sede") String sede) {
         
         int Resultado = 0;
-        BigDecimal idu = new BigDecimal(idusu);
-        BigDecimal ids = new BigDecimal(sede);
+        
         BigDecimal idr = new BigDecimal("6");
-        Usuario usu = ejbUsuario.find(idu);
-        Sede sed = ejbSede.find(ids);
+        Usuario usu = ejbUsuario.consultarUsuarioXUser(idusu);
+        Sede sed = ejbSede.ConsultarSedeXNombre(sede);
         Rol ro = ejbRol.find(idr);
         try {
             ejbUsuariosede.asignarSede(usu, ro, sed);

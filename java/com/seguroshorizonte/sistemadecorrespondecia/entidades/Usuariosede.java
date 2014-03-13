@@ -43,8 +43,8 @@ public class Usuariosede implements Serializable {
     private Rol idrol;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PAQUETESEQ")
-    @SequenceGenerator(name = "PAQUETESEQ", sequenceName = "SEQ_PAQUETE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIOSEDE")
+    @SequenceGenerator(name = "SEQ_USUARIOSEDE", sequenceName = "SEQ_USUARIOSEDE", allocationSize = 1)
     @Id
     @Basic(optional = false)
     @Column(name = "IDUSE")
