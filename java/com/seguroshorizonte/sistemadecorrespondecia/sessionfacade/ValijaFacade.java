@@ -37,12 +37,12 @@ public class ValijaFacade extends AbstractFacade<Valija> {
 
     public BigDecimal crearValija(Valija registro) {
         this.create(registro);
-        BigDecimal max = this.ultimaValija(registro.getIdusu().getIdusu());
+        BigDecimal max = this.ultimaValija(registro.getIduse().getIdusu().getIdusu());
         return max;
     }
 
     public void editarZoomValija(BigDecimal idValija, String codZoom) {
-        Query q = em.createNativeQuery("UPDATE valija SET zoomval=? WHERE idval=?");
+        Query q = em.createNativeQuery("UPDATE valija SET codproveedorval=? WHERE idval=?");
         q.setParameter(1, codZoom);
         q.setParameter(2, idValija);
         q.executeUpdate();

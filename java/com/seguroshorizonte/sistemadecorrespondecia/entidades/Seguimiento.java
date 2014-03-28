@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -38,24 +40,19 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByIdpaq", query = "SELECT s FROM Seguimiento s WHERE s.idpaq = :idpaq"),
     @NamedQuery(name = "Seguimiento.findByFechaseg", query = "SELECT s FROM Seguimiento s WHERE s.fechaseg = :fechaseg"),
     @NamedQuery(name = "Seguimiento.findByStatusseg", query = "SELECT s FROM Seguimiento s WHERE s.statusseg = :statusseg"),
-    @NamedQuery(name = "Seguimiento.Temporal", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.idusu = :idusu "),
-    @NamedQuery(name = "Seguimiento.findByFechasegYUsuario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.idusu = :idusu AND s.fechaseg = :fechaseg"),
-    @NamedQuery(name = "Seguimiento.findPaqByUsuario", query = "SELECT s FROM Seguimiento s WHERE s.idusu = :idusu ")})
+    @NamedQuery(name = "Seguimiento.Temporal", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse = :idusu "),
+    @NamedQuery(name = "Seguimiento.findByFechasegYUsuario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed AND s.fechaseg = :fechaseg"),
+     @NamedQuery(name = "Seguimiento.findPaqueteByUsuario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed"),
+    @NamedQuery(name = "Seguimiento.findPaqByUsuario", query = "SELECT s FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed")})
 public class Seguimiento implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "NIVELSEG")
-    private String nivelseg;
-    @Size(max = 20)
-    @Column(name = "TIPOSEG")
-    private String tiposeg;
+   
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEGUIMIENTOSEQ")
     @SequenceGenerator(name = "SEGUIMIENTOSEQ", sequenceName = "SEQ_SEGUIMIENTO", allocationSize = 1)
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDSEG")
@@ -68,12 +65,22 @@ public class Seguimiento implements Serializable {
     @Size(max = 20)
     @Column(name = "STATUSSEG")
     private String statusseg;
-    @JoinColumn(name = "IDUSU", referencedColumnName = "IDUSU")
+    @Size(max = 20)
+    @Column(name = "TIPOSEG")
+    private String tiposeg;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "NIVELSEG")
+    private String nivelseg;
+    @JoinColumn(name = "IDUSE", referencedColumnName = "IDUSE")
     @ManyToOne(optional = false)
-    private Usuario idusu;
+    private Usuariosede iduse;
     @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
     @ManyToOne(optional = false)
     private Paquete idpaq;
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "seguimiento")
+    private Alerta alerta;
 
     public Seguimiento() {
     }
@@ -82,9 +89,10 @@ public class Seguimiento implements Serializable {
         this.idseg = idseg;
     }
 
-    public Seguimiento(BigDecimal idseg, Date fechaseg) {
+    public Seguimiento(BigDecimal idseg, Date fechaseg, String nivelseg) {
         this.idseg = idseg;
         this.fechaseg = fechaseg;
+        this.nivelseg = nivelseg;
     }
 
     public BigDecimal getIdseg() {
@@ -111,12 +119,28 @@ public class Seguimiento implements Serializable {
         this.statusseg = statusseg;
     }
 
-    public Usuario getIdusu() {
-        return idusu;
+    public String getTiposeg() {
+        return tiposeg;
     }
 
-    public void setIdusu(Usuario idusu) {
-        this.idusu = idusu;
+    public void setTiposeg(String tiposeg) {
+        this.tiposeg = tiposeg;
+    }
+
+    public String getNivelseg() {
+        return nivelseg;
+    }
+
+    public void setNivelseg(String nivelseg) {
+        this.nivelseg = nivelseg;
+    }
+
+    public Usuariosede getIduse() {
+        return iduse;
+    }
+
+    public void setIduse(Usuariosede iduse) {
+        this.iduse = iduse;
     }
 
     public Paquete getIdpaq() {
@@ -125,6 +149,14 @@ public class Seguimiento implements Serializable {
 
     public void setIdpaq(Paquete idpaq) {
         this.idpaq = idpaq;
+    }
+
+    public Alerta getAlerta() {
+        return alerta;
+    }
+
+    public void setAlerta(Alerta alerta) {
+        this.alerta = alerta;
     }
 
     @Override
@@ -146,25 +178,12 @@ public class Seguimiento implements Serializable {
         }
         return true;
     }
+   
 
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento[ idseg=" + idseg + " ]";
     }
 
-    public String getTiposeg() {
-        return tiposeg;
-    }
-
-    public void setTiposeg(String tiposeg) {
-        this.tiposeg = tiposeg;
-    }
-
-    public String getNivelseg() {
-        return nivelseg;
-    }
-
-    public void setNivelseg(String nivelseg) {
-        this.nivelseg = nivelseg;
-    }
+   
 }

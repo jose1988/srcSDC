@@ -6,6 +6,7 @@ package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -44,27 +45,24 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByFechaval", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval"),
     @NamedQuery(name = "Valija.findByFechaalerval", query = "SELECT v FROM Valija v WHERE v.fechaalerval = :fechaalerval"),
     @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
-    @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.zoomval = :zoomval"),
+    @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.codproveedorval = :zoomval"),
     @NamedQuery(name = "Valija.findByNoProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval1 OR v.statusval = :statusval2"),
-    @NamedQuery(name = "Valija.maxVal", query = "SELECT MAX(v.idval) FROM Valija v WHERE v.idusu.idusu = :idusu"),
+    @NamedQuery(name = "Valija.maxVal", query = "SELECT MAX(v.idval) FROM Valija v WHERE v.iduse.idusu.idusu = :idusu"),
     @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
     @NamedQuery(name = "Valija.findByFechaVencimientoOrigen", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.origenval = :origen AND v.statusval = '0' "),
     @NamedQuery(name = "Valija.findByFechaVencimientoDestino", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.destinoval = :destinoval AND v.statusval = '0' "),
-    @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval AND v.idusu = :idusu")})
+    @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval AND v.iduse.idusu = :idusu")})
 public class Valija implements Serializable {
-
     @Basic(optional = false)
     @NotNull
     @Column(name = "ORIGENVAL")
     private BigDecimal origenval;
-    @JoinColumn(name = "IDINC", referencedColumnName = "IDINC")
-    @ManyToOne
-    private Incidente idinc;
-    private static final long serialVersionUID = 1L;
+
+   
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VALIJA")
     @SequenceGenerator(name = "SEQ_VALIJA", sequenceName = "SEQ_VALIJA", allocationSize = 1)
-    @Id
+     @Id
     @Basic(optional = false)
     @Column(name = "IDVAL")
     private BigDecimal idval;
@@ -83,14 +81,20 @@ public class Valija implements Serializable {
     @Column(name = "STATUSVAL")
     private String statusval;
     @Size(max = 20)
-    @Column(name = "ZOOMVAL")
-    private String zoomval;
-    @JoinColumn(name = "IDUSU", referencedColumnName = "IDUSU")
+    @Column(name = "CODPROVEEDORVAL")
+    private String codproveedorval;
+    @JoinColumn(name = "IDUSE", referencedColumnName = "IDUSE")
     @ManyToOne(optional = false)
-    private Usuario idusu;
+    private Usuariosede iduse;
     @JoinColumn(name = "DESTINOVAL", referencedColumnName = "IDSED")
     @ManyToOne(optional = false)
     private Sede destinoval;
+    @JoinColumn(name = "IDPRO", referencedColumnName = "IDPRO")
+    @ManyToOne
+    private Proveedor idpro;
+    @JoinColumn(name = "IDINC", referencedColumnName = "IDINC")
+    @ManyToOne
+    private Incidente idinc;
     @OneToMany(mappedBy = "idval")
     private Collection<Paquete> paqueteCollection;
 
@@ -147,20 +151,20 @@ public class Valija implements Serializable {
         this.statusval = statusval;
     }
 
-    public String getZoomval() {
-        return zoomval;
+    public String getCodproveedorval() {
+        return codproveedorval;
     }
 
-    public void setZoomval(String zoomval) {
-        this.zoomval = zoomval;
+    public void setCodproveedorval(String codproveedorval) {
+        this.codproveedorval = codproveedorval;
     }
 
-    public Usuario getIdusu() {
-        return idusu;
+    public Usuariosede getIduse() {
+        return iduse;
     }
 
-    public void setIdusu(Usuario idusu) {
-        this.idusu = idusu;
+    public void setIduse(Usuariosede iduse) {
+        this.iduse = iduse;
     }
 
     public Sede getDestinoval() {
@@ -169,6 +173,22 @@ public class Valija implements Serializable {
 
     public void setDestinoval(Sede destinoval) {
         this.destinoval = destinoval;
+    }
+
+    public Proveedor getIdpro() {
+        return idpro;
+    }
+
+    public void setIdpro(Proveedor idpro) {
+        this.idpro = idpro;
+    }
+
+    public Incidente getIdinc() {
+        return idinc;
+    }
+
+    public void setIdinc(Incidente idinc) {
+        this.idinc = idinc;
     }
 
     @XmlTransient
@@ -205,14 +225,6 @@ public class Valija implements Serializable {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija[ idval=" + idval + " ]";
     }
 
-    public Incidente getIdinc() {
-        return idinc;
-    }
-
-    public void setIdinc(Incidente idinc) {
-        this.idinc = idinc;
-    }
-
     public BigDecimal getOrigenval() {
         return origenval;
     }
@@ -220,4 +232,6 @@ public class Valija implements Serializable {
     public void setOrigenval(BigDecimal origenval) {
         this.origenval = origenval;
     }
+
+  
 }

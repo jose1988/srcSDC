@@ -4,7 +4,10 @@
  */
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
+import com.novell.ldap.LDAPConnection;
+import com.novell.ldap.LDAPException;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -104,4 +107,57 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         BigDecimal Id = (BigDecimal) em.createNamedQuery("Usuario.findMaxIdXuserUsu").setParameter("userusu", userUsu).getSingleResult();
         return Id;
     }
+    
+     public String auntenticarLDAP(String user, String password){
+         int ldapPort;
+        int ldapVersion;
+        String base = "@seguroshorizonte.com";
+        String ldapHost = "172.19.4.6";
+        String dn = "";
+        String[] ATTRS = {"mail", "sAMAccountName"};
+        LDAPConnection conn;
+        String[] values;
+        String[] vect = new String[2];
+        boolean find = false;
+
+        try {
+            ldapVersion = LDAPConnection.LDAP_V3;
+            //Puerto por Defecto 389
+            ldapPort = LDAPConnection.DEFAULT_PORT;
+            //ldapPort = LDAPConnection.DEFAULT_SSL_PORT; //Puerto SSL 636
+            conn = new LDAPConnection();
+            dn = user + base;
+            conn.connect(ldapHost, ldapPort);
+            conn.bind(ldapVersion, dn, password.getBytes("UTF8"));
+
+            if (conn.isBound()) {
+
+
+                return "ACEPT";
+
+            } else {
+                return "FAIL";
+            }
+
+        } //catch(LDAPException ex){
+        catch (UnsupportedEncodingException ex) {
+            return "FAIL";
+        } catch (LDAPException ex) {
+            if (ex.getLDAPErrorMessage().split(",")[2].trim().split(" ")[1].trim().compareTo("773") == 0) {
+                return "PASS";
+            }
+            return "FAIL";
+        } finally {
+            //conn.disconnect();
+        }
+
+
+        
+        
+        
+       
+    }
+     
+    
+    
 }

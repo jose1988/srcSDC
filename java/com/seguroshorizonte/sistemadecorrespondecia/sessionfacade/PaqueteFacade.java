@@ -4,6 +4,7 @@
  */
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Buzon;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
@@ -173,7 +174,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         BigDecimal id = new BigDecimal(idPaq);
         Paquete paq = this.find(id);
         Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=?, statuspaq=?  WHERE idpaq=?");
-        q.setParameter(1, paq.getDestinopaq().getIdusubuz().getNombreusu());
+        q.setParameter(1, paq.getDestinopaq().getIdusu().getNombreusu());
         q.setParameter(2, "1");
         q.setParameter(3, paq.getIdpaq());
         q.executeUpdate();
@@ -216,10 +217,17 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         return Resultado;
     }
 
-    public String ultimoPaqueteXOrigen(Usuario idUsuario) {
+    public String ultimoPaqueteXOrigen(Buzon idUsuario) {
         String Resultado;
         Query consulta = em.createNamedQuery("Paquete.findMaxPaqXOrigen").setParameter("origenpaq", idUsuario);
         Resultado = consulta.getSingleResult().toString();
+        return Resultado;
+    }
+     public List<Paquete> BuscarArea(BigDecimal idatr, BigDecimal idsede) {
+        
+        String sede="Sede Destino";
+        Query consulta = em.createNamedQuery("Paquete.findPaqXBuscarArea").setParameter("idatr", idatr).setParameter("idsed", idsede).setParameter("sede", sede);
+        List<Paquete> Resultado = consulta.getResultList();
         return Resultado;
     }
 

@@ -70,10 +70,11 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
     }
 
     public void insertarUsuarioSede(Usuariosede registroUsuSede) {
-        Query q = em.createNativeQuery("INSERT INTO USUARIOSEDE (IDUSE, IDUSU, IDSED, IDROL) VALUES (SEQ_USUARIOSEDE.nextVal, ?, ?, ?)");
+        Query q = em.createNativeQuery("INSERT INTO USUARIOSEDE (IDUSE, IDUSU, IDSED, IDROL, IDATR) VALUES (SEQ_USUARIOSEDE.nextVal, ?, ?, ?,?)");
         q.setParameter(1, registroUsuSede.getIdusu().getIdusu());
         q.setParameter(2, registroUsuSede.getIdsed().getIdsed());
         q.setParameter(3, registroUsuSede.getIdrol().getIdrol());
+        q.setParameter(4, registroUsuSede.getIdatr().getIdatr());
         q.executeUpdate();
     }
 

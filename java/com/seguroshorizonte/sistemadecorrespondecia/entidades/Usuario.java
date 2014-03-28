@@ -47,25 +47,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByDireccion2usu", query = "SELECT u FROM Usuario u WHERE u.direccion2usu = :direccion2usu")})
 public class Usuario implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
-    @Column(name = "TIPOUSU")
-    private String tipousu;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Seguimiento> seguimientoCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Bitacora> bitacoraCollection;
-    @OneToMany(mappedBy = "idusubuz")
-    private Collection<Buzon> buzonCollection;
-    @OneToMany(mappedBy = "idusu")
-    private Collection<Buzon> buzonCollection1;
-    @OneToMany(mappedBy = "idusu")
-    private Collection<Usuariosede> usuariosedeCollection;
+    
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIO")
     @SequenceGenerator(name = "SEQ_USUARIO", sequenceName = "SEQ_USUARIO", allocationSize = 1)
+    
     @Id
     @Basic(optional = false)
     @Column(name = "IDUSU")
@@ -105,12 +92,19 @@ public class Usuario implements Serializable {
     @Size(max = 2500)
     @Column(name = "DIRECCION2USU")
     private String direccion2usu;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 20)
+    @Column(name = "TIPOUSU")
+    private String tipousu;
+    @OneToMany(mappedBy = "idusu")
+    private Collection<Usuariosede> usuariosedeCollection;
     @OneToMany(mappedBy = "idusu")
     private Collection<Bandeja> bandejaCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusu")
-    private Collection<Valija> valijaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")
-    private Collection<Paquete> paqueteCollection;
+    private Collection<Bitacora> bitacoraCollection;
+    @OneToMany(mappedBy = "idusu")
+    private Collection<Buzon> buzonCollection;
 
     public Usuario() {
     }
@@ -119,12 +113,13 @@ public class Usuario implements Serializable {
         this.idusu = idusu;
     }
 
-    public Usuario(BigDecimal idusu, String nombreusu, String correousu, String userusu, String statususu) {
+    public Usuario(BigDecimal idusu, String nombreusu, String correousu, String userusu, String statususu, String tipousu) {
         this.idusu = idusu;
         this.nombreusu = nombreusu;
         this.correousu = correousu;
         this.userusu = userusu;
         this.statususu = statususu;
+        this.tipousu = tipousu;
     }
 
     public BigDecimal getIdusu() {
@@ -207,6 +202,23 @@ public class Usuario implements Serializable {
         this.direccion2usu = direccion2usu;
     }
 
+    public String getTipousu() {
+        return tipousu;
+    }
+
+    public void setTipousu(String tipousu) {
+        this.tipousu = tipousu;
+    }
+
+    @XmlTransient
+    public Collection<Usuariosede> getUsuariosedeCollection() {
+        return usuariosedeCollection;
+    }
+
+    public void setUsuariosedeCollection(Collection<Usuariosede> usuariosedeCollection) {
+        this.usuariosedeCollection = usuariosedeCollection;
+    }
+
     @XmlTransient
     public Collection<Bandeja> getBandejaCollection() {
         return bandejaCollection;
@@ -217,21 +229,21 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Valija> getValijaCollection() {
-        return valijaCollection;
+    public Collection<Bitacora> getBitacoraCollection() {
+        return bitacoraCollection;
     }
 
-    public void setValijaCollection(Collection<Valija> valijaCollection) {
-        this.valijaCollection = valijaCollection;
+    public void setBitacoraCollection(Collection<Bitacora> bitacoraCollection) {
+        this.bitacoraCollection = bitacoraCollection;
     }
 
     @XmlTransient
-    public Collection<Paquete> getPaqueteCollection() {
-        return paqueteCollection;
+    public Collection<Buzon> getBuzonCollection() {
+        return buzonCollection;
     }
 
-    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
-        this.paqueteCollection = paqueteCollection;
+    public void setBuzonCollection(Collection<Buzon> buzonCollection) {
+        this.buzonCollection = buzonCollection;
     }
 
     @Override
@@ -254,61 +266,10 @@ public class Usuario implements Serializable {
         return true;
     }
 
+
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario[ idusu=" + idusu + " ]";
     }
 
-    @XmlTransient
-    public Collection<Usuariosede> getUsuariosedeCollection() {
-        return usuariosedeCollection;
-    }
-
-    public void setUsuariosedeCollection(Collection<Usuariosede> usuariosedeCollection) {
-        this.usuariosedeCollection = usuariosedeCollection;
-    }
-
-    @XmlTransient
-    public Collection<Buzon> getBuzonCollection() {
-        return buzonCollection;
-    }
-
-    public void setBuzonCollection(Collection<Buzon> buzonCollection) {
-        this.buzonCollection = buzonCollection;
-    }
-
-    @XmlTransient
-    public Collection<Buzon> getBuzonCollection1() {
-        return buzonCollection1;
-    }
-
-    public void setBuzonCollection1(Collection<Buzon> buzonCollection1) {
-        this.buzonCollection1 = buzonCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Seguimiento> getSeguimientoCollection() {
-        return seguimientoCollection;
-    }
-
-    public void setSeguimientoCollection(Collection<Seguimiento> seguimientoCollection) {
-        this.seguimientoCollection = seguimientoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Bitacora> getBitacoraCollection() {
-        return bitacoraCollection;
-    }
-
-    public void setBitacoraCollection(Collection<Bitacora> bitacoraCollection) {
-        this.bitacoraCollection = bitacoraCollection;
-    }
-
-    public String getTipousu() {
-        return tipousu;
-    }
-
-    public void setTipousu(String tipousu) {
-        this.tipousu = tipousu;
-    }
 }

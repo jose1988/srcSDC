@@ -24,6 +24,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -42,9 +43,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByTextopaq", query = "SELECT p FROM Paquete p WHERE p.textopaq = :textopaq"),
     @NamedQuery(name = "Paquete.findByFechapaq", query = "SELECT p FROM Paquete p WHERE p.fechapaq = :fechapaq"),
     @NamedQuery(name = "Paquete.findByVencimientoXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND p.origenpaq = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
-    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND p.destinopaq.idusubuz = :destino AND p.destinopaq.idsed = :idsed AND p.statuspaq = '0'"),
+    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
     @NamedQuery(name = "Paquete.findByAlertaXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq And p.origenpaq = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
-    @NamedQuery(name = "Paquete.findByAlertaXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq AND p.destinopaq.idusubuz.idusu = :destino AND p.destinopaq.idsed = :idsed AND p.statuspaq = '0'"),
+    @NamedQuery(name = "Paquete.findByAlertaXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq AND p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
     @NamedQuery(name = "Paquete.findByFechaenviopaq", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq = :fechaenviopaq"),
     @NamedQuery(name = "Paquete.findByFechaapaq", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq"),
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),
@@ -55,28 +56,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByPaqYValija", query = "SELECT p FROM Paquete p WHERE p.idval = :idval"),
     @NamedQuery(name = "Paquete.findByOrigenYRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq AND p.origenpaq = :origenpaq"),
     @NamedQuery(name = "Paquete.findByStatuspaqYRespaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq AND p.respaq = :respaq"),
-    @NamedQuery(name = "Paquete.paqBySede", query = "SELECT p FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed AND p.destinopaq.tipobuz= :tipo"),
-    @NamedQuery(name = "Paquete.SedeByValija", query = "SELECT DISTINCT p.destinopaq.idsed.nombresed FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed AND p.destinopaq.tipobuz =:tipo"),
+    @NamedQuery(name = "Paquete.paqBySede", query = "SELECT p FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed AND p.destinopaq.tipobuz= :tipo"),
+    @NamedQuery(name = "Paquete.SedeByValija", query = "SELECT DISTINCT p.destinopaq.idatr.idsed.nombresed FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed AND p.destinopaq.tipobuz =:tipo"),
     @NamedQuery(name = "Paquete.findByidPaqueteYSedeDeValija", query = "SELECT p FROM Paquete p WHERE p.idval.destinoval = :idSede AND p.idpaq =:idpaq"),
     @NamedQuery(name = "Paquete.findMaxPaqXOrigen", query = "SELECT MAX(p.idpaq) FROM Paquete p WHERE p.origenpaq = :origenpaq"),
+    @NamedQuery(name = "Paquete.findPaqXBuscarArea", query = "SELECT p FROM Paquete p WHERE  p.destinopaq.idatr.idatr=:idatr AND p.destinopaq.idatr.idsed.idsed= :idsed AND p.localizacionpaq= :sede"),
     @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq"),
-    @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusubuz = :destinopaq")})
+    @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusu = :destinopaq")})
 public class Paquete implements Serializable {
 
-    @OneToMany(mappedBy = "idpaqres")
-    private Collection<Paquete> paqueteCollection;
-    @JoinColumn(name = "IDPAQRES", referencedColumnName = "IDPAQ")
-    @ManyToOne
-    private Paquete idpaqres;
-    @JoinColumn(name = "IDSED", referencedColumnName = "IDSED")
-    @ManyToOne
-    private Sede idsed;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaq")
-    private Collection<Seguimiento> seguimientoCollection;
-    @OneToMany(mappedBy = "idpaq")
-    private Collection<Adjunto> adjuntoCollection;
-    @OneToMany(mappedBy = "idpaq")
-    private Collection<Bandeja> bandejaCollection;
+   
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -109,15 +98,26 @@ public class Paquete implements Serializable {
     @Size(max = 20)
     @Column(name = "RESPAQ")
     private String respaq;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaq")
+    private Collection<Seguimiento> seguimientoCollection;
+    @OneToMany(mappedBy = "idpaq")
+    private Collection<Adjunto> adjuntoCollection;
+    @OneToMany(mappedBy = "idpaq")
+    private Collection<Bandeja> bandejaCollection;
     @JoinColumn(name = "IDVAL", referencedColumnName = "IDVAL")
     @ManyToOne
     private Valija idval;
-    @JoinColumn(name = "ORIGENPAQ", referencedColumnName = "IDUSU")
-    @ManyToOne(optional = false)
-    private Usuario origenpaq;
+    @JoinColumn(name = "IDSED", referencedColumnName = "IDSED")
+    @ManyToOne
+    private Sede idsed;
     @JoinColumn(name = "IDPRI", referencedColumnName = "IDPRI")
     @ManyToOne
     private Prioridad idpri;
+    @OneToMany(mappedBy = "idpaqres")
+    private Collection<Paquete> paqueteCollection;
+    @JoinColumn(name = "IDPAQRES", referencedColumnName = "IDPAQ")
+    @ManyToOne
+    private Paquete idpaqres;
     @JoinColumn(name = "IDMEN", referencedColumnName = "IDMEN")
     @ManyToOne
     private Mensaje idmen;
@@ -127,6 +127,9 @@ public class Paquete implements Serializable {
     @JoinColumn(name = "DESTINOPAQ", referencedColumnName = "IDBUZ")
     @ManyToOne(optional = false)
     private Buzon destinopaq;
+    @JoinColumn(name = "ORIGENPAQ", referencedColumnName = "IDBUZ")
+    @ManyToOne(optional = false)
+    private Buzon origenpaq;
 
     public Paquete() {
     }
@@ -207,79 +210,6 @@ public class Paquete implements Serializable {
         this.respaq = respaq;
     }
 
-    public Valija getIdval() {
-        return idval;
-    }
-
-    public void setIdval(Valija idval) {
-        this.idval = idval;
-    }
-
-    public Usuario getOrigenpaq() {
-        return origenpaq;
-    }
-
-    public void setOrigenpaq(Usuario origenpaq) {
-        this.origenpaq = origenpaq;
-    }
-
-    public Prioridad getIdpri() {
-        return idpri;
-    }
-
-    public void setIdpri(Prioridad idpri) {
-        this.idpri = idpri;
-    }
-
-    public Mensaje getIdmen() {
-        return idmen;
-    }
-
-    public void setIdmen(Mensaje idmen) {
-        this.idmen = idmen;
-    }
-
-    public Documento getIddoc() {
-        return iddoc;
-    }
-
-    public void setIddoc(Documento iddoc) {
-        this.iddoc = iddoc;
-    }
-
-    public Buzon getDestinopaq() {
-        return destinopaq;
-    }
-
-    public void setDestinopaq(Buzon destinopaq) {
-        this.destinopaq = destinopaq;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (idpaq != null ? idpaq.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Paquete)) {
-            return false;
-        }
-        Paquete other = (Paquete) object;
-        if ((this.idpaq == null && other.idpaq != null) || (this.idpaq != null && !this.idpaq.equals(other.idpaq))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete[ idpaq=" + idpaq + " ]";
-    }
-
     @XmlTransient
     public Collection<Seguimiento> getSeguimientoCollection() {
         return seguimientoCollection;
@@ -307,12 +237,28 @@ public class Paquete implements Serializable {
         this.bandejaCollection = bandejaCollection;
     }
 
+    public Valija getIdval() {
+        return idval;
+    }
+
+    public void setIdval(Valija idval) {
+        this.idval = idval;
+    }
+
     public Sede getIdsed() {
         return idsed;
     }
 
     public void setIdsed(Sede idsed) {
         this.idsed = idsed;
+    }
+
+    public Prioridad getIdpri() {
+        return idpri;
+    }
+
+    public void setIdpri(Prioridad idpri) {
+        this.idpri = idpri;
     }
 
     @XmlTransient
@@ -331,4 +277,64 @@ public class Paquete implements Serializable {
     public void setIdpaqres(Paquete idpaqres) {
         this.idpaqres = idpaqres;
     }
+
+    public Mensaje getIdmen() {
+        return idmen;
+    }
+
+    public void setIdmen(Mensaje idmen) {
+        this.idmen = idmen;
+    }
+
+    public Documento getIddoc() {
+        return iddoc;
+    }
+
+    public void setIddoc(Documento iddoc) {
+        this.iddoc = iddoc;
+    }
+
+    public Buzon getDestinopaq() {
+        return destinopaq;
+    }
+
+    public void setDestinopaq(Buzon destinopaq) {
+        this.destinopaq = destinopaq;
+    }
+
+    public Buzon getOrigenpaq() {
+        return origenpaq;
+    }
+
+    public void setOrigenpaq(Buzon origenpaq) {
+        this.origenpaq = origenpaq;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idpaq != null ? idpaq.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Paquete)) {
+            return false;
+        }
+        Paquete other = (Paquete) object;
+        if ((this.idpaq == null && other.idpaq != null) || (this.idpaq != null && !this.idpaq.equals(other.idpaq))) {
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
+    public String toString() {
+        return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete[ idpaq=" + idpaq + " ]";
+    }
+
+ 
 }
