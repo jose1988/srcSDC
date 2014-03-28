@@ -64,6 +64,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq"),
     @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusu = :destinopaq")})
 public class Paquete implements Serializable {
+    @Size(max = 20)
+    @Column(name = "FRAGILPAQ")
+    private String fragilpaq;
 
    
     private static final long serialVersionUID = 1L;
@@ -334,6 +337,14 @@ public class Paquete implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete[ idpaq=" + idpaq + " ]";
+    }
+
+    public String getFragilpaq() {
+        return fragilpaq;
+    }
+
+    public void setFragilpaq(String fragilpaq) {
+        this.fragilpaq = fragilpaq;
     }
 
  
