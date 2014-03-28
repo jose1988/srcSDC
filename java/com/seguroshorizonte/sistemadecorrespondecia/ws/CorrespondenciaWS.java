@@ -1538,11 +1538,10 @@ public class CorrespondenciaWS {
 
         String idPaquete;
         BigDecimal idPaq;
-        Buzon idUsua;
+        Usuario idUsua;
         Paquete Resultado = null;
         try {
-            idUsua = new Buzon();
-            idUsua.setIdbuz(new BigDecimal(idUsuario));
+            idUsua = ejbUsuario.consultarUsuario(idUsuario);
             idPaquete = ejbPaquete.ultimoPaqueteXOrigen(idUsua);
             if (idPaquete != null) {
                 idPaq = new BigDecimal(idPaquete);

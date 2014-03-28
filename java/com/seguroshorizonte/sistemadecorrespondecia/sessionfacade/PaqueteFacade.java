@@ -217,7 +217,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         return Resultado;
     }
 
-    public String ultimoPaqueteXOrigen(Buzon idUsuario) {
+    public String ultimoPaqueteXOrigen(Usuario idUsuario) {
         String Resultado;
         Query consulta = em.createNamedQuery("Paquete.findMaxPaqXOrigen").setParameter("origenpaq", idUsuario);
         Resultado = consulta.getSingleResult().toString();
