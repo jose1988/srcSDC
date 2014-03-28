@@ -417,7 +417,6 @@ public class CorrespondenciaWS {
         registroValija.setStatusval("0");
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         java.util.Date d = sdf.parse(fechapaq);
-        registroValija.setFechaalerval(d);
         try {
             Resultado = ejbValija.crearValija(registroValija);
             ejbBitacora.insertarBitacora(destino, usu, "INSERCIÓN", "Creacion de Valija");
@@ -2244,6 +2243,9 @@ public class CorrespondenciaWS {
         try {
             Resul = ejbUsuario.consultarUsuarioXUser(user);
         } catch (Exception e) {
+            return null;
+        }
+        if(Resul.getIdusu()==null){
             return null;
         }
         return Resul;

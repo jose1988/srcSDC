@@ -43,14 +43,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByOrigenval", query = "SELECT v FROM Valija v WHERE v.origenval = :origenval"),
     @NamedQuery(name = "Valija.findByAsuntoval", query = "SELECT v FROM Valija v WHERE v.asuntoval = :asuntoval"),
     @NamedQuery(name = "Valija.findByFechaval", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval"),
-    @NamedQuery(name = "Valija.findByFechaalerval", query = "SELECT v FROM Valija v WHERE v.fechaalerval = :fechaalerval"),
     @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
     @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.codproveedorval = :zoomval"),
     @NamedQuery(name = "Valija.findByNoProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval1 OR v.statusval = :statusval2"),
     @NamedQuery(name = "Valija.maxVal", query = "SELECT MAX(v.idval) FROM Valija v WHERE v.iduse.idusu.idusu = :idusu"),
     @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
-    @NamedQuery(name = "Valija.findByFechaVencimientoOrigen", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.origenval = :origen AND v.statusval = '0' "),
-    @NamedQuery(name = "Valija.findByFechaVencimientoDestino", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.destinoval = :destinoval AND v.statusval = '0' "),
+   // @NamedQuery(name = "Valija.findByFechaVencimientoOrigen", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.origenval = :origen AND v.statusval = '0' "),
+   // @NamedQuery(name = "Valija.findByFechaVencimientoDestino", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.destinoval = :destinoval AND v.statusval = '0' "),
     @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval AND v.iduse.idusu = :idusu")})
 public class Valija implements Serializable {
     @Basic(optional = false)
@@ -74,9 +73,7 @@ public class Valija implements Serializable {
     @Column(name = "FECHAVAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaval;
-    @Column(name = "FECHAALERVAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaalerval;
+    
     @Size(max = 20)
     @Column(name = "STATUSVAL")
     private String statusval;
@@ -133,14 +130,6 @@ public class Valija implements Serializable {
 
     public void setFechaval(Date fechaval) {
         this.fechaval = fechaval;
-    }
-
-    public Date getFechaalerval() {
-        return fechaalerval;
-    }
-
-    public void setFechaalerval(Date fechaalerval) {
-        this.fechaalerval = fechaalerval;
     }
 
     public String getStatusval() {

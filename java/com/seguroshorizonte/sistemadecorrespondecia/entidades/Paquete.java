@@ -42,12 +42,11 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByAsuntopaq", query = "SELECT p FROM Paquete p WHERE p.asuntopaq = :asuntopaq"),
     @NamedQuery(name = "Paquete.findByTextopaq", query = "SELECT p FROM Paquete p WHERE p.textopaq = :textopaq"),
     @NamedQuery(name = "Paquete.findByFechapaq", query = "SELECT p FROM Paquete p WHERE p.fechapaq = :fechapaq"),
-    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND p.origenpaq = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
-    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq < :fechaenviopaq AND p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
-    @NamedQuery(name = "Paquete.findByAlertaXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq And p.origenpaq = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
-    @NamedQuery(name = "Paquete.findByAlertaXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq AND p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
-    @NamedQuery(name = "Paquete.findByFechaenviopaq", query = "SELECT p FROM Paquete p WHERE p.fechaenviopaq = :fechaenviopaq"),
-    @NamedQuery(name = "Paquete.findByFechaapaq", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq"),
+    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechapaq < :fechaenviopaq AND p.origenpaq = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
+    @NamedQuery(name = "Paquete.findByVencimientoXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechapaq < :fechaenviopaq AND p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
+   // @NamedQuery(name = "Paquete.findByAlertaXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq And p.origenpaq = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
+   // @NamedQuery(name = "Paquete.findByAlertaXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.fechaapaq = :fechaapaq AND p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
+
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),
     @NamedQuery(name = "Paquete.findByLocalizacionpaq", query = "SELECT p FROM Paquete p WHERE p.localizacionpaq = :localizacionpaq"),
     @NamedQuery(name = "Paquete.findByIdval", query = "SELECT p FROM Paquete p WHERE p.idval.idval = :idval"),
@@ -86,12 +85,7 @@ public class Paquete implements Serializable {
     @Column(name = "FECHAPAQ")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechapaq;
-    @Column(name = "FECHAENVIOPAQ")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaenviopaq;
-    @Column(name = "FECHAAPAQ")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fechaapaq;
+    
     @Size(max = 20)
     @Column(name = "STATUSPAQ")
     private String statuspaq;
@@ -173,22 +167,7 @@ public class Paquete implements Serializable {
         this.fechapaq = fechapaq;
     }
 
-    public Date getFechaenviopaq() {
-        return fechaenviopaq;
-    }
-
-    public void setFechaenviopaq(Date fechaenviopaq) {
-        this.fechaenviopaq = fechaenviopaq;
-    }
-
-    public Date getFechaapaq() {
-        return fechaapaq;
-    }
-
-    public void setFechaapaq(Date fechaapaq) {
-        this.fechaapaq = fechaapaq;
-    }
-
+  
     public String getStatuspaq() {
         return statuspaq;
     }
