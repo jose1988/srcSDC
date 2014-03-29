@@ -30,9 +30,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Proveedor.findAll", query = "SELECT p FROM Proveedor p"),
     @NamedQuery(name = "Proveedor.findByIdpro", query = "SELECT p FROM Proveedor p WHERE p.idpro = :idpro"),
-    @NamedQuery(name = "Proveedor.findByNombrepro", query = "SELECT p FROM Proveedor p WHERE p.nombrepro = :nombrepro"),
-    @NamedQuery(name = "Proveedor.findByDescripcionpro", query = "SELECT p FROM Proveedor p WHERE p.descripcionpro = :descripcionpro")})
+    @NamedQuery(name = "Proveedor.findByNombrepro", query = "SELECT p FROM Proveedor p WHERE p.nombrepro = :nombrepro")})
 public class Proveedor implements Serializable {
+
     @Size(max = 20)
     @Column(name = "TELEFONOPRO")
     private String telefonopro;
@@ -50,9 +50,6 @@ public class Proveedor implements Serializable {
     @Size(max = 200)
     @Column(name = "NOMBREPRO")
     private String nombrepro;
-    @Size(max = 500)
-    @Column(name = "DESCRIPCIONPRO")
-    private String descripcionpro;
 
     public Proveedor() {
     }
@@ -75,14 +72,6 @@ public class Proveedor implements Serializable {
 
     public void setNombrepro(String nombrepro) {
         this.nombrepro = nombrepro;
-    }
-
-    public String getDescripcionpro() {
-        return descripcionpro;
-    }
-
-    public void setDescripcionpro(String descripcionpro) {
-        this.descripcionpro = descripcionpro;
     }
 
     @Override
@@ -135,5 +124,4 @@ public class Proveedor implements Serializable {
     public void setValijaCollection(Collection<Valija> valijaCollection) {
         this.valijaCollection = valijaCollection;
     }
-    
 }

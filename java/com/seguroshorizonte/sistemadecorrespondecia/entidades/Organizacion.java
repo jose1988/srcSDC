@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Organizacion.findByNombreorg", query = "SELECT o FROM Organizacion o WHERE o.nombreorg = :nombreorg"),
     @NamedQuery(name = "Organizacion.findByDescripcionorg", query = "SELECT o FROM Organizacion o WHERE o.descripcionorg = :descripcionorg")})
 public class Organizacion implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idorg")
     private Collection<Sede> sedeCollection;
     private static final long serialVersionUID = 1L;
@@ -121,5 +122,4 @@ public class Organizacion implements Serializable {
     public void setSedeCollection(Collection<Sede> sedeCollection) {
         this.sedeCollection = sedeCollection;
     }
-    
 }

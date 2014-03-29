@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Areatrabajo.findBySedeXNombre", query = "SELECT a FROM Areatrabajo a WHERE a.idsed.nombresed= :sede"),
     @NamedQuery(name = "Areatrabajo.findByAreaExistente", query = "SELECT a FROM Areatrabajo a WHERE A.nombreatr= :nombreatr AND a.idsed.idsed= :sede")})
 public class Areatrabajo implements Serializable {
+
     @OneToMany(mappedBy = "idatr")
     private Collection<Usuariosede> usuariosedeCollection;
     @Size(max = 20)
@@ -56,13 +57,11 @@ public class Areatrabajo implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    
     @Column(name = "IDATR")
-     private BigDecimal idatr;
+    private BigDecimal idatr;
     @Size(max = 200)
     @Column(name = "NOMBREATR")
     private String nombreatr;
-   
 
     public Areatrabajo() {
     }
@@ -86,8 +85,6 @@ public class Areatrabajo implements Serializable {
     public void setNombreatr(String nombreatr) {
         this.nombreatr = nombreatr;
     }
-
-  
 
     @Override
     public int hashCode() {
@@ -147,5 +144,4 @@ public class Areatrabajo implements Serializable {
     public void setUsuariosedeCollection(Collection<Usuariosede> usuariosedeCollection) {
         this.usuariosedeCollection = usuariosedeCollection;
     }
-    
 }

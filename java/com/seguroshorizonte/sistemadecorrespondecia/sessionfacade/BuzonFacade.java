@@ -42,8 +42,8 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         }
         return lista;
     }
-    
-     public List<Buzon> ConsultarBuzonXUsuario(BigDecimal idUsuario) {
+
+    public List<Buzon> ConsultarBuzonXUsuario(BigDecimal idUsuario) {
         List<Buzon> lista = null;
         try {
             lista = em.createNamedQuery("Buzon.findByUsuario").setParameter("idusu", idUsuario).getResultList();
@@ -77,10 +77,11 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         }
         return Resultado;
     }
-    public Buzon ConsultarBuzonXNombreSede(String idusu, String idsed ) {
+
+    public Buzon ConsultarBuzonXNombreSede(String idusu, String idsed) {
         Buzon Resultado;
         try {
-            Resultado = (Buzon) em.createNamedQuery("Buzon.findByUsuarioSede").setParameter("idsed",new BigDecimal(idsed)).setParameter("idusu", new BigDecimal(idusu)).getSingleResult();
+            Resultado = (Buzon) em.createNamedQuery("Buzon.findByUsuarioSede").setParameter("idsed", new BigDecimal(idsed)).setParameter("idusu", new BigDecimal(idusu)).getSingleResult();
         } catch (Exception e) {
             return null;
         }
@@ -108,7 +109,7 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         Resultado = (Buzon) em.createNamedQuery("Buzon.findByIdbuz").setParameter("idbuz", new BigDecimal(idBuzon)).getSingleResult();
         return Resultado;
     }
-    
+
     public void editarBuzon(Buzon Registro) {
         Query q = em.createNativeQuery("UPDATE BUZON "
                 + "SET NOMBREBUZ=?, DIRECCIONBUZ=?, TELEFONOBUZ=? WHERE IDBUZ=?");
@@ -118,17 +119,14 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         q.setParameter(4, Registro.getIdbuz());
         q.executeUpdate();
     }
-    
-     public List<Buzon> buscarBuzonParaEnviar(String nombre, String apellido, String area) {
 
+    public List<Buzon> buscarBuzonParaEnviar(String nombre, String apellido, String area) {
         List<Buzon> emp;
-        if(!"".equals(area)){
-        emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNASA").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("area", new BigDecimal(area) ).getResultList();
-        }else{
-         emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNAS").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase()+ "%").getResultList();
-       
+        if (!"".equals(area)) {
+            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNASA").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("area", new BigDecimal(area)).getResultList();
+        } else {
+            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNAS").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").getResultList();
         }
-  
         return emp;
     }
 }

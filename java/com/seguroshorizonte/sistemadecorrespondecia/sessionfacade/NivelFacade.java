@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class NivelFacade extends AbstractFacade<Nivel> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -26,5 +27,4 @@ public class NivelFacade extends AbstractFacade<Nivel> {
     public NivelFacade() {
         super(Nivel.class);
     }
-    
 }

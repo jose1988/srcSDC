@@ -7,7 +7,6 @@ package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -37,6 +34,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Nivel.findByTiemponiv", query = "SELECT n FROM Nivel n WHERE n.tiemponiv = :tiemponiv"),
     @NamedQuery(name = "Nivel.findByDescripcionniv", query = "SELECT n FROM Nivel n WHERE n.descripcionniv = :descripcionniv")})
 public class Nivel implements Serializable {
+
     @Column(name = "TIEMPONIV")
     private BigInteger tiemponiv;
     @JoinColumn(name = "IDPRI", referencedColumnName = "IDPRI")
@@ -127,5 +125,4 @@ public class Nivel implements Serializable {
     public void setIdpri(Prioridad idpri) {
         this.idpri = idpri;
     }
-    
 }

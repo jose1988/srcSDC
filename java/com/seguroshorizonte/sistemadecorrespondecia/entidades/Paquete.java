@@ -42,11 +42,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByAsuntopaq", query = "SELECT p FROM Paquete p WHERE p.asuntopaq = :asuntopaq"),
     @NamedQuery(name = "Paquete.findByTextopaq", query = "SELECT p FROM Paquete p WHERE p.textopaq = :textopaq"),
     @NamedQuery(name = "Paquete.findByFechapaq", query = "SELECT p FROM Paquete p WHERE p.fechapaq = :fechapaq"),
-   // @NamedQuery(name = "Paquete.findUrgenteXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.idpri.idpri='1' AND p.origenpaq.idusu = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
- //   @NamedQuery(name = "Paquete.findUrgenteXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE DATEDIFF(DD,p.fechapaq,GETDATE())>3 AND p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
+    //@NamedQuery(name = "Paquete.findUrgenteXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.idpri.idpri='1' AND p.origenpaq.idusu = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
+    //@NamedQuery(name = "Paquete.findUrgenteXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE DATEDIFF(DD,p.fechapaq,GETDATE())>3 AND p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
     @NamedQuery(name = "Paquete.findVencidosXUsuarioOrigen", query = "SELECT p FROM Paquete p WHERE p.origenpaq.idusu = :origen AND p.idsed = :idsed AND p.statuspaq = '0'"),
     @NamedQuery(name = "Paquete.findNormalXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
-
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),
     @NamedQuery(name = "Paquete.findByLocalizacionpaq", query = "SELECT p FROM Paquete p WHERE p.localizacionpaq = :localizacionpaq"),
     @NamedQuery(name = "Paquete.findByIdval", query = "SELECT p FROM Paquete p WHERE p.idval.idval = :idval"),
@@ -63,11 +62,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq"),
     @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusu = :destinopaq")})
 public class Paquete implements Serializable {
+
     @Size(max = 20)
     @Column(name = "FRAGILPAQ")
     private String fragilpaq;
-
-   
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -85,7 +83,6 @@ public class Paquete implements Serializable {
     @Column(name = "FECHAPAQ")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechapaq;
-    
     @Size(max = 20)
     @Column(name = "STATUSPAQ")
     private String statuspaq;
@@ -167,7 +164,6 @@ public class Paquete implements Serializable {
         this.fechapaq = fechapaq;
     }
 
-  
     public String getStatuspaq() {
         return statuspaq;
     }
@@ -312,7 +308,6 @@ public class Paquete implements Serializable {
         return true;
     }
 
-
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete[ idpaq=" + idpaq + " ]";
@@ -325,6 +320,4 @@ public class Paquete implements Serializable {
     public void setFragilpaq(String fragilpaq) {
         this.fragilpaq = fragilpaq;
     }
-
- 
 }

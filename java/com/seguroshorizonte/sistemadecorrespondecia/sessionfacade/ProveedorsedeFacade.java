@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class ProveedorsedeFacade extends AbstractFacade<Proveedorsede> {
+
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
 
@@ -26,5 +27,4 @@ public class ProveedorsedeFacade extends AbstractFacade<Proveedorsede> {
     public ProveedorsedeFacade() {
         super(Proveedorsede.class);
     }
-    
 }

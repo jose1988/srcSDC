@@ -41,10 +41,11 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         return max;
     }
 
-    public void editarZoomValija(BigDecimal idValija, String codZoom) {
-        Query q = em.createNativeQuery("UPDATE valija SET codproveedorval=? WHERE idval=?");
-        q.setParameter(1, codZoom);
-        q.setParameter(2, idValija);
+    public void editarProveedorValija(BigDecimal idValija, String codProveedor, BigDecimal idPro) {
+        Query q = em.createNativeQuery("UPDATE valija SET codproveedorval=?, idpro=? WHERE idval=?");
+        q.setParameter(1, codProveedor);
+        q.setParameter(2, idPro);
+        q.setParameter(3, idValija);
         q.executeUpdate();
     }
 

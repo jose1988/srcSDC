@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Proveedorsede.findAll", query = "SELECT p FROM Proveedorsede p"),
     @NamedQuery(name = "Proveedorsede.findByIdpse", query = "SELECT p FROM Proveedorsede p WHERE p.idpse = :idpse")})
 public class Proveedorsede implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -98,5 +99,4 @@ public class Proveedorsede implements Serializable {
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Proveedorsede[ idpse=" + idpse + " ]";
     }
-    
 }

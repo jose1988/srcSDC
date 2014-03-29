@@ -42,16 +42,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuariosede.findUsuarioBySede", query = "SELECT u.idusu FROM Usuariosede u WHERE  u.idsed = :idsed"),
     @NamedQuery(name = "Usuariosede.findMaxId", query = "SELECT MAX(u.idusu.idusu) FROM Usuariosede u ")})
 public class Usuariosede implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "iduse")
     private Collection<Seguimiento> seguimientoCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "iduse")
     private Collection<Valija> valijaCollection;
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_USUARIOSEDE")
     @SequenceGenerator(name = "SEQ_USUARIOSEDE", sequenceName = "SEQ_USUARIOSEDE", allocationSize = 1)
-    
     @Id
     @Basic(optional = false)
     @Column(name = "IDUSE")
@@ -135,6 +134,7 @@ public class Usuariosede implements Serializable {
         }
         return true;
     }
+
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede[ iduse=" + iduse + " ]";
@@ -157,6 +157,4 @@ public class Usuariosede implements Serializable {
     public void setValijaCollection(Collection<Valija> valijaCollection) {
         this.valijaCollection = valijaCollection;
     }
-
-    
 }

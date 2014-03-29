@@ -107,9 +107,9 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         BigDecimal Id = (BigDecimal) em.createNamedQuery("Usuario.findMaxIdXuserUsu").setParameter("userusu", userUsu).getSingleResult();
         return Id;
     }
-    
-     public String auntenticarLDAP(String user, String password){
-         int ldapPort;
+
+    public String auntenticarLDAP(String user, String password) {
+        int ldapPort;
         int ldapVersion;
         String base = "@seguroshorizonte.com";
         String ldapHost = "172.19.4.6";
@@ -131,8 +131,6 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             conn.bind(ldapVersion, dn, password.getBytes("UTF8"));
 
             if (conn.isBound()) {
-
-
                 return "ACEPT";
 
             } else {
@@ -150,14 +148,5 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         } finally {
             //conn.disconnect();
         }
-
-
-        
-        
-        
-       
     }
-     
-    
-    
 }

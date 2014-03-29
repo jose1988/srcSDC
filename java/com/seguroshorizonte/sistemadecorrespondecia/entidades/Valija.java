@@ -6,7 +6,6 @@ package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -48,20 +47,19 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByNoProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval1 OR v.statusval = :statusval2"),
     @NamedQuery(name = "Valija.maxVal", query = "SELECT MAX(v.idval) FROM Valija v WHERE v.iduse.idusu.idusu = :idusu"),
     @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
-   // @NamedQuery(name = "Valija.findByFechaVencimientoOrigen", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.origenval = :origen AND v.statusval = '0' "),
-   // @NamedQuery(name = "Valija.findByFechaVencimientoDestino", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.destinoval = :destinoval AND v.statusval = '0' "),
+    //@NamedQuery(name = "Valija.findByFechaVencimientoOrigen", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.origenval = :origen AND v.statusval = '0' "),
+    //@NamedQuery(name = "Valija.findByFechaVencimientoDestino", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.destinoval = :destinoval AND v.statusval = '0' "),
     @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval AND v.iduse.idusu = :idusu")})
 public class Valija implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "ORIGENVAL")
     private BigDecimal origenval;
-
-   
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VALIJA")
     @SequenceGenerator(name = "SEQ_VALIJA", sequenceName = "SEQ_VALIJA", allocationSize = 1)
-     @Id
+    @Id
     @Basic(optional = false)
     @Column(name = "IDVAL")
     private BigDecimal idval;
@@ -73,7 +71,6 @@ public class Valija implements Serializable {
     @Column(name = "FECHAVAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaval;
-    
     @Size(max = 20)
     @Column(name = "STATUSVAL")
     private String statusval;
@@ -221,6 +218,4 @@ public class Valija implements Serializable {
     public void setOrigenval(BigDecimal origenval) {
         this.origenval = origenval;
     }
-
-  
 }

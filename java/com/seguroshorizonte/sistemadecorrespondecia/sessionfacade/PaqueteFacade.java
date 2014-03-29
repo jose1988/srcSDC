@@ -74,7 +74,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 //    public List<Paquete> consultarPaqueteVencidosXUsuarioOrigen(Usuario usuarioId, Sede idSede) {
 //        List<Paquete> Resultado = null;
 //        try {
-////            Query consulta = em.createNamedQuery("Paquete.findNormalXUsuarioOrigen").setParameter("fechaapaq", FechaActual()).setParameter("origen", usuarioId).setParameter("idsed", idSede);
+//            Query consulta = em.createNamedQuery("Paquete.findNormalXUsuarioOrigen").setParameter("fechaapaq", FechaActual()).setParameter("origen", usuarioId).setParameter("idsed", idSede);
 //            Query consulta = em.createNamedQuery("Paquete.findVencidosXUsuarioOrigen").setParameter("origen", usuarioId).setParameter("idsed", idSede);
 //            Resultado = consulta.getResultList();
 //            for (int i = 0; i < Resultado.size(); i++) {
@@ -118,7 +118,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 //        }
 //        return Resultado;
 //    }
-
     public void crearPaquete(Paquete registro) {
         this.create(registro);
     }
@@ -181,7 +180,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.setParameter(2, "1");
         q.setParameter(3, paq.getIdpaq());
         q.executeUpdate();
-
     }
 
     public void actualizacionPaqueteDeVuelta(String idPaq, String idRes) {
@@ -189,7 +187,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.setParameter(1, idPaq);
         q.setParameter(2, idRes);
         q.executeUpdate();
-
     }
 
     public void editarLocalizacionPaquete(BigDecimal idPaquete, String localizacion) {

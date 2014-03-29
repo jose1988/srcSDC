@@ -41,6 +41,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Sede.findByTelefonosed", query = "SELECT s FROM Sede s WHERE s.telefonosed = :telefonosed"),
     @NamedQuery(name = "Sede.findByTelefono2sed", query = "SELECT s FROM Sede s WHERE s.telefono2sed = :telefono2sed")})
 public class Sede implements Serializable {
+
     @Size(max = 20)
     @Column(name = "CODIGOSED")
     private String codigosed;
@@ -49,7 +50,6 @@ public class Sede implements Serializable {
     @Size(max = 20)
     @Column(name = "BORRADOSED")
     private String borradosed;
-    
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_SEDE")
     @SequenceGenerator(name = "SEQ_SEDE", sequenceName = "SEQ_SEDE", allocationSize = 1)
@@ -59,7 +59,6 @@ public class Sede implements Serializable {
     @Size(max = 20)
     @Column(name = "NOMBRESED")
     private String nombresed;
-    
     @Size(max = 20)
     @Column(name = "DIRECCIONSED")
     private String direccionsed;
@@ -105,8 +104,6 @@ public class Sede implements Serializable {
     public void setNombresed(String nombresed) {
         this.nombresed = nombresed;
     }
-
-   
 
     public String getDireccionsed() {
         return direccionsed;
@@ -234,6 +231,4 @@ public class Sede implements Serializable {
     public void setProveedorsedeCollection(Collection<Proveedorsede> proveedorsedeCollection) {
         this.proveedorsedeCollection = proveedorsedeCollection;
     }
-
-
 }

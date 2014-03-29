@@ -16,6 +16,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Mensaje;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Organizacion;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Prioridad;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Proveedor;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Rol;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
@@ -35,6 +36,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.MensajeFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.OrganizacionFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PaqueteFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PrioridadFacade;
+import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.ProveedorFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.RolFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.SedeFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.SeguimientoFacade;
@@ -100,6 +102,8 @@ public class CorrespondenciaWS {
     private OrganizacionFacade ejbOrganizacion;
     @EJB
     private AlertaFacade ejbAlerta;
+    @EJB
+    private ProveedorFacade ejbProveedor;
 
     /**
      * This is a sample web service operation
@@ -219,8 +223,8 @@ public class CorrespondenciaWS {
     /**
      * Método encargado de insertar registros de la entidad Usuario
      *
-     * @param registroUsuario objeto de la entidad Usuario , debe tener como
-     * mínimo los campos obligatorios para poder insertar
+     * @param registroSede
+     * @param idorg
      * @return
      */
     @WebMethod(operationName = "insertarSede")
@@ -237,6 +241,12 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param registroArea
+     * @param idsed
+     * @return
+     */
     @WebMethod(operationName = "insertarArea")
     public int insertarArea(@WebParam(name = "registroArea") Areatrabajo registroArea, @WebParam(name = "idsed") String idsed) {
         Sede sed = ejbSede.find(new BigDecimal(idsed));
@@ -630,6 +640,7 @@ public class CorrespondenciaWS {
     /**
      *
      * @param area
+     * @param sede
      * @return
      */
     @WebMethod(operationName = "consultarAreaExistente")
@@ -647,7 +658,8 @@ public class CorrespondenciaWS {
 
     /**
      *
-     * @param area
+     * @param idusu
+     * @param sede
      * @return
      */
     @WebMethod(operationName = "consultarPaquetesporArea")
@@ -689,7 +701,6 @@ public class CorrespondenciaWS {
     /**
      *
      * @param idusu
-     * @param idusub
      * @param sede
      * @return
      */
@@ -769,6 +780,7 @@ public class CorrespondenciaWS {
 
     /**
      *
+     * @param sede
      * @return
      */
     @WebMethod(operationName = "ConsultarSedesBuzon")
@@ -1056,44 +1068,21 @@ public class CorrespondenciaWS {
     }
 
     /**
-     * Método que lista los paquetes procesados en el día de hoy dependiendo del
-     * usuario
-     *
-     * @param idUsuario
-     * @return lista de tipo paquete con toda la información
-     */
-    @WebMethod(operationName = "listaPaquetesXUsuarioYFechaProcesadas")
-    public List<Paquete> listaPaquetesXUsuarioYFechaProcesadas(@WebParam(name = "idUsuario") String idUsuario, @WebParam(name = "sede") String sede) {
-
-        List<Paquete> Resultado = null;
-        try {
-            Usuario idUsu = new Usuario();
-            idUsu.setIdusu(new BigDecimal(idUsuario));
-            Sede sed = new Sede();
-            sed.setIdsed(new BigDecimal(sede));
-
-            //Resultado = ejbSeguimiento.listaPaquetesXUsuarioYFechaProcesadas(idUsu);
-            Resultado = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(idUsu, sed);
-        } catch (Exception e) {
-            Resultado = null;
-        }
-        return Resultado;
-    }
-
-    /**
-     * Método que confirma la valija en Zoom
+     * Método que confirma la valija en el Proveedor que se selecciona
      *
      * @param idValija
-     * @param codZoom
+     * @param proveedor
+     * @param codProveedor
      * @return entero 1 si se confirma correctamente y 0 si no se confirma
      */
     @WebMethod(operationName = "confirmarValija")
-    public int confirmarValija(@WebParam(name = "idValija") String idValija, @WebParam(name = "codZoom") String codZoom) {
+    public int confirmarValija(@WebParam(name = "idValija") String idValija, @WebParam(name = "proveedor") String proveedor, @WebParam(name = "codProveedor") String codProveedor) {
 
         int Resultado = 0;
         List<Paquete> lista;
         BigDecimal idPaquete;
         BigDecimal idVal;
+        BigDecimal idPro;
         String localizacion;
         Valija idValPaq;
         try {
@@ -1101,10 +1090,11 @@ public class CorrespondenciaWS {
             idValPaq = new Valija();
             idValPaq.setIdval(idVal);
             Valija consulta = ejbValija.find(idVal);
+            idPro = new BigDecimal(proveedor);
             if (consulta != null) {
-                ejbValija.editarZoomValija(idVal, codZoom);
+                ejbValija.editarProveedorValija(idVal, codProveedor, idPro);
                 lista = ejbPaquete.listarPaquetesXValija(idValPaq);
-                localizacion = "Zoom";
+                localizacion = ejbProveedor.consultarProveedorXId(idPro).getNombrepro();
                 for (int i = 0; i < lista.size(); i++) {
                     idPaquete = lista.get(i).getIdpaq();
                     ejbPaquete.editarLocalizacionPaquete(idPaquete, localizacion);
@@ -1122,51 +1112,66 @@ public class CorrespondenciaWS {
      *
      * @param registroPaquete
      * @param registroUsuario
+     * @param registroSede
+     * @param datosPaquete
      * @return entero 1 si se reporta correctamente, 0 si no se reporta
      */
     @WebMethod(operationName = "reportarPaqueteExcedente")
-    public int reportarPaqueteExcedente(@WebParam(name = "registroPaquete") String registroPaquete, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "registroSede") String registroSede) {
+    public int reportarPaqueteExcedente(@WebParam(name = "registroPaquete") String registroPaquete, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "registroSede") String registroSede, @WebParam(name = "datosPaquete") String datosPaquete) {
 
         int Resultado = 0;
         String idIncidente;
+        String idMensaje;
         BigDecimal idVal;
         BigDecimal idMaxInci;
         BigDecimal idPaq;
+        BigDecimal idMaxMens;
         Seguimiento nuevoSeg;
         Incidente nuevoIncidente;
         Paquete registroPaq;
-        Usuario registroUsua;
+        Mensaje nuevoMensaje;
 
         try {
             registroPaq = new Paquete();
             idPaq = new BigDecimal(registroPaquete);
             registroPaq = ejbPaquete.consultarPaquete(idPaq);
-
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
-            Sede origen = ejbSede.ConsultarSedeXNombre(registroSede);
+            Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
 
-
-
-
             nuevoSeg = new Seguimiento();
-            nuevoSeg.setFechaseg(new Date());
             nuevoSeg.setIdpaq(registroPaq);
             nuevoSeg.setIduse(use);
+            nuevoSeg.setFechaseg(new Date());
             nuevoSeg.setStatusseg("2");
             nuevoSeg.setTiposeg("1");
             nuevoSeg.setNivelseg("Valija");
             ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+
             nuevoIncidente = new Incidente();
             nuevoIncidente.setNombreinc("Paquete Excedente");
             nuevoIncidente.setDescripcioninc("Reporte de paquete excedente");
             ejbIncidente.insertarIncidente(nuevoIncidente);
+
+            nuevoMensaje = new Mensaje();
+            nuevoMensaje.setNombremen("Paquete Excedente");
+            nuevoMensaje.setDescripcionmen(datosPaquete);
+            ejbMensaje.insertarMensaje(nuevoMensaje);
+
             idIncidente = ejbIncidente.ultimoIncidente();
             idMaxInci = new BigDecimal(idIncidente);
+
+            idMensaje = ejbMensaje.ultimoMensaje();
+            idMaxMens = new BigDecimal(idMensaje);
+
+            //Edito el mensaje en el paquete
+            ejbPaquete.editarMensajePaquete(idPaq, idMaxMens);
             //Cambio de Status de Paquete a Reenviado (3)
             ejbPaquete.editarStatusPaquete(idPaq, "3");
+
             if (registroPaq.getIdval() != null) {
                 idVal = registroPaq.getIdval().getIdval();
+                //Edito el incidente en la Valija que traia el paquete
                 ejbValija.editarIncidenteValija(idVal, idMaxInci);
                 //Cambio de Status de Valija con Paquete Excedente (3)
                 ejbValija.editarStatusValija(idVal, "3");
@@ -1239,10 +1244,12 @@ public class CorrespondenciaWS {
      *
      * @param registroValija
      * @param registroUsuario
+     * @param registroSede
+     * @param datosValija
      * @return entero 1 si se reporta correctamente, 0 si no se reporta
      */
     @WebMethod(operationName = "reportarValija")
-    public int reportarValija(@WebParam(name = "registroValija") String registroValija, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "registroSede") String registroSede) {
+    public int reportarValija(@WebParam(name = "registroValija") String registroValija, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "registroSede") String registroSede, @WebParam(name = "datosValija") String datosValija) {
 
         int Resultado = 0;
         String idIncidente;
@@ -1253,41 +1260,41 @@ public class CorrespondenciaWS {
         Seguimiento nuevoSeg;
         Incidente nuevoIncidente;
         Paquete registroPaquete;
-        Usuario registroUsua;
         Valija idValija;
-        try {
-            registroUsua = new Usuario();
-            registroUsua.setIdusu(new BigDecimal(registroUsuario));
 
+        try {
+            Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
+            Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
+            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
 
             nuevoIncidente = new Incidente();
             nuevoIncidente.setNombreinc("Valija Incorrecta");
-            nuevoIncidente.setDescripcioninc("Reporte de valija con destino incorrecto");
+            nuevoIncidente.setDescripcioninc(datosValija);
             ejbIncidente.insertarIncidente(nuevoIncidente);
+
             idIncidente = ejbIncidente.ultimoIncidente();
             idMaxInci = new BigDecimal(idIncidente);
             idVal = new BigDecimal(registroValija);
             idValija = new Valija();
             idValija.setIdval(idVal);
+            //Edito el incidente en la valija
             ejbValija.editarIncidenteValija(idVal, idMaxInci);
             lista = ejbPaquete.listarPaquetesXValija(idValija);
-
-            Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
-            Sede origen = ejbSede.ConsultarSedeXNombre(registroSede);
-            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
 
             for (int i = 0; i < lista.size(); i++) {
                 idPaq = lista.get(i).getIdpaq();
                 registroPaquete = new Paquete();
                 registroPaquete.setIdpaq(idPaq);
+
                 nuevoSeg = new Seguimiento();
-                nuevoSeg.setFechaseg(new Date());
                 nuevoSeg.setIdpaq(registroPaquete);
                 nuevoSeg.setIduse(use);
+                nuevoSeg.setFechaseg(new Date());
                 nuevoSeg.setStatusseg("2");
                 nuevoSeg.setTiposeg("1");
                 nuevoSeg.setNivelseg("Valija");
                 ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+
                 //Cambio de Status de Paquete a Reenviado (3)
                 ejbPaquete.editarStatusPaquete(idPaq, "3");
             }
@@ -1648,6 +1655,42 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param idPaquete
+     * @return
+     */
+    @WebMethod(operationName = "consultarSeguimientoXPaquete")
+    public List<Seguimiento> consultarSeguimientoXPaquete(@WebParam(name = "idPaquete") String idPaquete) {
+
+        List<Seguimiento> Resultado;
+        Paquete idPaq;
+        try {
+            idPaq = new Paquete();
+            idPaq.setIdpaq(new BigDecimal(idPaquete));
+            Resultado = ejbSeguimiento.consultarSeguimientoXPaquete(idPaq);
+        } catch (Exception e) {
+            Resultado = null;
+        }
+        return Resultado;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @WebMethod(operationName = "consultarProveedor")
+    public List<Proveedor> consultarProveedor() {
+
+        List<Proveedor> Resultado;
+        try {
+            Resultado = ejbProveedor.findAll();
+        } catch (Exception e) {
+            Resultado = null;
+        }
+        return Resultado;
+    }
+
     //////////////// FIN NIUSKA ////////////////
     //////////////// INICIO MARIELA ////////////////
     /**
@@ -1893,7 +1936,6 @@ public class CorrespondenciaWS {
      * consulta el buzon por usuario
      *
      * @param registroUsuario
-     * @param registroSede
      * @return
      */
     @WebMethod(operationName = "consultarBuzonUsuario")
@@ -1908,6 +1950,11 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param idbuz
+     * @return
+     */
     @WebMethod(operationName = "consultarBuzon")
     public Buzon consultarBuzon(@WebParam(name = "idbuz") String idbuz) {
 
@@ -1920,6 +1967,13 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param nombre
+     * @param apellido
+     * @param area
+     * @return
+     */
     @WebMethod(operationName = "consultarBuzonParaEnviar")
     public List<Buzon> consultarBuzonParaEnviar(@WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "area") String area) {
 
@@ -1989,7 +2043,7 @@ public class CorrespondenciaWS {
     /**
      * Editar usuario
      *
-     * @param registroUsuario
+     * @param registroBuzon
      * @return
      */
     @WebMethod(operationName = "editarBuzon")
@@ -2116,6 +2170,7 @@ public class CorrespondenciaWS {
      * consultarPaquetesXUsuario confirmados al día
      *
      * @param idUsuario
+     * @param sede
      * @return
      */
     @WebMethod(operationName = "consultarPaquetesXUsuarioProcesadasAlDia")
@@ -2284,9 +2339,9 @@ public class CorrespondenciaWS {
     /**
      * caso en buzon adicional
      *
-     * @param
-     * @param
-     * @param
+     * @param idusu
+     * @param idatr
+     * @param idsed
      * @return
      */
     @WebMethod(operationName = "insertarUsuarioSedeXAdicional")
@@ -2351,6 +2406,12 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param idusu
+     * @param sede
+     * @return
+     */
     @WebMethod(operationName = "consultarBuzonXUsuarioSede")
     public Buzon consultarBuzonXUsuarioSede(@WebParam(name = "idusu") String idusu, @WebParam(name = "idsede") String sede) {
 
