@@ -23,6 +23,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.AdjuntoFacade;
+import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.AlertaFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.AreatrabajoFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.BandejaFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.BitacoraFacade;
@@ -97,6 +98,8 @@ public class CorrespondenciaWS {
     private AreatrabajoFacade ejbAreaTrabajo;
     @EJB
     private OrganizacionFacade ejbOrganizacion;
+    @EJB
+    private AlertaFacade ejbAlerta;
 
     /**
      * This is a sample web service operation
@@ -221,7 +224,7 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "insertarSede")
-    public int insertarSede(@WebParam(name = "registroSede") Sede registroSede,@WebParam(name = "idorg") String idorg) {
+    public int insertarSede(@WebParam(name = "registroSede") Sede registroSede, @WebParam(name = "idorg") String idorg) {
         Organizacion org = ejbOrganizacion.find(new BigDecimal(idorg));
         registroSede.setIdorg(org);
         int Resultado;
@@ -233,9 +236,9 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
+
     @WebMethod(operationName = "insertarArea")
-    public int insertarArea(@WebParam(name = "registroArea") Areatrabajo registroArea,@WebParam(name = "idsed") String idsed) {
+    public int insertarArea(@WebParam(name = "registroArea") Areatrabajo registroArea, @WebParam(name = "idsed") String idsed) {
         Sede sed = ejbSede.find(new BigDecimal(idsed));
         registroArea.setIdsed(sed);
         int Resultado;
@@ -247,8 +250,7 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-    
+
     /**
      * Método encargado de deshabilitar registros de usuario el status cambiara
      * a 0
@@ -400,7 +402,7 @@ public class CorrespondenciaWS {
      */
     @WebMethod(operationName = "insertarValija")
     public String insertarValija(@WebParam(name = "idusu") String idusu, @WebParam(name = "sorigen") String IdsedeO, @WebParam(name = "sdestino") String sedeD, @WebParam(name = "fechaapaq") String fechapaq) throws ParseException {
-       
+
         Usuario usu = ejbUsuario.consultarUsuario(idusu);
         Sede origen = ejbSede.consultarSedeXId(new BigDecimal(IdsedeO));
         Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
@@ -409,7 +411,7 @@ public class CorrespondenciaWS {
         Valija registroValija = new Valija();
         Date hoy = new Date();
         Sede destino = ejbSede.ConsultarSedeXNombre(sedeD);
-        
+
         registroValija.setDestinoval(destino);
         registroValija.setOrigenval(id);
         registroValija.setIduse(use);
@@ -555,8 +557,8 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     /**
+
+    /**
      *
      * @param sede
      * @return
@@ -572,9 +574,8 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-    
-     /**
+
+    /**
      *
      * @param sede
      * @return
@@ -607,8 +608,8 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     /**
+
+    /**
      *
      * @param sede
      * @return
@@ -618,50 +619,50 @@ public class CorrespondenciaWS {
 
         int Resultado = 0;
         try {
-          ejbSede.ConsultarSedeExistente(sede);
-           Resultado=1; 
+            ejbSede.ConsultarSedeExistente(sede);
+            Resultado = 1;
         } catch (Exception e) {
-            Resultado=0;
+            Resultado = 0;
         }
         return Resultado;
     }
-    
-      /**
+
+    /**
      *
      * @param area
      * @return
      */
     @WebMethod(operationName = "consultarAreaExistente")
-    public int consultarAreaExistente(@WebParam(name = "area") String area,@WebParam(name = "sede") String sede) {
+    public int consultarAreaExistente(@WebParam(name = "area") String area, @WebParam(name = "sede") String sede) {
 
         int Resultado = 0;
         try {
-          ejbAreaTrabajo.consultarAreaExistente(area,sede);
-           Resultado=1; 
+            ejbAreaTrabajo.consultarAreaExistente(area, sede);
+            Resultado = 1;
         } catch (Exception e) {
-            Resultado=0;
+            Resultado = 0;
         }
         return Resultado;
     }
-    
-       /**
+
+    /**
      *
      * @param area
      * @return
      */
     @WebMethod(operationName = "consultarPaquetesporArea")
-    public List<Paquete> consultarPaquetesporArea(@WebParam(name = "idusu") String idusu,@WebParam(name = "idsed") String sede) {
+    public List<Paquete> consultarPaquetesporArea(@WebParam(name = "idusu") String idusu, @WebParam(name = "idsed") String sede) {
 
         List<Paquete> Resultado;
         try {
-          Usuario usu = ejbUsuario.consultarUsuario(idusu);
-          Sede sed = ejbSede.consultarSedeXId(new BigDecimal(sede));
-          Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, sed);
-          
-          Resultado=ejbPaquete.BuscarArea(use.getIdatr().getIdatr(), sed.getIdsed());
-            
+            Usuario usu = ejbUsuario.consultarUsuario(idusu);
+            Sede sed = ejbSede.consultarSedeXId(new BigDecimal(sede));
+            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, sed);
+
+            Resultado = ejbPaquete.BuscarArea(use.getIdatr().getIdatr(), sed.getIdsed());
+
         } catch (Exception e) {
-            Resultado= null;
+            Resultado = null;
         }
         return Resultado;
     }
@@ -696,12 +697,12 @@ public class CorrespondenciaWS {
     public int insertarBuzon(@WebParam(name = "idusu") String idusu, @WebParam(name = "sede") String sede) {
 
         try {
-           
+
             Usuario usu = ejbUsuario.consultarUsuario(idusu);
             Sede sed = ejbSede.consultarSedeXId(new BigDecimal(sede));
             Buzon buzoni = new Buzon();
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, sed);
-            String nombre=usu.getNombreusu()+"."+usu.getApellidousu();
+            String nombre = usu.getNombreusu() + "." + usu.getApellidousu();
             buzoni.setIdatr(use.getIdatr());
             buzoni.setIdusu(usu);
             buzoni.setNombrebuz(sede);
@@ -709,7 +710,7 @@ public class CorrespondenciaWS {
             buzoni.setDireccionbuz(usu.getDireccionusu());
             buzoni.setTipobuz("0");
             ejbBuzon.insertarBuzon(buzoni);
-        } catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
         return 1;
@@ -765,8 +766,8 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     /**
+
+    /**
      *
      * @return
      */
@@ -775,16 +776,16 @@ public class CorrespondenciaWS {
 
         List<Sede> Result = new ArrayList<Sede>();
         try {
-          List<Sede> Resultado = ejbSede.findAll();
-           Iterator<Sede> lista = Resultado.iterator();
+            List<Sede> Resultado = ejbSede.findAll();
+            Iterator<Sede> lista = Resultado.iterator();
             while (lista.hasNext()) {
                 Sede aux = lista.next();
-                if(!aux.getNombresed().equals(sede)){
+                if (!aux.getNombresed().equals(sede)) {
                     Result.add(aux);
                 }
-                
+
             }
-         
+
         } catch (Exception e) {
             return null;
         }
@@ -985,8 +986,6 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-    
 
     //////////////// INICIO NIUSKA ////////////////
     /**
@@ -1064,7 +1063,7 @@ public class CorrespondenciaWS {
      * @return lista de tipo paquete con toda la información
      */
     @WebMethod(operationName = "listaPaquetesXUsuarioYFechaProcesadas")
-    public List<Paquete> listaPaquetesXUsuarioYFechaProcesadas(@WebParam(name = "idUsuario") String idUsuario,@WebParam(name = "sede") String sede) {
+    public List<Paquete> listaPaquetesXUsuarioYFechaProcesadas(@WebParam(name = "idUsuario") String idUsuario, @WebParam(name = "sede") String sede) {
 
         List<Paquete> Resultado = null;
         try {
@@ -1072,9 +1071,9 @@ public class CorrespondenciaWS {
             idUsu.setIdusu(new BigDecimal(idUsuario));
             Sede sed = new Sede();
             sed.setIdsed(new BigDecimal(sede));
-            
+
             //Resultado = ejbSeguimiento.listaPaquetesXUsuarioYFechaProcesadas(idUsu);
-            Resultado = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(idUsu,sed);
+            Resultado = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(idUsu, sed);
         } catch (Exception e) {
             Resultado = null;
         }
@@ -1126,7 +1125,7 @@ public class CorrespondenciaWS {
      * @return entero 1 si se reporta correctamente, 0 si no se reporta
      */
     @WebMethod(operationName = "reportarPaqueteExcedente")
-    public int reportarPaqueteExcedente(@WebParam(name = "registroPaquete") String registroPaquete, @WebParam(name = "registroUsuario") String registroUsuario,  @WebParam(name = "registroSede") String registroSede) {
+    public int reportarPaqueteExcedente(@WebParam(name = "registroPaquete") String registroPaquete, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "registroSede") String registroSede) {
 
         int Resultado = 0;
         String idIncidente;
@@ -1137,19 +1136,19 @@ public class CorrespondenciaWS {
         Incidente nuevoIncidente;
         Paquete registroPaq;
         Usuario registroUsua;
-        
+
         try {
             registroPaq = new Paquete();
             idPaq = new BigDecimal(registroPaquete);
             registroPaq = ejbPaquete.consultarPaquete(idPaq);
-            
-        Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
-        Sede origen = ejbSede.ConsultarSedeXNombre(registroSede);
-        Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
-        
-             
-            
-            
+
+            Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
+            Sede origen = ejbSede.ConsultarSedeXNombre(registroSede);
+            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
+
+
+
+
             nuevoSeg = new Seguimiento();
             nuevoSeg.setFechaseg(new Date());
             nuevoSeg.setIdpaq(registroPaq);
@@ -1243,7 +1242,7 @@ public class CorrespondenciaWS {
      * @return entero 1 si se reporta correctamente, 0 si no se reporta
      */
     @WebMethod(operationName = "reportarValija")
-    public int reportarValija(@WebParam(name = "registroValija") String registroValija, @WebParam(name = "registroUsuario") String registroUsuario,@WebParam(name = "registroSede") String registroSede) {
+    public int reportarValija(@WebParam(name = "registroValija") String registroValija, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "registroSede") String registroSede) {
 
         int Resultado = 0;
         String idIncidente;
@@ -1259,8 +1258,8 @@ public class CorrespondenciaWS {
         try {
             registroUsua = new Usuario();
             registroUsua.setIdusu(new BigDecimal(registroUsuario));
-            
-            
+
+
             nuevoIncidente = new Incidente();
             nuevoIncidente.setNombreinc("Valija Incorrecta");
             nuevoIncidente.setDescripcioninc("Reporte de valija con destino incorrecto");
@@ -1272,11 +1271,11 @@ public class CorrespondenciaWS {
             idValija.setIdval(idVal);
             ejbValija.editarIncidenteValija(idVal, idMaxInci);
             lista = ejbPaquete.listarPaquetesXValija(idValija);
-            
-             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
-        Sede origen = ejbSede.ConsultarSedeXNombre(registroSede);
-        Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
-        
+
+            Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
+            Sede origen = ejbSede.ConsultarSedeXNombre(registroSede);
+            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
+
             for (int i = 0; i < lista.size(); i++) {
                 idPaq = lista.get(i).getIdpaq();
                 registroPaquete = new Paquete();
@@ -1836,7 +1835,7 @@ public class CorrespondenciaWS {
                 } else {
                     nuevoSeg.setStatusseg("0");
                 }
-                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                     RegistrosSeguimiento.get(i).setStatusseg("1");
                     ejbSeguimiento.edit(RegistrosSeguimiento.get(i));
                 }
@@ -1889,7 +1888,7 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
+
     /**
      * consulta el buzon por usuario
      *
@@ -1900,7 +1899,7 @@ public class CorrespondenciaWS {
     @WebMethod(operationName = "consultarBuzonUsuario")
     public List<Buzon> consultarBuzonUsuario(@WebParam(name = "registroUsuario") String registroUsuario) {
 
-       List<Buzon> Resultado;
+        List<Buzon> Resultado;
         try {
             Resultado = ejbBuzon.ConsultarBuzonXUsuario(new BigDecimal(registroUsuario));
         } catch (Exception e) {
@@ -1908,11 +1907,11 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     @WebMethod(operationName = "consultarBuzon")
+
+    @WebMethod(operationName = "consultarBuzon")
     public Buzon consultarBuzon(@WebParam(name = "idbuz") String idbuz) {
 
-      Buzon Resultado;
+        Buzon Resultado;
         try {
             Resultado = ejbBuzon.consultarBuzonXId(idbuz);
         } catch (Exception e) {
@@ -1920,10 +1919,11 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-        @WebMethod(operationName = "consultarBuzonParaEnviar")
-    public List<Buzon> consultarBuzonParaEnviar(@WebParam(name = "nombre") String nombre,@WebParam(name = "apellido") String apellido,@WebParam(name = "area") String area) {
-    
-      List<Buzon> Resultado;
+
+    @WebMethod(operationName = "consultarBuzonParaEnviar")
+    public List<Buzon> consultarBuzonParaEnviar(@WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "area") String area) {
+
+        List<Buzon> Resultado;
         try {
             Resultado = ejbBuzon.buscarBuzonParaEnviar(nombre, apellido, area);
         } catch (Exception e) {
@@ -1997,7 +1997,7 @@ public class CorrespondenciaWS {
 
         int Resultado = 0;
         try {
-            
+
             ejbBuzon.editarBuzon(registroBuzon);
             Resultado = 1;
         } catch (Exception e) {
@@ -2005,6 +2005,7 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+
     /**
      * lista paquetes que se pasaron de fecha limite o si la fecha alerta es
      * igual a la actualy el paquete no ha llegado de los paquetes que se han
@@ -2017,33 +2018,9 @@ public class CorrespondenciaWS {
     @WebMethod(operationName = "paquetesVencidosXOrigen")
     public List<Paquete> paquetesVencidosXOrigen(@WebParam(name = "registroUsuario") Usuario registroUsuario, @WebParam(name = "registroSede") Sede registroSede) {
 
-        List<Paquete> ResultadoAlerta = null, ResultadoVencidas = null;
-        boolean noEsta = false;
+        List<Paquete> ResultadoVencidas = null;
         try {
-            ResultadoAlerta = ejbPaquete.consultarPaqueteXAlertaXUsuarioOrigen(registroUsuario, registroSede);
-            ResultadoVencidas = ejbPaquete.consultarPaqueteXFechaVencimientoXOrigen(registroUsuario, registroSede);
-            if (ResultadoAlerta != null && ResultadoVencidas != null) {
-                for (int i = 0; i < ResultadoAlerta.size(); i++) {
-                    noEsta = false;
-                    for (int j = 0; j < ResultadoVencidas.size(); j++) {
-                        if (ResultadoAlerta.get(i).getIdpaq() == ResultadoVencidas.get(j).getIdpaq()) {
-                            noEsta = true;
-                            break;
-                        }
-                    }
-                    if (!noEsta) {
-                        ResultadoVencidas.add(ResultadoAlerta.get(i));
-                    }
-                }
-            } else {
-                if (ResultadoAlerta == null && ResultadoVencidas != null) {
-                    return ResultadoVencidas;
-                } else if (ResultadoAlerta != null && ResultadoVencidas == null) {
-                    return ResultadoAlerta;
-                } else {
-                    return null;
-                }
-            }
+            ResultadoVencidas = ejbAlerta.consultarPaquetesXUsuarioOrigen(registroUsuario, registroSede);
         } catch (Exception e) {
             return null;
         }
@@ -2062,37 +2039,14 @@ public class CorrespondenciaWS {
     @WebMethod(operationName = "paquetesVencidosXDestino")
     public List<Paquete> paquetesVencidosXDestino(@WebParam(name = "registroUsuario") Usuario registroUsuario, @WebParam(name = "registroSede") Sede registroSede) {
 
-        List<Paquete> ResultadoAlerta = null, ResultadoVencidas = null;
-        boolean noEsta = false;
+        List<Paquete> Resultado = null;
         try {
-            ResultadoAlerta = ejbPaquete.consultarPaqueteXAlertaXUsuarioDestino(registroUsuario, registroSede);
-            ResultadoVencidas = ejbPaquete.consultarPaqueteXFechaVencimientoXDestino(registroUsuario, registroSede);
-            if (ResultadoAlerta != null && ResultadoVencidas != null) {
-                for (int i = 0; i < ResultadoAlerta.size(); i++) {
-                    noEsta = false;
-                    for (int j = 0; j < ResultadoVencidas.size(); j++) {
-                        if (ResultadoAlerta.get(i).getIdpaq() == ResultadoVencidas.get(j).getIdpaq()) {
-                            noEsta = true;
-                            break;
-                        }
-                    }
-                    if (!noEsta) {
-                        ResultadoVencidas.add(ResultadoAlerta.get(i));
-                    }
-                }
-            } else {
-                if (ResultadoAlerta == null && ResultadoVencidas != null) {
-                    return ResultadoVencidas;
-                } else if (ResultadoAlerta != null && ResultadoVencidas == null) {
-                    return ResultadoAlerta;
-                } else {
-                    return null;
-                }
-            }
+            Resultado = ejbAlerta.consultarPaquetesXUsuarioDestino(registroUsuario, registroSede);
+
         } catch (Exception e) {
             return null;
         }
-        return ResultadoVencidas;
+        return Resultado;
     }
 
     /**
@@ -2165,11 +2119,11 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "consultarPaquetesXUsuarioProcesadasAlDia")
-    public List<Paquete> consultarPaquetesXUsuarioProcesadasAlDia(@WebParam(name = "idUsuario") Usuario idUsuario,@WebParam(name = "sede") Sede sede) {
+    public List<Paquete> consultarPaquetesXUsuarioProcesadasAlDia(@WebParam(name = "idUsuario") Usuario idUsuario, @WebParam(name = "sede") Sede sede) {
 
         List<Paquete> Resultado = null;
         try {
-            Resultado = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(idUsuario,sede);
+            Resultado = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(idUsuario, sede);
         } catch (Exception e) {
             return null;
         }
@@ -2191,7 +2145,7 @@ public class CorrespondenciaWS {
         try {
             resultadoUsuarios = ejbUsuariosede.ConsultarUsuariosXSede(registroSede);
             for (int i = 0; i < resultadoUsuarios.size(); i++) {
-                paquetesXUsuario = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(resultadoUsuarios.get(i),registroSede);
+                paquetesXUsuario = ejbSeguimiento.listaPaquetesProcesadosXUsuarioAlDia(resultadoUsuarios.get(i), registroSede);
                 for (int j = 0; j < paquetesXUsuario.size(); j++) {
                     noAdd = false;
                     for (int k = 0; k < paquetesConfirmados.size(); k++) {
@@ -2245,7 +2199,7 @@ public class CorrespondenciaWS {
         } catch (Exception e) {
             return null;
         }
-        if(Resul.getIdusu()==null){
+        if (Resul.getIdusu() == null) {
             return null;
         }
         return Resul;
@@ -2286,7 +2240,7 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
+
     /**
      * lista todas las sedes
      *
@@ -2320,37 +2274,37 @@ public class CorrespondenciaWS {
             registroUsuSede.setIdusu(RegUsu);
             ejbUsuariosede.insertarUsuarioSede(registroUsuSede);
             Resultado = 1;
-            Resultado = insertarBuzon(RegUsu.getIdusu().toString(),registroUsuSede.getIdsed().getIdsed().toString());
+            Resultado = insertarBuzon(RegUsu.getIdusu().toString(), registroUsuSede.getIdsed().getIdsed().toString());
         } catch (Exception e) {
             Resultado = 0;
         }
         return Resultado;
     }
-    
+
     /**
      * caso en buzon adicional
      *
-     * @param 
      * @param
-     * @param 
+     * @param
+     * @param
      * @return
      */
     @WebMethod(operationName = "insertarUsuarioSedeXAdicional")
-    public int insertarUsuarioSedeXAdicional(@WebParam(name = "idusu") String idusu,@WebParam(name = "idatr") String idatr, @WebParam(name = "idsed") String idsed) {
+    public int insertarUsuarioSedeXAdicional(@WebParam(name = "idusu") String idusu, @WebParam(name = "idatr") String idatr, @WebParam(name = "idsed") String idsed) {
 
         int Resultado = 0;
         try {
             Usuariosede registroUsuSede = new Usuariosede();
-             Rol rol=ejbRol.find(new BigDecimal("6"));
-             Sede sed=ejbSede.ConsultarSedeXNombre(idsed);
+            Rol rol = ejbRol.find(new BigDecimal("6"));
+            Sede sed = ejbSede.ConsultarSedeXNombre(idsed);
             registroUsuSede.setIdatr(ejbAreaTrabajo.consultarAreasXNombre(idatr));
-             registroUsuSede.setIdsed(sed);
-              registroUsuSede.setIdusu(ejbUsuario.find(new BigDecimal(idusu)));
-             registroUsuSede.setIdrol(rol);
-            
+            registroUsuSede.setIdsed(sed);
+            registroUsuSede.setIdusu(ejbUsuario.find(new BigDecimal(idusu)));
+            registroUsuSede.setIdrol(rol);
+
             ejbUsuariosede.insertarUsuarioSede(registroUsuSede);
             Resultado = 1;
-            Resultado = insertarBuzon(idusu,sed.getIdsed().toString());
+            Resultado = insertarBuzon(idusu, sed.getIdsed().toString());
         } catch (Exception e) {
             Resultado = 0;
         }
@@ -2396,13 +2350,14 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-     @WebMethod(operationName = "consultarBuzonXUsuarioSede")
+
+    @WebMethod(operationName = "consultarBuzonXUsuarioSede")
     public Buzon consultarBuzonXUsuarioSede(@WebParam(name = "idusu") String idusu, @WebParam(name = "idsede") String sede) {
 
         Buzon Resultado = null;
         try {
             Resultado = ejbBuzon.ConsultarBuzonXNombreSede(idusu, sede);
-           
+
         } catch (Exception e) {
             return null;
         }
@@ -2418,7 +2373,7 @@ public class CorrespondenciaWS {
      */
     @WebMethod(operationName = "verificarExistenciaBuzon")
     public int verificarExistenciaBuzon(@WebParam(name = "dueno") Usuario dueno, @WebParam(name = "contacto") Usuario contacto, @WebParam(name = "idSede") Sede idSede) {
-        
+
         int Resultado = 0;
         try {
             Buzon Result = ejbBuzon.verficarBuzon(dueno, contacto, idSede);
@@ -2538,6 +2493,4 @@ public class CorrespondenciaWS {
         return Resultado;
     }
     //////////////// FIN MARIELA //////////////// 
-
-   
 }
