@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Alerta.findAll", query = "SELECT a FROM Alerta a"),
     @NamedQuery(name = "Alerta.findByIdale", query = "SELECT a FROM Alerta a WHERE a.idale = :idale"),
-    @NamedQuery(name = "Alerta.findPaquetesVencidosXOrigen", query = "SELECT a.seguimiento.idpaq FROM Alerta a WHERE a.seguimiento.statusseg = '0' AND a.seguimiento.idpaq.origenpaq.idusu.idusu = :origen AND a.seguimiento.idpaq.origenpaq.idatr.idsed.idsed = :idsed AND a.seguimiento.idpaq.statuspaq = '0' "),
-    @NamedQuery(name = "Alerta.findPaquetesVencidosXDestino", query = "SELECT a.seguimiento.idpaq FROM Alerta a WHERE a.seguimiento.statusseg = '0' AND a.seguimiento.idpaq.destinopaq.idusu.idusu = :destino AND a.seguimiento.idpaq.destinopaq.idatr.idsed.idsed = :idsed AND a.seguimiento.idpaq.statuspaq = '0' "),
+    @NamedQuery(name = "Alerta.findPaquetesVencidosXOrigen", query = "SELECT a.seguimiento.idpaq FROM Alerta a WHERE a.seguimiento.statusseg = '0' AND a.seguimiento.idpaq.origenpaq.idusu= :origen AND a.seguimiento.idpaq.origenpaq.idatr.idsed = :idsed AND a.seguimiento.idpaq.statuspaq = '0' "),
+    @NamedQuery(name = "Alerta.findPaquetesVencidosXDestino", query = "SELECT a.seguimiento.idpaq FROM Alerta a WHERE a.seguimiento.statusseg = '0' AND a.seguimiento.idpaq.destinopaq.idusu = :destino AND a.seguimiento.idpaq.destinopaq.idatr.idsed = :idsed AND a.seguimiento.idpaq.statuspaq = '0' "),
     @NamedQuery(name = "Alerta.findPaquetesVencidosXSeguimiento", query = "SELECT a.seguimiento.idpaq FROM Alerta a WHERE a.seguimiento.statusseg='0' AND a.seguimiento.iduse= :usuarioSede  ANd a.seguimiento.idpaq.statuspaq ='0'"),
     @NamedQuery(name = "Alerta.findByDescripcionale", query = "SELECT a FROM Alerta a WHERE a.descripcionale = :descripcionale")})
 public class Alerta implements Serializable {

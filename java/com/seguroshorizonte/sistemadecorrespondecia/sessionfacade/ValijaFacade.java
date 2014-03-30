@@ -8,6 +8,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -139,16 +140,29 @@ public class ValijaFacade extends AbstractFacade<Valija> {
     }
 
     public List<Valija> listarValijasXFechaVencimientoOrigen(BigDecimal idSedeOrigen) {
-        List<Valija> Resultado;
-        Query consulta = em.createNamedQuery("Valija.findByFechaVencimientoOrigen").setParameter("fechaalerval", FechaActual()).setParameter("origen", idSedeOrigen);
-        Resultado = consulta.getResultList();
+        List<Valija> Resultado = new ArrayList();
+        List<BigDecimal> consulta = null;
+        consulta = em.createNativeQuery("SELECT  v.idval FROM  NIVEL N, VALIJA V\n"
+                + "WHERE N.OPERADORNIV='Valija' AND v.statusval='0' AND v.origenval=" + idSedeOrigen + " \n"
+                + "AND horaslaborables(TO_DATE (TO_CHAR (v.fechaval, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI'),TO_DATE (TO_CHAR (SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI')) > N.TIEMPONIV ").getResultList();
+        for (int i = 0; i < consulta.size(); i++) {
+            Query consultaValija = em.createNamedQuery("Valija.findByIdval").setParameter("idval", consulta.get(i));
+            Resultado.add((Valija) consultaValija.getSingleResult());
+        }
         return Resultado;
     }
 
     public List<Valija> listarValijasXFechaVencimientoDestino(Sede idSede) {
-        List<Valija> Resultado;
-        Query consulta = em.createNamedQuery("Valija.findByFechaVencimientoDestino").setParameter("fechaalerval", FechaActual()).setParameter("destinoval", idSede);
-        Resultado = consulta.getResultList();
+        List<Valija> Resultado = new ArrayList();
+        List<BigDecimal> consulta = null;
+        consulta = em.createNativeQuery("SELECT  v.idval\n"
+                + "FROM  NIVEL N, VALIJA V\n"
+                + "WHERE N.OPERADORNIV='Valija' AND v.statusval='0' AND v.destinoval=" + idSede.getIdsed() + "\n"
+                + "AND horaslaborables(TO_DATE (TO_CHAR (v.fechaval, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI'),TO_DATE (TO_CHAR (SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI')) > N.TIEMPONIV; ").getResultList();
+        for (int i = 0; i < consulta.size(); i++) {
+            Query consultaValija = em.createNamedQuery("Valija.findByIdval").setParameter("idval", consulta.get(i));
+            Resultado.add((Valija) consultaValija.getSingleResult());
+        }
         return Resultado;
     }
 

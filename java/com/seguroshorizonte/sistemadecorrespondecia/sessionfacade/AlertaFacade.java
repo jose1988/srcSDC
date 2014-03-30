@@ -37,7 +37,7 @@ public class AlertaFacade extends AbstractFacade<Alerta> {
     public List<Paquete> consultarPaquetesXUsuarioOrigen(Usuario usuarioId, Sede idSede) {
         List<Paquete> Resultado = null;
         try {
-            Query consulta = em.createNamedQuery("Alerta.findPaquetesVencidosXOrigen").setParameter("origen", usuarioId.getIdusu()).setParameter("idsed", idSede.getIdsed());
+            Query consulta = em.createNamedQuery("Alerta.findPaquetesVencidosXOrigen").setParameter("origen", usuarioId).setParameter("idsed", idSede);
             Resultado = consulta.getResultList();
 
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class AlertaFacade extends AbstractFacade<Alerta> {
     public List<Paquete> consultarPaquetesXUsuarioDestino(Usuario usuarioId, Sede idSede) {
         List<Paquete> Resultado = null;
         try {
-            Query consulta = em.createNamedQuery("Alerta.findPaquetesVencidosXDestino").setParameter("destino", usuarioId.getIdusu()).setParameter("idsed", idSede.getIdsed());
+            Query consulta = em.createNamedQuery("Alerta.findPaquetesVencidosXDestino").setParameter("destino", usuarioId).setParameter("idsed", idSede);
             Resultado = consulta.getResultList();
 
         } catch (Exception e) {
