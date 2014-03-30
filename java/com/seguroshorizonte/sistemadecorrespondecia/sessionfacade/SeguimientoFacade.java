@@ -5,9 +5,11 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Rol;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -46,9 +48,16 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         this.create(RegSeguimiento);
     }
 
-    public List<Paquete> listaPaquetesProcesadosXUsuarioAlDia(Usuario idUsuario, Sede sede) {
+    public List<Paquete> listaPaquetesProcesadosXUsuarioSede(Usuariosede idUsuarioSede) {
         List<Paquete> Resultado = null;
-        Query consulta = em.createNamedQuery("Seguimiento.findPaqueteByUsuario").setParameter("idusu", idUsuario.getIdusu()).setParameter("idsed", sede.getIdsed());
+        Query consulta = em.createNamedQuery("Seguimiento.findPaqueteByUsuarioSede").setParameter("idusu", idUsuarioSede);
+        Resultado = consulta.getResultList();
+        return Resultado;
+    }
+
+    public List<Paquete> consultarPaquetesConfirmadosXRol(Usuariosede Registro) {
+        List<Paquete> Resultado = null;
+        Query consulta = em.createNamedQuery("Seguimiento.findPaqueteByRol").setParameter("idrol", Registro.getIdrol()).setParameter("idsed", Registro.getIdsed());
         Resultado = consulta.getResultList();
         return Resultado;
     }

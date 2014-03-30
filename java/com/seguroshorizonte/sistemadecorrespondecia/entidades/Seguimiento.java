@@ -42,7 +42,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByStatusseg", query = "SELECT s FROM Seguimiento s WHERE s.statusseg = :statusseg"),
     @NamedQuery(name = "Seguimiento.Temporal", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse = :idusu "),
     @NamedQuery(name = "Seguimiento.findByFechasegYUsuario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed AND s.fechaseg = :fechaseg"),
-    @NamedQuery(name = "Seguimiento.findPaqueteByUsuario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed"),
+    @NamedQuery(name = "Seguimiento.findPaqueteByUsuarioSede", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse = :idusu"),
+    @NamedQuery(name = "Seguimiento.findPaqueteByRol", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse.idrol = :idrol AND s.iduse.idsed = :idsed"),
     @NamedQuery(name = "Seguimiento.findPaqByUsuario", query = "SELECT s FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed")})
 public class Seguimiento implements Serializable {
 
