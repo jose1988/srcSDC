@@ -168,7 +168,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.setParameter(2, idVal);
         q.setParameter(3, idPaq);
         q.executeUpdate();
-
     }
 
     public void ActualizacionLocalizacionyDelPaqueteRecibido(String idPaq) {
@@ -188,11 +187,8 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.setParameter(1, "Extraviado");
         q.setParameter(2, "3");
         q.setParameter(3, paq.getIdpaq());
-        q.executeUpdate();
-       
-        
+        q.executeUpdate();        
     }
-
     
     public void actualizacionPaqueteDeVuelta(String idPaq, String idRes) {
         Query q = em.createNativeQuery("UPDATE paquete SET idpaqres=?,  WHERE paquete.idpaq=?");
@@ -211,13 +207,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     public void editarStatusPaquete(BigDecimal idPaquete, String status) {
         Query q = em.createNativeQuery("UPDATE paquete SET statuspaq=? WHERE idpaq=?");
         q.setParameter(1, status);
-        q.setParameter(2, idPaquete);
-        q.executeUpdate();
-    }
-
-    public void editarMensajePaquete(BigDecimal idPaquete, BigDecimal idMensaje) {
-        Query q = em.createNativeQuery("UPDATE paquete SET idmen=? WHERE idpaq=?");
-        q.setParameter(1, idMensaje);
         q.setParameter(2, idPaquete);
         q.executeUpdate();
     }
@@ -256,19 +245,5 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.setParameter(1, tipo);
         q.setParameter(2, idusu);
         q.executeUpdate();
-    }
-
-    public Paquete consultarPaqueteXIdYOrigen(BigDecimal idPaquete, Usuario idUsuarioOrigen) {
-        Paquete Resultado;
-        Query consulta = em.createNamedQuery("Paquete.findPaqXOrigen").setParameter("idpaq", idPaquete).setParameter("origenpaq", idUsuarioOrigen);
-        Resultado = (Paquete) consulta.getSingleResult();
-        return Resultado;
-    }
-
-    public Paquete consultarPaqueteXIdYDestino(BigDecimal idPaquete, Usuario idUsuarioDestino) {
-        Paquete Resultado;
-        Query consulta = em.createNamedQuery("Paquete.findPaqXDestino").setParameter("idpaq", idPaquete).setParameter("destinopaq", idUsuarioDestino);
-        Resultado = (Paquete) consulta.getSingleResult();
-        return Resultado;
     }
 }

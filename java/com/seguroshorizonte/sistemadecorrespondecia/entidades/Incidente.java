@@ -36,8 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Incidente.findAll", query = "SELECT i FROM Incidente i"),
     @NamedQuery(name = "Incidente.findByIdinc", query = "SELECT i FROM Incidente i WHERE i.idinc = :idinc"),
     @NamedQuery(name = "Incidente.findByNombreinc", query = "SELECT i FROM Incidente i WHERE i.nombreinc = :nombreinc"),
-    @NamedQuery(name = "Incidente.findByDescripcioninc", query = "SELECT i FROM Incidente i WHERE i.descripcioninc = :descripcioninc"),
-    @NamedQuery(name = "Incidente.findByMaximoIdinc", query = "SELECT MAX(i.idinc) FROM Incidente i")})
+    @NamedQuery(name = "Incidente.findByDescripcioninc", query = "SELECT i FROM Incidente i WHERE i.descripcioninc = :descripcioninc")})
 public class Incidente implements Serializable {
     @JoinColumn(name = "IDVAL", referencedColumnName = "IDVAL")
     @ManyToOne
