@@ -8,6 +8,8 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -107,18 +109,13 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         q.executeUpdate();
     }
 
-    public List<Valija> listarValijasXFechaYUsuario(Usuario idUsuario) {
+    public List<Valija> listarValijasXFechaYUsuario(Usuario idUsuario, String fechaInicio, String fechaFin) {
         List<Valija> Resultado = null;
-        Date fecha = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(fecha);
-        System.out.print(cal);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        fecha = cal.getTime();
-        Query consulta = em.createNamedQuery("Valija.findByFechavalYUsuario").setParameter("fechaval", fecha).setParameter("idusu", idUsuario);
+        Date fechaI;
+        Date fechaF;
+        fechaI=ParseFecha(fechaInicio);
+        fechaF=ParseFecha(fechaFin);
+        Query consulta = em.createNamedQuery("Valija.findByFechavalYUsuario").setParameter("fechaIni", fechaI).setParameter("fechaFin", fechaF).setParameter("idusu", idUsuario);
         Resultado = consulta.getResultList();
         return Resultado;
     }
@@ -176,5 +173,17 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         cal.set(Calendar.MILLISECOND, 0);
         fecha = cal.getTime();
         return fecha;
+    }
+    
+    public Date ParseFecha(String fecha){
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date fechaDate = null;
+        try {
+            fechaDate = formato.parse(fecha);
+        } 
+        catch (ParseException ex){
+            System.out.println(ex);
+        }
+        return fechaDate;
     }
 }

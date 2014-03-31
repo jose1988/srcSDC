@@ -1306,6 +1306,7 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+    
 
     /**
      * Método que lista las valijas con fecha de creación del día de hoy,
@@ -1316,7 +1317,7 @@ public class CorrespondenciaWS {
      * @return lista tipo valija con toda la información
      */
     @WebMethod(operationName = "listarValijasXFechaYUsuarioSede")
-    public List<Valija> listarValijasXFechaYUsuarioSede(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario) {
+    public List<Valija> listarValijasXFechaYUsuarioSede(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "fechaInicio") String fechaInicio, @WebParam(name = "fechaFin") String fechaFin) {
         
         List<Valija> Resultado = null;
         List<Usuariosede> idUsuario;
@@ -1324,7 +1325,7 @@ public class CorrespondenciaWS {
         Sede idSede;
         Usuario idUsu;
         Usuario regUsuario;
-        Valija val;
+        Valija val;       
         try {
             idSede = new Sede();
             idSede.setIdsed(new BigDecimal(registroSede));
@@ -1335,7 +1336,7 @@ public class CorrespondenciaWS {
             for (int i = 0; i < idUsuario.size(); i++) {
                 idUsu = new Usuario();
                 idUsu = idUsuario.get(i).getIdusu();
-                valijas = ejbValija.listarValijasXFechaYUsuario(idUsu);
+                valijas = ejbValija.listarValijasXFechaYUsuario(idUsu, fechaInicio, fechaFin);
                 int j = 0;
                 if (idUsu.getIdusu().compareTo(regUsuario.getIdusu()) == 0) {
                     if (valijas.isEmpty()) {
@@ -1362,13 +1363,13 @@ public class CorrespondenciaWS {
      * @return lista tipo valija con toda la información
      */
     @WebMethod(operationName = "listarValijasNoProcesadas")
-    public List<Valija> listarValijasNoProcesadas(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario) {
+    public List<Valija> listarValijasNoProcesadas(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "fechaInicio") String fechaInicio, @WebParam(name = "fechaFin") String fechaFin) {
         
         List<Valija> Resultado = null;
         List<Valija> valijas;
         Valija val;
         try {
-            valijas = listarValijasXFechaYUsuarioSede(registroSede, registroUsuario);
+            valijas = listarValijasXFechaYUsuarioSede(registroSede, registroUsuario, fechaInicio, fechaFin);
             Resultado = new ArrayList<Valija>();
             int j = 0;
             if (valijas.isEmpty()) {
@@ -1395,13 +1396,13 @@ public class CorrespondenciaWS {
      * @return lista tipo valija con toda la información
      */
     @WebMethod(operationName = "listarValijasProcesadas")
-    public List<Valija> listarValijasProcesadas(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario) {
+    public List<Valija> listarValijasProcesadas(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "fechaInicio") String fechaInicio, @WebParam(name = "fechaFin") String fechaFin) {
         
         List<Valija> Resultado = null;
         List<Valija> valijas;
         Valija val;
         try {
-            valijas = listarValijasXFechaYUsuarioSede(registroSede, registroUsuario);
+            valijas = listarValijasXFechaYUsuarioSede(registroSede, registroUsuario, fechaInicio, fechaFin);
             Resultado = new ArrayList<Valija>();
             int j = 0;
             if (valijas.isEmpty()) {

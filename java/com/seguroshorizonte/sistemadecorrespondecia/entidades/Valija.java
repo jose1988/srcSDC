@@ -49,7 +49,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
     //@NamedQuery(name = "Valija.findByFechaVencimientoOrigen", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.origenval = :origen AND v.statusval = '0' "),
     //@NamedQuery(name = "Valija.findByFechaVencimientoDestino", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.destinoval = :destinoval AND v.statusval = '0' "),
-    @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval AND v.iduse.idusu = :idusu")})
+    @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin AND v.iduse.idusu = :idusu")})
 public class Valija implements Serializable {
 
     @Basic(optional = false)
