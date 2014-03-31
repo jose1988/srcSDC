@@ -91,15 +91,14 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     public void editarUsuario(Usuario Registro) {
         Query q = em.createNativeQuery("UPDATE USUARIO "
-                + "SET APELLIDOUSU=?,CORREOUSU=?,DIRECCIONUSU=?,DIRECCION2USU=?,NOMBREUSU=?,TELEFONOUSU=?,TELEFONO2USU=? WHERE IDUSU=?");
+                + "SET APELLIDOUSU=?,CORREOUSU=?,DIRECCIONUSU=?,NOMBREUSU=?,TELEFONOUSU=?,TELEFONO2USU=? WHERE IDUSU=?");
         q.setParameter(1, Registro.getApellidousu());
         q.setParameter(2, Registro.getCorreousu());
-        q.setParameter(3, Registro.getDireccion2usu());
-        q.setParameter(4, Registro.getDireccionusu());
-        q.setParameter(5, Registro.getNombreusu());
-        q.setParameter(6, Registro.getTelefono2usu());
-        q.setParameter(7, Registro.getTelefonousu());
-        q.setParameter(8, Registro.getIdusu());
+        q.setParameter(3, Registro.getDireccionusu());
+        q.setParameter(4, Registro.getNombreusu());
+        q.setParameter(5, Registro.getTelefono2usu());
+        q.setParameter(6, Registro.getTelefonousu());
+        q.setParameter(7, Registro.getIdusu());
         q.executeUpdate();
     }
 
