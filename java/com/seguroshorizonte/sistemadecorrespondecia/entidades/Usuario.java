@@ -90,9 +90,6 @@ public class Usuario implements Serializable {
     @Size(max = 2500)
     @Column(name = "DIRECCIONUSU")
     private String direccionusu;
-    @Size(max = 2500)
-    @Column(name = "DIRECCION2USU")
-    private String direccion2usu;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -193,14 +190,6 @@ public class Usuario implements Serializable {
 
     public void setDireccionusu(String direccionusu) {
         this.direccionusu = direccionusu;
-    }
-
-    public String getDireccion2usu() {
-        return direccion2usu;
-    }
-
-    public void setDireccion2usu(String direccion2usu) {
-        this.direccion2usu = direccion2usu;
     }
 
     public String getTipousu() {
