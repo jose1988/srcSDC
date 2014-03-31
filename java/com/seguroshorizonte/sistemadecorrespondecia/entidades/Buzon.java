@@ -49,6 +49,12 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Buzon.findByNAS", query = "SELECT b FROM Usuario u , Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido OR upper(b.nombrebuz) like :nombre2"),
     @NamedQuery(name = "Buzon.findByUsuario", query = "SELECT b FROM Buzon b WHERE b.idusu.idusu = :idusu")})
 public class Buzon implements Serializable {
+    @Size(max = 20)
+    @Column(name = "IDENTIFICACIONBUZ")
+    private String identificacionbuz;
+    @Size(max = 20)
+    @Column(name = "CORREOBUZ")
+    private String correobuz;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
     private Collection<Paquete> paqueteCollection;
@@ -196,5 +202,21 @@ public class Buzon implements Serializable {
 
     public void setPaqueteCollection1(Collection<Paquete> paqueteCollection1) {
         this.paqueteCollection1 = paqueteCollection1;
+    }
+
+    public String getIdentificacionbuz() {
+        return identificacionbuz;
+    }
+
+    public void setIdentificacionbuz(String identificacionbuz) {
+        this.identificacionbuz = identificacionbuz;
+    }
+
+    public String getCorreobuz() {
+        return correobuz;
+    }
+
+    public void setCorreobuz(String correobuz) {
+        this.correobuz = correobuz;
     }
 }
