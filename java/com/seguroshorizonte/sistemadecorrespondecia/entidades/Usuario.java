@@ -46,6 +46,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findMaxIdXuserUsu", query = "SELECT MAX(u.idusu) FROM Usuario u where u.userusu = :userusu"),
     @NamedQuery(name = "Usuario.findByDireccion2usu", query = "SELECT u FROM Usuario u WHERE u.direccion2usu = :direccion2usu")})
 public class Usuario implements Serializable {
+    @Size(max = 20)
+    @Column(name = "CARGOUSU")
+    private String cargousu;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -267,5 +270,13 @@ public class Usuario implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario[ idusu=" + idusu + " ]";
+    }
+
+    public String getCargousu() {
+        return cargousu;
+    }
+
+    public void setCargousu(String cargousu) {
+        this.cargousu = cargousu;
     }
 }

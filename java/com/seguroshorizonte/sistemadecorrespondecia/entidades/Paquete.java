@@ -62,6 +62,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq"),
     @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusu = :destinopaq")})
 public class Paquete implements Serializable {
+    @OneToMany(mappedBy = "idpaq")
+    private Collection<Incidente> incidenteCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaq")
+    private Collection<Mensaje> mensajeCollection;
 
     @Size(max = 20)
     @Column(name = "FRAGILPAQ")
@@ -319,5 +323,23 @@ public class Paquete implements Serializable {
 
     public void setFragilpaq(String fragilpaq) {
         this.fragilpaq = fragilpaq;
+    }
+
+    @XmlTransient
+    public Collection<Incidente> getIncidenteCollection() {
+        return incidenteCollection;
+    }
+
+    public void setIncidenteCollection(Collection<Incidente> incidenteCollection) {
+        this.incidenteCollection = incidenteCollection;
+    }
+
+    @XmlTransient
+    public Collection<Mensaje> getMensajeCollection() {
+        return mensajeCollection;
+    }
+
+    public void setMensajeCollection(Collection<Mensaje> mensajeCollection) {
+        this.mensajeCollection = mensajeCollection;
     }
 }

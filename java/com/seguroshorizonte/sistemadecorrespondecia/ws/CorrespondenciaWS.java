@@ -853,6 +853,31 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+     /**
+     *
+     * @param idpaq
+     * @return
+     */
+    @WebMethod(operationName = "actualizacionPaqueteextraviado")
+    public int actualizacionPaqueteextraviado(@WebParam(name = "idpaq") String idpaq, @WebParam(name = "mensaje") String mensaje) {
+        
+        int Resultado = 0;
+        try {
+            ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido(idpaq);
+            Mensaje msj = new Mensaje();
+            msj.setNombremen("Extravio");
+            msj.setDescripcionmen(mensaje);
+            Paquete p = ejbPaquete.ConsultarPaqueteXId(new BigDecimal(idpaq));
+            msj.setIdpaq(p);
+            ejbMensaje.insertarMensaje(msj);
+            Resultado = 1;
+        } catch (Exception e) {
+            return 0;
+        }
+        return Resultado;
+    }
+
+    
     /**
      *
      * @param idpaq

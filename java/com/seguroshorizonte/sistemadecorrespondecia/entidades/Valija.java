@@ -6,6 +6,7 @@ package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -56,6 +57,9 @@ public class Valija implements Serializable {
     @NotNull
     @Column(name = "ORIGENVAL")
     private BigDecimal origenval;
+    @Column(name = "FECHARVAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecharval;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VALIJA")
     @SequenceGenerator(name = "SEQ_VALIJA", sequenceName = "SEQ_VALIJA", allocationSize = 1)
@@ -217,5 +221,13 @@ public class Valija implements Serializable {
 
     public void setOrigenval(BigDecimal origenval) {
         this.origenval = origenval;
+    }
+
+    public Date getFecharval() {
+        return fecharval;
+    }
+
+    public void setFecharval(Date fecharval) {
+        this.fecharval = fecharval;
     }
 }

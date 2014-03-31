@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -37,6 +39,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Incidente.findByDescripcioninc", query = "SELECT i FROM Incidente i WHERE i.descripcioninc = :descripcioninc"),
     @NamedQuery(name = "Incidente.findByMaximoIdinc", query = "SELECT MAX(i.idinc) FROM Incidente i")})
 public class Incidente implements Serializable {
+    @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
+    @ManyToOne
+    private Paquete idpaq;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -119,5 +124,13 @@ public class Incidente implements Serializable {
     @Override
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Incidente[ idinc=" + idinc + " ]";
+    }
+
+    public Paquete getIdpaq() {
+        return idpaq;
+    }
+
+    public void setIdpaq(Paquete idpaq) {
+        this.idpaq = idpaq;
     }
 }

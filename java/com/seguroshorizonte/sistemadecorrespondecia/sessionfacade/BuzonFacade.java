@@ -123,9 +123,9 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
     public List<Buzon> buscarBuzonParaEnviar(String nombre, String apellido, String area) {
         List<Buzon> emp;
         if (!"".equals(area)) {
-            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNASA").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("area", new BigDecimal(area)).getResultList();
+            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNASA").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("area", new BigDecimal(area)).setParameter("nombre2", "%" + nombre.toUpperCase() + "%").getResultList();
         } else {
-            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNAS").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").getResultList();
+            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNAS").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("nombre2", "%" + nombre.toUpperCase() + "%").getResultList();
         }
         return emp;
     }

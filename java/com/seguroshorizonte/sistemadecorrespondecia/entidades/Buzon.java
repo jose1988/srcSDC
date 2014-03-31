@@ -45,8 +45,8 @@ import javax.xml.bind.annotation.XmlTransient;
     //@NamedQuery(name = "Buzon.findByDuenoYContacto", query = "SELECT b FROM Buzon b WHERE b.idatr = :area AND b.idusu = :idusu AND b.idsed = :idsed"),
     @NamedQuery(name = "Buzon.findByNombrebuz", query = "SELECT b FROM Buzon b WHERE b.nombrebuz = :nombrebuz"),
     @NamedQuery(name = "Buzon.findByUsuarioSede", query = "SELECT b FROM Buzon b WHERE b.idatr.idsed.idsed = :idsed AND b.idusu.idusu= :idusu"),
-    @NamedQuery(name = "Buzon.findByNASA", query = "SELECT b FROM Usuario u,Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido and b.idatr.idatr= :area"),
-    @NamedQuery(name = "Buzon.findByNAS", query = "SELECT b FROM Usuario u,Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido"),
+    @NamedQuery(name = "Buzon.findByNASA", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido and b.idatr.idatr= :area OR upper(b.nombrebuz) like :nombre2"),
+    @NamedQuery(name = "Buzon.findByNAS", query = "SELECT b FROM Usuario u , Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido OR upper(b.nombrebuz) like :nombre2"),
     @NamedQuery(name = "Buzon.findByUsuario", query = "SELECT b FROM Buzon b WHERE b.idusu.idusu = :idusu")})
 public class Buzon implements Serializable {
 

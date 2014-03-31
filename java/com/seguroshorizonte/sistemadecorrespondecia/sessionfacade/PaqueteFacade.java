@@ -4,7 +4,6 @@
  */
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Buzon;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
@@ -182,6 +181,19 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.executeUpdate();
     }
 
+     public void ActualizacionPaqueteExtraviado(String idPaq) {
+        BigDecimal id = new BigDecimal(idPaq);
+        Paquete paq = this.find(id);
+        Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=?, statuspaq=?  WHERE idpaq=?");
+        q.setParameter(1, "Extraviado");
+        q.setParameter(2, "3");
+        q.setParameter(3, paq.getIdpaq());
+        q.executeUpdate();
+       
+        
+    }
+
+    
     public void actualizacionPaqueteDeVuelta(String idPaq, String idRes) {
         Query q = em.createNativeQuery("UPDATE paquete SET idpaqres=?,  WHERE paquete.idpaq=?");
         q.setParameter(1, idPaq);
