@@ -39,6 +39,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Incidente.findByDescripcioninc", query = "SELECT i FROM Incidente i WHERE i.descripcioninc = :descripcioninc"),
     @NamedQuery(name = "Incidente.findByMaximoIdinc", query = "SELECT MAX(i.idinc) FROM Incidente i")})
 public class Incidente implements Serializable {
+    @JoinColumn(name = "IDVAL", referencedColumnName = "IDVAL")
+    @ManyToOne
+    private Valija idval;
     @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
     @ManyToOne
     private Paquete idpaq;
@@ -132,5 +135,13 @@ public class Incidente implements Serializable {
 
     public void setIdpaq(Paquete idpaq) {
         this.idpaq = idpaq;
+    }
+
+    public Valija getIdval() {
+        return idval;
+    }
+
+    public void setIdval(Valija idval) {
+        this.idval = idval;
     }
 }

@@ -57,6 +57,8 @@ public class Valija implements Serializable {
     @NotNull
     @Column(name = "ORIGENVAL")
     private BigDecimal origenval;
+    @OneToMany(mappedBy = "idval")
+    private Collection<Incidente> incidenteCollection;
     @Column(name = "FECHARVAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecharval;
@@ -215,6 +217,14 @@ public class Valija implements Serializable {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija[ idval=" + idval + " ]";
     }
 
+    public Date getFecharval() {
+        return fecharval;
+    }
+
+    public void setFecharval(Date fecharval) {
+        this.fecharval = fecharval;
+    }
+
     public BigDecimal getOrigenval() {
         return origenval;
     }
@@ -223,11 +233,12 @@ public class Valija implements Serializable {
         this.origenval = origenval;
     }
 
-    public Date getFecharval() {
-        return fecharval;
+    @XmlTransient
+    public Collection<Incidente> getIncidenteCollection() {
+        return incidenteCollection;
     }
 
-    public void setFecharval(Date fecharval) {
-        this.fecharval = fecharval;
+    public void setIncidenteCollection(Collection<Incidente> incidenteCollection) {
+        this.incidenteCollection = incidenteCollection;
     }
 }
