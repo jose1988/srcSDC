@@ -716,7 +716,6 @@ public class CorrespondenciaWS {
             String nombre = usu.getNombreusu() + "." + usu.getApellidousu();
             buzoni.setIdatr(use.getIdatr());
             buzoni.setIdusu(usu);
-            buzoni.setNombrebuz(sede);
             buzoni.setNombrebuz(nombre);
             buzoni.setDireccionbuz(usu.getDireccionusu());
             buzoni.setTipobuz("0");
