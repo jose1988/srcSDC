@@ -62,8 +62,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq"),
     @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusu = :destinopaq")})
 public class Paquete implements Serializable {
-    @OneToMany(mappedBy = "idpaq")
-    private Collection<Incidente> incidenteCollection;
+   
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaq")
     private Collection<Mensaje> mensajeCollection;
 
@@ -116,9 +115,7 @@ public class Paquete implements Serializable {
     @JoinColumn(name = "IDPAQRES", referencedColumnName = "IDPAQ")
     @ManyToOne
     private Paquete idpaqres;
-    @JoinColumn(name = "IDMEN", referencedColumnName = "IDMEN")
-    @ManyToOne
-    private Mensaje idmen;
+   
     @JoinColumn(name = "IDDOC", referencedColumnName = "IDDOC")
     @ManyToOne(optional = false)
     private Documento iddoc;
@@ -260,14 +257,7 @@ public class Paquete implements Serializable {
         this.idpaqres = idpaqres;
     }
 
-    public Mensaje getIdmen() {
-        return idmen;
-    }
-
-    public void setIdmen(Mensaje idmen) {
-        this.idmen = idmen;
-    }
-
+  
     public Documento getIddoc() {
         return iddoc;
     }
@@ -325,14 +315,7 @@ public class Paquete implements Serializable {
         this.fragilpaq = fragilpaq;
     }
 
-    @XmlTransient
-    public Collection<Incidente> getIncidenteCollection() {
-        return incidenteCollection;
-    }
-
-    public void setIncidenteCollection(Collection<Incidente> incidenteCollection) {
-        this.incidenteCollection = incidenteCollection;
-    }
+  
 
     @XmlTransient
     public Collection<Mensaje> getMensajeCollection() {

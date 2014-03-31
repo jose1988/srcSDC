@@ -62,8 +62,7 @@ public class Mensaje implements Serializable {
     @Size(min = 1, max = 2000)
     @Column(name = "DESCRIPCIONMEN")
     private String descripcionmen;
-    @OneToMany(mappedBy = "idmen")
-    private Collection<Paquete> paqueteCollection;
+   
 
     public Mensaje() {
     }
@@ -102,14 +101,7 @@ public class Mensaje implements Serializable {
         this.descripcionmen = descripcionmen;
     }
 
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection() {
-        return paqueteCollection;
-    }
-
-    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
-        this.paqueteCollection = paqueteCollection;
-    }
+    
 
     @Override
     public int hashCode() {

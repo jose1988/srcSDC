@@ -42,9 +42,8 @@ public class Incidente implements Serializable {
     @JoinColumn(name = "IDVAL", referencedColumnName = "IDVAL")
     @ManyToOne
     private Valija idval;
-    @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
-    @ManyToOne
-    private Paquete idpaq;
+   
+    
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -61,8 +60,7 @@ public class Incidente implements Serializable {
     @Size(max = 2500)
     @Column(name = "DESCRIPCIONINC")
     private String descripcioninc;
-    @OneToMany(mappedBy = "idinc")
-    private Collection<Valija> valijaCollection;
+   
 
     public Incidente() {
     }
@@ -70,7 +68,6 @@ public class Incidente implements Serializable {
     public Incidente(BigDecimal idinc) {
         this.idinc = idinc;
     }
-
     public BigDecimal getIdinc() {
         return idinc;
     }
@@ -95,15 +92,7 @@ public class Incidente implements Serializable {
         this.descripcioninc = descripcioninc;
     }
 
-    @XmlTransient
-    public Collection<Valija> getValijaCollection() {
-        return valijaCollection;
-    }
-
-    public void setValijaCollection(Collection<Valija> valijaCollection) {
-        this.valijaCollection = valijaCollection;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -129,14 +118,6 @@ public class Incidente implements Serializable {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Incidente[ idinc=" + idinc + " ]";
     }
 
-    public Paquete getIdpaq() {
-        return idpaq;
-    }
-
-    public void setIdpaq(Paquete idpaq) {
-        this.idpaq = idpaq;
-    }
-
     public Valija getIdval() {
         return idval;
     }
@@ -144,4 +125,6 @@ public class Incidente implements Serializable {
     public void setIdval(Valija idval) {
         this.idval = idval;
     }
+
+ 
 }

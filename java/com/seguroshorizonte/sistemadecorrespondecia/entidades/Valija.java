@@ -57,8 +57,13 @@ public class Valija implements Serializable {
     @NotNull
     @Column(name = "ORIGENVAL")
     private BigDecimal origenval;
+    @Size(max = 20)
+    @Column(name = "TIPOVAL")
+    private String tipoval;
     @OneToMany(mappedBy = "idval")
-    private Collection<Incidente> incidenteCollection;
+    private Collection<Paquete> paqueteCollection;
+    @OneToMany(mappedBy = "idval")
+   
     @Column(name = "FECHARVAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecharval;
@@ -92,11 +97,8 @@ public class Valija implements Serializable {
     @JoinColumn(name = "IDPRO", referencedColumnName = "IDPRO")
     @ManyToOne
     private Proveedor idpro;
-    @JoinColumn(name = "IDINC", referencedColumnName = "IDINC")
-    @ManyToOne
-    private Incidente idinc;
-    @OneToMany(mappedBy = "idval")
-    private Collection<Paquete> paqueteCollection;
+    
+   
 
     public Valija() {
     }
@@ -175,22 +177,9 @@ public class Valija implements Serializable {
         this.idpro = idpro;
     }
 
-    public Incidente getIdinc() {
-        return idinc;
-    }
+ 
 
-    public void setIdinc(Incidente idinc) {
-        this.idinc = idinc;
-    }
-
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection() {
-        return paqueteCollection;
-    }
-
-    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
-        this.paqueteCollection = paqueteCollection;
-    }
+   
 
     @Override
     public int hashCode() {
@@ -225,6 +214,17 @@ public class Valija implements Serializable {
         this.fecharval = fecharval;
     }
 
+  
+
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection() {
+        return paqueteCollection;
+    }
+
+    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
+        this.paqueteCollection = paqueteCollection;
+    }
+
     public BigDecimal getOrigenval() {
         return origenval;
     }
@@ -233,12 +233,11 @@ public class Valija implements Serializable {
         this.origenval = origenval;
     }
 
-    @XmlTransient
-    public Collection<Incidente> getIncidenteCollection() {
-        return incidenteCollection;
+    public String getTipoval() {
+        return tipoval;
     }
 
-    public void setIncidenteCollection(Collection<Incidente> incidenteCollection) {
-        this.incidenteCollection = incidenteCollection;
+    public void setTipoval(String tipoval) {
+        this.tipoval = tipoval;
     }
 }
