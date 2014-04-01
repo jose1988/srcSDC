@@ -1181,13 +1181,13 @@ public class CorrespondenciaWS {
                 idVal = registroPaq.getIdval().getIdval();
                 idValija = new Valija();
                 idValija.setIdval(idVal);
-                
+
                 nuevoIncidente = new Incidente();
                 nuevoIncidente.setNombreinc("Paquete Excedente");
                 nuevoIncidente.setDescripcioninc("Reporte de paquete excedente");
                 nuevoIncidente.setIdval(idValija);
                 ejbIncidente.insertarIncidente(nuevoIncidente);
-                
+
                 //Cambio de Status de Valija con Paquete Excedente (3)
                 ejbValija.editarStatusValija(idVal, "3");
             }
@@ -1226,13 +1226,13 @@ public class CorrespondenciaWS {
             idVal = new BigDecimal(registroValija);
             idValija = new Valija();
             idValija.setIdval(idVal);
-            
+
             nuevoIncidente = new Incidente();
             nuevoIncidente.setNombreinc("Valija Incorrecta");
             nuevoIncidente.setDescripcioninc(datosValija);
             nuevoIncidente.setIdval(idValija);
             ejbIncidente.insertarIncidente(nuevoIncidente);
-            
+
             lista = ejbPaquete.listarPaquetesXValija(idValija);
 
             for (int i = 0; i < lista.size(); i++) {
@@ -2477,6 +2477,18 @@ public class CorrespondenciaWS {
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "consultarPaquetesExternosXEnviar")
+    public List<Paquete> consultarPaquetesExternosXEnviar(@WebParam(name = "sede") Sede sede) {
+
+        List<Paquete> Resultado = null;
+        try {
+            Resultado = ejbPaquete.ConsultarPaquetesExternos(sede);
+        } catch (Exception e) {
+            return null;
         }
         return Resultado;
     }
