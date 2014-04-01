@@ -55,6 +55,20 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         Resultado = consulta.getResultList();
         return Resultado;
     }
+    
+    public String ultimoSegXPaq(BigDecimal idpaq) {
+       String Resultado= null;
+         Resultado=  (String) em.createNamedQuery("Seguimiento.findUltimoSegXPaq").setParameter("idpaq", idpaq).getSingleResult();
+       
+        return Resultado;
+    }
+    
+     public void editarSeguimiento(BigDecimal idpaq, String status) {
+        Query q = em.createNativeQuery("UPDATE Seguimiento SET statusseg=? WHERE idpaq=?");
+        q.setParameter(1, status);
+        q.setParameter(2, idpaq);
+        q.executeUpdate();
+    }
 
     public List<Paquete> consultarPaquetesConfirmadosXRol(Usuariosede Registro) {
         List<Paquete> Resultado = null;

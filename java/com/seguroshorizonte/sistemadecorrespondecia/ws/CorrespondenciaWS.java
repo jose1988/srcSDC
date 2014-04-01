@@ -726,6 +726,34 @@ public class CorrespondenciaWS {
         return 1;
     }
 
+      /**
+     *
+     * @param idusu
+     * @param sede
+     * @return
+     */
+    @WebMethod(operationName = "insertarBuzonExterno")
+    public int insertarBuzonExterno(@WebParam(name = "buzon") Buzon buz,@WebParam(name = "idusu") String idusu, @WebParam(name = "sede") String sede) {
+
+        try {
+
+            Usuario usu = ejbUsuario.consultarUsuario(idusu);
+            Sede sed = ejbSede.consultarSedeXId(new BigDecimal(sede));
+            Buzon buzoni = new Buzon();
+            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, sed);
+            String nombre = usu.getNombreusu() + "." + usu.getApellidousu();
+            buzoni.setIdatr(use.getIdatr());
+            buzoni.setIdusu(usu);
+            buzoni.setNombrebuz(nombre);
+            buzoni.setDireccionbuz(usu.getDireccionusu());
+            buzoni.setTipobuz("0");
+            ejbBuzon.insertarBuzon(buzoni);
+        } catch (Exception e) {
+            return 0;
+        }
+        return 1;
+    }
+    
     /**
      *
      * @return
@@ -1197,6 +1225,55 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+    
+     /**
+     * Metodo que reporta el paquete por extravió, pertenezca o no a una valija
+     *
+     * @param registroPaquete
+     * @param registroUsuario
+     * @param registroSede
+     * @param datosPaquete
+     * @return entero 1 si se reporta correctamente, 0 si no se reporta
+     */
+    @WebMethod(operationName = "reportarPaqueteExtravio")
+    public int reportarPaqueteExtravio(@WebParam(name = "registroPaquete") String registroPaquete, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "registroSede") String registroSede, @WebParam(name = "datosPaquete") String datosPaquete) {
+
+        int Resultado = 0;
+        BigDecimal idVal;
+        BigDecimal idPaq;
+        Seguimiento nuevoSeg;
+        Incidente nuevoIncidente;
+        Paquete registroPaq;
+        Mensaje nuevoMensaje;
+        Valija idValija;
+
+        try {
+            registroPaq = new Paquete();
+            idPaq = new BigDecimal(registroPaquete);
+            registroPaq = ejbPaquete.consultarPaquete(idPaq);
+            Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
+            Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
+            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
+            String idP = ejbSeguimiento.ultimoSegXPaq(idPaq);
+            
+            ejbSeguimiento.editarSeguimiento(new BigDecimal(idP),"3" );
+
+            nuevoMensaje = new Mensaje();
+            nuevoMensaje.setNombremen("Paquete Extraviado");
+            nuevoMensaje.setDescripcionmen(datosPaquete);
+            nuevoMensaje.setIdpaq(registroPaq);
+            ejbMensaje.insertarMensaje(nuevoMensaje);
+
+            //Cambio de Status de Paquete a extraviado (4)
+            ejbPaquete.ActualizacionPaqueteExtraviado(idP);
+
+           
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
 
     /**
      * Método que reporta valija con destino erroneo
@@ -1261,6 +1338,58 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     * Método que reporta valija con destino erroneo
+     *
+     * @param registroValija
+     * @param registroUsuario
+     * @param registroSede
+     * @param datosValija
+     * @return entero 1 si se reporta correctamente, 0 si no se reporta
+     */
+    @WebMethod(operationName = "reportarValijaExtravio")
+    public int reportarValijaExtravio(@WebParam(name = "registroValija") String registroValija, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "registroSede") String registroSede, @WebParam(name = "datosValija") String datosValija) {
+
+        int Resultado = 0;
+        List<Paquete> lista;
+        BigDecimal idPaq;
+        BigDecimal idVal;
+        Seguimiento nuevoSeg;
+        Incidente nuevoIncidente;
+        Paquete registroPaquete;
+        Valija idValija;
+
+        try {
+            Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
+            Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
+            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
+            idVal = new BigDecimal(registroValija);
+            idValija = new Valija();
+            idValija.setIdval(idVal);
+
+            nuevoIncidente = new Incidente();
+            nuevoIncidente.setNombreinc("Valija extraviada");
+            nuevoIncidente.setDescripcioninc(datosValija);
+            nuevoIncidente.setIdval(idValija);
+            ejbIncidente.insertarIncidente(nuevoIncidente);
+
+            lista = ejbPaquete.listarPaquetesXValija(idValija);
+
+            for (int i = 0; i < lista.size(); i++) {
+                idPaq = lista.get(i).getIdpaq();
+           
+                //Cambio de Status de Paquete a Reenviado (3)
+                ejbPaquete.ActualizacionPaqueteExtraviado(idPaq.toString());
+            }
+            //Cambio de Status de Valija a Reenviada (5)
+            ejbValija.editarStatusValija(idVal, "5");
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
+    
     /**
      * Método que lista las valijas con fecha de creación del día de hoy,
      * depediendo del usuario y de la sede

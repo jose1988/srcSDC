@@ -146,7 +146,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         Paquete paq = this.find(id);
         Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=?, statuspaq=?  WHERE idpaq=?");
         q.setParameter(1, "Extraviado");
-        q.setParameter(2, "3");
+        q.setParameter(2, "4");
         q.setParameter(3, paq.getIdpaq());
         q.executeUpdate();        
     }
@@ -171,6 +171,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.setParameter(2, idPaquete);
         q.executeUpdate();
     }
+    
 
     public List<Paquete> listarPaquetesXOrigenYRespuesta(Usuario idUsuario, String respuesta) {
         List<Paquete> Resultado = null;
