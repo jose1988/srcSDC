@@ -57,6 +57,11 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
         return sedeId;
     }
 
+    public Usuariosede ConsultarXId(BigDecimal idUsuSede) {
+        Usuariosede sedeId = (Usuariosede) em.createNamedQuery("Usuariosede.findByIduse").setParameter("iduse", idUsuSede).getSingleResult();
+        return sedeId;
+    }
+
     public List<Usuario> ConsultarUsuariosXSede(Sede sede) {
         List<Usuario> usuario;
         usuario = (List<Usuario>) em.createNamedQuery("Usuariosede.findUsuarioBySede").setParameter("idsed", sede).getResultList();

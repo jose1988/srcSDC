@@ -37,6 +37,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.OrganizacionFa
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PaqueteFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PrioridadFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.ProveedorFacade;
+import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.ProveedorsedeFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.RolFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.SedeFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.SeguimientoFacade;
@@ -104,6 +105,8 @@ public class CorrespondenciaWS {
     private AlertaFacade ejbAlerta;
     @EJB
     private ProveedorFacade ejbProveedor;
+    @EJB
+    private ProveedorsedeFacade ejbProveedorSede;
 
     /**
      * This is a sample web service operation
@@ -726,14 +729,14 @@ public class CorrespondenciaWS {
         return 1;
     }
 
-      /**
+    /**
      *
      * @param idusu
      * @param sede
      * @return
      */
     @WebMethod(operationName = "insertarBuzonExterno")
-    public int insertarBuzonExterno(@WebParam(name = "buzon") Buzon buz,@WebParam(name = "idusu") String idusu, @WebParam(name = "sede") String sede) {
+    public int insertarBuzonExterno(@WebParam(name = "buzon") Buzon buz, @WebParam(name = "idusu") String idusu, @WebParam(name = "sede") String sede) {
 
         try {
 
@@ -753,7 +756,7 @@ public class CorrespondenciaWS {
         }
         return 1;
     }
-    
+
     /**
      *
      * @return
@@ -1225,8 +1228,8 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     /**
+
+    /**
      * Metodo que reporta el paquete por extravió, pertenezca o no a una valija
      *
      * @param registroPaquete
@@ -1255,8 +1258,8 @@ public class CorrespondenciaWS {
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
             String idP = ejbSeguimiento.ultimoSegXPaq(idPaq);
-            
-            ejbSeguimiento.editarSeguimiento(new BigDecimal(idP),"3" );
+
+            ejbSeguimiento.editarSeguimiento(new BigDecimal(idP), "3");
 
             nuevoMensaje = new Mensaje();
             nuevoMensaje.setNombremen("Paquete Extraviado");
@@ -1267,7 +1270,7 @@ public class CorrespondenciaWS {
             //Cambio de Status de Paquete a extraviado (4)
             ejbPaquete.ActualizacionPaqueteExtraviado(idP);
 
-           
+
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
@@ -1377,7 +1380,7 @@ public class CorrespondenciaWS {
 
             for (int i = 0; i < lista.size(); i++) {
                 idPaq = lista.get(i).getIdpaq();
-           
+
                 //Cambio de Status de Paquete a Reenviado (3)
                 ejbPaquete.ActualizacionPaqueteExtraviado(idPaq.toString());
             }
@@ -1389,7 +1392,7 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
+
     /**
      * Método que lista las valijas con fecha de creación del día de hoy,
      * depediendo del usuario y de la sede
@@ -1728,12 +1731,12 @@ public class CorrespondenciaWS {
      *
      * @return
      */
-    @WebMethod(operationName = "consultarProveedor")
-    public List<Proveedor> consultarProveedor() {
+    @WebMethod(operationName = "consultarProveedorXSede")
+    public List<Proveedor> consultarProveedorXSede(@WebParam(name = "sede") Sede sede) {
 
         List<Proveedor> Resultado;
         try {
-            Resultado = ejbProveedor.findAll();
+            Resultado = ejbProveedorSede.consultarProveedorXSede(sede);
         } catch (Exception e) {
             Resultado = null;
         }
@@ -2618,6 +2621,33 @@ public class CorrespondenciaWS {
             Resultado = ejbPaquete.ConsultarPaquetesExternos(sede);
         } catch (Exception e) {
             return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "seguimientoExterno")
+    public int seguimientoExterno(@WebParam(name = "registroPaquete") Paquete registroPaquete, @WebParam(name = "registroUsuario") Usuario registroUsuario, @WebParam(name = "registroSede") Sede registroSede, @WebParam(name = "localizacion") String localizacion) {
+        int Resultado = 0;
+        try {
+            List<Seguimiento> RegistrosSeguimiento = ejbSeguimiento.consultarSeguimientoXPaquete(registroPaquete);
+            for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                RegistrosSeguimiento.get(i).setStatusseg("1");
+                ejbSeguimiento.edit(RegistrosSeguimiento.get(i));
+            }
+            Usuariosede registroUsuSede = ejbUsuariosede.ConsultarXUsuarioYSede(registroUsuario, registroSede);
+            Seguimiento nuevoSeg = new Seguimiento();
+            nuevoSeg.setIdpaq(registroPaquete);
+            nuevoSeg.setIduse(registroUsuSede);
+            nuevoSeg.setFechaseg(new Date());
+            nuevoSeg.setStatusseg("0");
+            nuevoSeg.setTiposeg("0");
+            nuevoSeg.setNivelseg("Externo");
+            ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+            ejbBitacora.insertarBitacora(registroSede, registroUsuario, "ENVIO EXTERNO", "Envio de corrspondencia externa");
+            ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), localizacion);
+            Resultado = 1;
+        } catch (Exception e) {
+            return 0;
         }
         return Resultado;
     }
