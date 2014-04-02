@@ -1257,7 +1257,7 @@ public class CorrespondenciaWS {
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
-             String idP = ejbSeguimiento.ultimoSegXPaq(registroPaquete);
+            String idP = ejbSeguimiento.ultimoSegXPaq(registroPaquete);
 
             ejbSeguimiento.editarSeguimiento(new BigDecimal(idP), "3");
 
@@ -1772,9 +1772,19 @@ public class CorrespondenciaWS {
             } catch (Exception e) {
                 Tipo = "0";
             }
-            if (usuarioSede.getIdrol().getIdrol().toString().compareTo("6") == 0) {
-                nivelSeg = "Usuario";
-            } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
+            if (RegistrosSeguimiento.isEmpty()) {
+                nuevoSeg = new Seguimiento();
+                nuevoSeg.setFechaseg(new Date());
+                nuevoSeg.setIdpaq(registroPaquete);
+                nuevoSeg.setIduse(usuarioSede);
+                nuevoSeg.setTiposeg(Tipo);
+                nuevoSeg.setNivelseg("Usuario");
+                nuevoSeg.setStatusseg("0");
+                ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+                ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Usuario Normal");
+                return 1;
+            }
+            if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
                 nivelSeg = "Area de Trabajo";
             } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0) {
                 nivelSeg = "Sede";
@@ -1797,21 +1807,7 @@ public class CorrespondenciaWS {
                     }
                 }
             }
-            if (RegistrosSeguimiento.isEmpty()) {
-                if (usuarioSede.getIdrol().getIdrol().toString().compareTo("6") == 0) {
-                    nuevoSeg = new Seguimiento();
-                    nuevoSeg.setFechaseg(new Date());
-                    nuevoSeg.setIdpaq(registroPaquete);
-                    nuevoSeg.setIduse(usuarioSede);
-                    nuevoSeg.setTiposeg(Tipo);
-                    nuevoSeg.setNivelseg(nivelSeg);
-                    nuevoSeg.setStatusseg("0");
-                    ejbSeguimiento.insertarSeguimiento(nuevoSeg);
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Usuario Normal");
-                } else {
-                    return 2;
-                }
-            }
+
             if (RegistrosSeguimiento.size() == 1) {
                 if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0 || Tipo.compareTo("0") == 0) {
                     nuevoSeg = new Seguimiento();
