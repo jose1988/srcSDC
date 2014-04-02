@@ -49,8 +49,10 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import javax.ejb.EJB;
@@ -927,6 +929,45 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    @WebMethod(operationName = "listarValijasXFechaYUsuarioSede")
+    public List<Valija> listarValijasXFechaYUsuarioSede(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "fechaInicio") String fechaInicio, @WebParam(name = "fechaFin") String fechaFin) {
+
+        List<Valija> Resultado = null;
+        List<Usuariosede> idUsuario;
+        List<Valija> valijas;
+        Sede idSede;
+        Usuario idUsu;
+        Usuario regUsuario;
+        Valija val;
+        try {
+            idSede = new Sede();
+            idSede.setIdsed(new BigDecimal(registroSede));
+            idUsuario = ejbUsuariosede.listaUsuarios(idSede);
+            regUsuario = new Usuario();
+            regUsuario.setIdusu(new BigDecimal(registroUsuario));
+            Resultado = new ArrayList<Valija>();
+            for (int i = 0; i < idUsuario.size(); i++) {
+                idUsu = new Usuario();
+                idUsu = idUsuario.get(i).getIdusu();
+                valijas = ejbValija.listarValijasXFechaYUsuario(idUsu, fechaInicio, fechaFin);
+                int j = 0;
+                if (idUsu.getIdusu().compareTo(regUsuario.getIdusu()) == 0) {
+                    if (valijas.isEmpty()) {
+                        Resultado = null;
+                    }
+                    while (valijas.size() > j) {
+                        val = valijas.get(j);
+                        Resultado.add(val);
+                        j++;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            Resultado = null;
+        }
+        return Resultado;
+    }
+    
     /**
      *
      * @param idpaq
@@ -985,6 +1026,8 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+    
+    
 
     /**
      *
@@ -1401,39 +1444,21 @@ public class CorrespondenciaWS {
      * @param registroUsuario
      * @return lista tipo valija con toda la información
      */
-    @WebMethod(operationName = "listarValijasXFechaYUsuarioSede")
-    public List<Valija> listarValijasXFechaYUsuarioSede(@WebParam(name = "registroSede") String registroSede, @WebParam(name = "registroUsuario") String registroUsuario, @WebParam(name = "fechaInicio") String fechaInicio, @WebParam(name = "fechaFin") String fechaFin) {
+    @WebMethod(operationName = "consultarEstadisticas")
+    public List<Valija> consultarEstadisticas(@WebParam(name = "fechaInicio") String fechaInicio, @WebParam(name = "fechaFinal") String fechaFinal,@WebParam(name = "consulta") String consulta, @WebParam(name = "idsede") String idsede) {
 
-        List<Valija> Resultado = null;
-        List<Usuariosede> idUsuario;
-        List<Valija> valijas;
-        Sede idSede;
-        Usuario idUsu;
-        Usuario regUsuario;
-        Valija val;
-        try {
-            idSede = new Sede();
-            idSede.setIdsed(new BigDecimal(registroSede));
-            idUsuario = ejbUsuariosede.listaUsuarios(idSede);
-            regUsuario = new Usuario();
-            regUsuario.setIdusu(new BigDecimal(registroUsuario));
-            Resultado = new ArrayList<Valija>();
-            for (int i = 0; i < idUsuario.size(); i++) {
-                idUsu = new Usuario();
-                idUsu = idUsuario.get(i).getIdusu();
-                valijas = ejbValija.listarValijasXFechaYUsuario(idUsu, fechaInicio, fechaFin);
-                int j = 0;
-                if (idUsu.getIdusu().compareTo(regUsuario.getIdusu()) == 0) {
-                    if (valijas.isEmpty()) {
-                        Resultado = null;
-                    }
-                    while (valijas.size() > j) {
-                        val = valijas.get(j);
-                        Resultado.add(val);
-                        j++;
-                    }
-                }
-            }
+        List<Valija> Resultado =new ArrayList<Valija>();
+        Calendar calendario = GregorianCalendar.getInstance();
+        Date fecha = calendario.getTime();
+        System.out.println(fecha);
+        SimpleDateFormat formatoDeFecha = new SimpleDateFormat("dd/MM/yyyy");
+        try{
+        Date fechaini=formatoDeFecha.parse(fechaInicio);
+        Date fechafin=formatoDeFecha.parse(fechaFinal);
+        
+            Resultado= ejbValija.estadisticasValija(fechaini, fechafin, consulta, idsede);
+            
+           
         } catch (Exception e) {
             Resultado = null;
         }

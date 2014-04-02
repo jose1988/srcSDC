@@ -89,11 +89,65 @@ public class ValijaFacade extends AbstractFacade<Valija> {
     }
 
     public void entregarValija(BigDecimal idValija, String Status) {
-        Query q = em.createNativeQuery("UPDATE valija SET statusval=? WHERE idval=?");
+        Query q = em.createNativeQuery("UPDATE valija SET statusval=? fecharval=? WHERE idval=?");
         q.setParameter(1, Status);
-        q.setParameter(2, idValija);
+         q.setParameter(2, FechaActual());
+        q.setParameter(3, idValija);
         q.executeUpdate();
     }
+    
+     public List<Valija> estadisticasValija(Date fechaini, Date fechafin,String consulta,String idsede) {
+        
+         List<Valija> Resultado = new ArrayList<Valija>();
+         if("0".equals(idsede)){
+             
+             if("1".equals(consulta)){
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadas").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).getResultList();
+           
+             }
+              if("2".equals(consulta)){
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidas").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).getResultList();
+           
+             }
+               if("3".equals(consulta)){
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasErradas").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).getResultList();
+           
+             }
+                if("4".equals(consulta)){
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladas").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).getResultList();
+           
+             }
+           
+         }else{
+             
+              if("1".equals(consulta)){
+                  
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadasXSede").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
+           
+             
+             }
+              if("2".equals(consulta)){
+              
+                  Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidasXSede").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
+             
+             }
+               if("3".equals(consulta)){
+                   
+                   Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadasXSede").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
+           
+             }
+                if("4".equals(consulta)){
+                    
+                    Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladasXSede").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
+            
+             }
+             
+          
+         }
+         return Resultado;
+       
+    }
+    
 
     public void editarStatusValija(BigDecimal idValija, String status) {
         Query q = em.createNativeQuery("UPDATE valija SET statusval=? WHERE idval=?");

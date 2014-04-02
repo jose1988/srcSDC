@@ -50,7 +50,18 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
     //@NamedQuery(name = "Valija.findByFechaVencimientoOrigen", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.origenval = :origen AND v.statusval = '0' "),
     //@NamedQuery(name = "Valija.findByFechaVencimientoDestino", query = "SELECT v FROM Valija v WHERE v.fechaalerval < :fechaalerval AND v.destinoval = :destinoval AND v.statusval = '0' "),
-    @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin AND v.iduse.idusu = :idusu")})
+    @NamedQuery(name = "Valija.findByFechavalYUsuario", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin AND v.iduse.idusu = :idusu"),
+    @NamedQuery(name = "Valija.totalValijasEnviadasXSede", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin AND v.iduse.idsed = :idsed"),
+    @NamedQuery(name = "Valija.totalValijasEnviadas", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin"),
+    @NamedQuery(name = "Valija.totalValijasRecibidasXSede", query = "SELECT v FROM Valija v WHERE v.fecharval BETWEEN :fechaIni AND :fechaFin AND v.iduse.idsed = :idsed"),
+    @NamedQuery(name = "Valija.totalValijasRecibidas", query = "SELECT v FROM Valija v WHERE v.fecharval BETWEEN :fechaIni AND :fechaFin"),
+    @NamedQuery(name = "Valija.totalValijasAnuladasXSede", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin AND v.statusval='5' AND v.iduse.idsed = :idsed"),
+    @NamedQuery(name = "Valija.totalValijasAnuladas", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin AND v.statusval='5' "),
+    @NamedQuery(name = "Valija.totalValijasErradasXSede", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin AND v.iduse.idsed = :idsed AND (v.statusval='1' OR v.statusval='3' OR v.statusval='4')"),
+    @NamedQuery(name = "Valija.totalValijasErradas", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin AND ( v.statusval='1' OR v.statusval='3' OR v.statusval='4') ")
+   
+   
+})
 public class Valija implements Serializable {
 
     @Basic(optional = false)
@@ -60,13 +71,11 @@ public class Valija implements Serializable {
     @Size(max = 20)
     @Column(name = "TIPOVAL")
     private String tipoval;
-    @OneToMany(mappedBy = "idval")
-    private Collection<Paquete> paqueteCollection;
-    @OneToMany(mappedBy = "idval")
    
-    @Column(name = "FECHARVAL")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date fecharval;
+   
+    
+    
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_VALIJA")
     @SequenceGenerator(name = "SEQ_VALIJA", sequenceName = "SEQ_VALIJA", allocationSize = 1)
@@ -82,6 +91,9 @@ public class Valija implements Serializable {
     @Column(name = "FECHAVAL")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechaval;
+    @Column(name = "FECHARVAL")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fecharval;
     @Size(max = 20)
     @Column(name = "STATUSVAL")
     private String statusval;
@@ -214,15 +226,13 @@ public class Valija implements Serializable {
         this.fecharval = fecharval;
     }
 
-  
 
-    @XmlTransient
-    public Collection<Paquete> getPaqueteCollection() {
-        return paqueteCollection;
+    public String getTipoval() {
+        return tipoval;
     }
 
-    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
-        this.paqueteCollection = paqueteCollection;
+    public void setTipoval(String tipoval) {
+        this.tipoval = tipoval;
     }
 
     public BigDecimal getOrigenval() {
@@ -231,13 +241,5 @@ public class Valija implements Serializable {
 
     public void setOrigenval(BigDecimal origenval) {
         this.origenval = origenval;
-    }
-
-    public String getTipoval() {
-        return tipoval;
-    }
-
-    public void setTipoval(String tipoval) {
-        this.tipoval = tipoval;
     }
 }
