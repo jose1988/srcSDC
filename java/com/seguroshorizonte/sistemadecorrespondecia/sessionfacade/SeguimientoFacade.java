@@ -56,10 +56,10 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         return Resultado;
     }
     
-    public String ultimoSegXPaq(BigDecimal idpaq) {
-       String Resultado= null;
-         Resultado=  (String) em.createNamedQuery("Seguimiento.findUltimoSegXPaq").setParameter("idpaq", idpaq).getSingleResult();
-       
+    public String ultimoSegXPaq(String idpaq) {
+       Query Resultad= null;
+         Resultad=  em.createNamedQuery("Seguimiento.findUltimoSegXPaq").setParameter("idpaq", new BigDecimal(idpaq));
+        String Resultado = (String) Resultad.getSingleResult().toString();
         return Resultado;
     }
     

@@ -1257,7 +1257,7 @@ public class CorrespondenciaWS {
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
-            String idP = ejbSeguimiento.ultimoSegXPaq(idPaq);
+             String idP = ejbSeguimiento.ultimoSegXPaq(registroPaquete);
 
             ejbSeguimiento.editarSeguimiento(new BigDecimal(idP), "3");
 
