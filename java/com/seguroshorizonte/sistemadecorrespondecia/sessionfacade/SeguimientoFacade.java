@@ -55,15 +55,15 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         Resultado = consulta.getResultList();
         return Resultado;
     }
-    
+
     public String ultimoSegXPaq(String idpaq) {
-       Query Resultad= null;
-         Resultad=  em.createNamedQuery("Seguimiento.findUltimoSegXPaq").setParameter("idpaq", new BigDecimal(idpaq));
+        Query Resultad = null;
+        Resultad = em.createNamedQuery("Seguimiento.findUltimoSegXPaq").setParameter("idpaq", new BigDecimal(idpaq));
         String Resultado = (String) Resultad.getSingleResult().toString();
         return Resultado;
     }
-    
-     public void editarSeguimiento(BigDecimal idpaq, String status) {
+
+    public void editarSeguimiento(BigDecimal idpaq, String status) {
         Query q = em.createNativeQuery("UPDATE Seguimiento SET statusseg=? WHERE idpaq=?");
         q.setParameter(1, status);
         q.setParameter(2, idpaq);
@@ -72,8 +72,23 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
 
     public List<Paquete> consultarPaquetesConfirmadosXRol(Usuariosede Registro) {
         List<Paquete> Resultado = null;
-        Query consulta = em.createNamedQuery("Seguimiento.findPaqueteByRol").setParameter("idrol", Registro.getIdrol()).setParameter("idsed", Registro.getIdsed());
+        String nivel = "";
+        if (Registro.getIdrol().getIdrol().toString().compareTo("5") == 0) {
+            nivel = "Sede";
+        } else {
+            nivel = Registro.getIdrol().getNombrerol();
+        }
+        Query consulta = em.createNamedQuery("Seguimiento.findPaqueteByRol").setParameter("nivel", nivel).setParameter("idsed", Registro.getIdsed());
         Resultado = consulta.getResultList();
+
+        return Resultado;
+    }
+
+    public List<Paquete> consultarPaquetesXConfirmarExternos(Sede sede) {
+        List<Paquete> Resultado = null;
+        Query consulta = em.createNamedQuery("Seguimiento.findPaqByExterno").setParameter("idsed", sede);
+        Resultado = consulta.getResultList();
+
         return Resultado;
     }
 
