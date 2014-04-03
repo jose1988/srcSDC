@@ -68,6 +68,9 @@ public class Valija implements Serializable {
     @NotNull
     @Column(name = "ORIGENVAL")
     private BigDecimal origenval;
+    @JoinColumn(name = "IDRUSE", referencedColumnName = "IDUSE")
+    @ManyToOne
+    private Usuariosede idruse;
     @Size(max = 20)
     @Column(name = "TIPOVAL")
     private String tipoval;
@@ -241,5 +244,13 @@ public class Valija implements Serializable {
 
     public void setOrigenval(BigDecimal origenval) {
         this.origenval = origenval;
+    }
+
+    public Usuariosede getIdruse() {
+        return idruse;
+    }
+
+    public void setIdruse(Usuariosede idruse) {
+        this.idruse = idruse;
     }
 }
