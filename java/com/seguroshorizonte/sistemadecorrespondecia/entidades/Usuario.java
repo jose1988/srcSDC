@@ -45,7 +45,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByUsuxSede", query = "SELECT u FROM Usuario u, Usuariosede s WHERE u.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede"),
     @NamedQuery(name = "Usuario.findMaxIdXuserUsu", query = "SELECT MAX(u.idusu) FROM Usuario u where u.userusu = :userusu")})
 public class Usuario implements Serializable {
-    
+  
     @Size(max = 20)
     @Column(name = "CARGOUSU")
     private String cargousu;
@@ -269,5 +269,5 @@ public class Usuario implements Serializable {
         this.cargousu = cargousu;
     }
 
-    
+ 
 }
