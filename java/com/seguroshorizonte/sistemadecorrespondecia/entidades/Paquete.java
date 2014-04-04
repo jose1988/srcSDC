@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findNormalXUsuarioDestino", query = "SELECT p FROM Paquete p WHERE p.destinopaq.idusu = :destino AND p.destinopaq.idatr.idsed= :idsed AND p.statuspaq = '0'"),
     @NamedQuery(name = "Paquete.findByStatuspaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq"),
     @NamedQuery(name = "Paquete.findByLocalizacionpaq", query = "SELECT p FROM Paquete p WHERE p.localizacionpaq = :localizacionpaq"),
-    @NamedQuery(name = "Paquete.findByIdval", query = "SELECT p FROM Paquete p WHERE p.idval.idval = :idval"),
+    @NamedQuery(name = "Paquete.findByIdval", query = "SELECT p FROM Paquete p WHERE p.idval.idval = :idval order by p.origenpaq.idatr.idsed.idsed,p.destinopaq.idatr.idsed.idsed,p.origenpaq.idusu.idusu,p.destinopaq.idusu.idusu"),
     @NamedQuery(name = "Paquete.findByRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq"),
     @NamedQuery(name = "Paquete.findByFechapaqYOrigen", query = "SELECT p FROM Paquete p WHERE p.origenpaq = :origenpaq AND p.fechapaq =:fechapaq"),
     @NamedQuery(name = "Paquete.findByPaqYValija", query = "SELECT p FROM Paquete p WHERE p.idval = :idval"),
