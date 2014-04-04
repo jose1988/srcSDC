@@ -692,11 +692,11 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "ActualizacionLocalizacionyValijaDelPaquete")
-    public List<Paquete> ActualizacionLocalizacionyValijaDelPaquete(@WebParam(name = "localizacion") String Localizacion, @WebParam(name = "idpaq") String idpaq, @WebParam(name = "idval") String idval) {
+    public List<Paquete> ActualizacionLocalizacionyValijaDelPaquete( @WebParam(name = "idpaq") String idpaq, @WebParam(name = "idval") String idval) {
         
         List<Paquete> Resultado = null;
         try {
-            ejbPaquete.ActualizacionLocalizacionyValijaDelPaquete(Localizacion, idpaq, idval);
+            ejbPaquete.ActualizacionLocalizacionyValijaDelPaquete(idpaq, idval);
         } catch (Exception e) {
             return null;
         }
@@ -743,16 +743,13 @@ public class CorrespondenciaWS {
         try {
             
             Usuario usu = ejbUsuario.consultarUsuario(idusu);
-            Sede sed = ejbSede.consultarSedeXId(new BigDecimal(sede));
-            Buzon buzoni = new Buzon();
-            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, sed);
-            String nombre = usu.getNombreusu() + "." + usu.getApellidousu();
-            buzoni.setIdatr(use.getIdatr());
-            buzoni.setIdusu(usu);
-            buzoni.setNombrebuz(nombre);
-            buzoni.setDireccionbuz(usu.getDireccionusu());
-            buzoni.setTipobuz("0");
-            ejbBuzon.insertarBuzon(buzoni);
+           
+            
+           buz.setIdusu(usu);
+          
+           
+            ejbBuzon.insertarBuzon(buz);
+            
         } catch (Exception e) {
             return 0;
         }
@@ -1017,8 +1014,9 @@ public class CorrespondenciaWS {
         BigDecimal id = new BigDecimal(idval);
         Sede destino = ejbSede.ConsultarSedeXNombre(sede);
         Usuario usu = ejbUsuario.consultarUsuario(idusu);
+         Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, destino);
         try {
-            ejbValija.entregarValija(id, status);
+            ejbValija.entregarValija(id, status , use);
             ejbBitacora.insertarBitacora(destino, usu, "DESGLOSAR", "Desglozar Valija");
             Resultado = 1;
         } catch (Exception e) {

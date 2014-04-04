@@ -6,6 +6,7 @@ package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -88,11 +89,12 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         return Resultado;
     }
 
-    public void entregarValija(BigDecimal idValija, String Status) {
-        Query q = em.createNativeQuery("UPDATE valija SET statusval=? fecharval=? WHERE idval=?");
+    public void entregarValija(BigDecimal idValija, String Status, Usuariosede use) {
+        Query q = em.createNativeQuery("UPDATE valija SET statusval=? idruse=? fecharval=? WHERE idval=?");
         q.setParameter(1, Status);
-         q.setParameter(2, FechaActual());
-        q.setParameter(3, idValija);
+        q.setParameter(2, use);
+        q.setParameter(3, FechaActual());
+        q.setParameter(4, idValija);
         q.executeUpdate();
     }
     
@@ -102,19 +104,19 @@ public class ValijaFacade extends AbstractFacade<Valija> {
          if("0".equals(idsede)){
              
              if("1".equals(consulta)){
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadas").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).getResultList();
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadas").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).getResultList();
            
              }
               if("2".equals(consulta)){
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidas").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).getResultList();
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidas").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).getResultList();
            
              }
                if("3".equals(consulta)){
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasErradas").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).getResultList();
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasErradas").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).getResultList();
            
              }
                 if("4".equals(consulta)){
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladas").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).getResultList();
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladas").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).getResultList();
            
              }
            
@@ -122,23 +124,23 @@ public class ValijaFacade extends AbstractFacade<Valija> {
              
               if("1".equals(consulta)){
                   
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadasXSede").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
+              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadasXSede").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
            
              
              }
               if("2".equals(consulta)){
               
-                  Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidasXSede").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
+                  Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidasXSede").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
              
              }
                if("3".equals(consulta)){
                    
-                   Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadasXSede").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
+                   Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadasXSede").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
            
              }
                 if("4".equals(consulta)){
                     
-                    Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladasXSede").setParameter("FechaIni",fechaini).setParameter("FechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
+                    Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladasXSede").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
             
              }
              

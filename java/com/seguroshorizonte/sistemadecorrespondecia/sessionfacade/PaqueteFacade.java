@@ -123,11 +123,11 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         return Resultado;
     }
 
-    public void ActualizacionLocalizacionyValijaDelPaquete(String Localizacion, String idPaq, String idVal) {
-        Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=?, idval=?  WHERE idpaq=?");
-        q.setParameter(1, Localizacion);
-        q.setParameter(2, idVal);
-        q.setParameter(3, idPaq);
+    public void ActualizacionLocalizacionyValijaDelPaquete(String idPaq, String idVal) {
+        Query q = em.createNativeQuery("UPDATE paquete SET idval=?  WHERE idpaq=?");
+      
+        q.setParameter(1, idVal);
+        q.setParameter(2, idPaq);
         q.executeUpdate();
     }
 

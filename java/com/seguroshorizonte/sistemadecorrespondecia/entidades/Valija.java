@@ -44,7 +44,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Valija.findByAsuntoval", query = "SELECT v FROM Valija v WHERE v.asuntoval = :asuntoval"),
     @NamedQuery(name = "Valija.findByFechaval", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval"),
     @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
-    @NamedQuery(name = "Valija.findByZoomval", query = "SELECT v FROM Valija v WHERE v.codproveedorval = :zoomval"),
     @NamedQuery(name = "Valija.findByNoProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval1 OR v.statusval = :statusval2"),
     @NamedQuery(name = "Valija.maxVal", query = "SELECT MAX(v.idval) FROM Valija v WHERE v.iduse.idusu.idusu = :idusu"),
     @NamedQuery(name = "Valija.findByProcesadas", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
