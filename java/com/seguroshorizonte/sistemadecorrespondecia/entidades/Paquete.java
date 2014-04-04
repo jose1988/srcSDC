@@ -48,9 +48,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findByLocalizacionpaq", query = "SELECT p FROM Paquete p WHERE p.localizacionpaq = :localizacionpaq"),
     @NamedQuery(name = "Paquete.findByIdval", query = "SELECT p FROM Paquete p WHERE p.idval.idval = :idval order by p.origenpaq.idatr.idsed.idsed,p.destinopaq.idatr.idsed.idsed,p.origenpaq.idusu.idusu,p.destinopaq.idusu.idusu"),
     @NamedQuery(name = "Paquete.findByRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq"),
-    @NamedQuery(name = "Paquete.findByFechapaqYOrigen", query = "SELECT p FROM Paquete p WHERE p.origenpaq = :origenpaq AND p.fechapaq =:fechapaq"),
     @NamedQuery(name = "Paquete.findByPaqYValija", query = "SELECT p FROM Paquete p WHERE p.idval = :idval"),
-    @NamedQuery(name = "Paquete.findByOrigenYRespaq", query = "SELECT p FROM Paquete p WHERE p.respaq = :respaq AND p.origenpaq = :origenpaq"),
     @NamedQuery(name = "Paquete.findByStatuspaqYRespaq", query = "SELECT p FROM Paquete p WHERE p.statuspaq = :statuspaq AND p.respaq = :respaq"),
     @NamedQuery(name = "Paquete.paqBySede", query = "SELECT p FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed AND p.destinopaq.tipobuz= :tipo"),
     @NamedQuery(name = "Paquete.findByExternos", query = "SELECT p FROM Paquete p WHERE  p.destinopaq.tipobuz = '1' AND p.origenpaq.idatr.idsed = :sede AND p.localizacionpaq = 'Sede' AND p.statuspaq = '0' "),
@@ -61,10 +59,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq"),
     @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusu = :destinopaq")})
 public class Paquete implements Serializable {
-   
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaq")
     private Collection<Mensaje> mensajeCollection;
-
     @Size(max = 20)
     @Column(name = "FRAGILPAQ")
     private String fragilpaq;
@@ -114,7 +111,6 @@ public class Paquete implements Serializable {
     @JoinColumn(name = "IDPAQRES", referencedColumnName = "IDPAQ")
     @ManyToOne
     private Paquete idpaqres;
-   
     @JoinColumn(name = "IDDOC", referencedColumnName = "IDDOC")
     @ManyToOne(optional = false)
     private Documento iddoc;
@@ -256,7 +252,6 @@ public class Paquete implements Serializable {
         this.idpaqres = idpaqres;
     }
 
-  
     public Documento getIddoc() {
         return iddoc;
     }
@@ -313,8 +308,6 @@ public class Paquete implements Serializable {
     public void setFragilpaq(String fragilpaq) {
         this.fragilpaq = fragilpaq;
     }
-
-  
 
     @XmlTransient
     public Collection<Mensaje> getMensajeCollection() {

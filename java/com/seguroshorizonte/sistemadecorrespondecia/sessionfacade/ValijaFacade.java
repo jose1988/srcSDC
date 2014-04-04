@@ -5,12 +5,9 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,36 +50,6 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         q.executeUpdate();
     }
 
-    public List<Valija> listarValijasXFecha() {
-        List<Valija> Resultado;
-        Date fecha = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(fecha);
-        System.out.print(cal);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        fecha = cal.getTime();
-        Query consulta = em.createNamedQuery("Valija.findByFechaval").setParameter("fechaval", fecha);
-        Resultado = consulta.getResultList();
-        return Resultado;
-    }
-
-    public List<Valija> listarValijasNoProcesadas() {
-        List<Valija> Resultado = null;
-        Query consulta = em.createNamedQuery("Valija.findByNoProcesadas").setParameter("statusval1", '2').setParameter("statusval2", '3');
-        Resultado = consulta.getResultList();
-        return Resultado;
-    }
-
-    public List<Valija> listarValijasProcesadas() {
-        List<Valija> Resultado = null;
-        Query consulta = em.createNamedQuery("Valija.findByProcesadas").setParameter("statusval", '1');
-        Resultado = consulta.getResultList();
-        return Resultado;
-    }
-
     public BigDecimal ultimaValija(BigDecimal idusu) {
         Query consulta = em.createNamedQuery("Valija.maxVal").setParameter("idusu", idusu);
         BigDecimal Resultado = (BigDecimal) consulta.getSingleResult();
@@ -97,76 +64,46 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         q.setParameter(4, idValija);
         q.executeUpdate();
     }
-    
-     public List<Valija> estadisticasValija(Date fechaini, Date fechafin,String consulta,String idsede) {
-        
-         List<Valija> Resultado = new ArrayList<Valija>();
-         if("0".equals(idsede)){
-             
-             if("1".equals(consulta)){
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadas").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).getResultList();
-           
-             }
-              if("2".equals(consulta)){
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidas").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).getResultList();
-           
-             }
-               if("3".equals(consulta)){
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasErradas").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).getResultList();
-           
-             }
-                if("4".equals(consulta)){
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladas").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).getResultList();
-           
-             }
-           
-         }else{
-             
-              if("1".equals(consulta)){
-                  
-              Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadasXSede").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
-           
-             
-             }
-              if("2".equals(consulta)){
-              
-                  Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidasXSede").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
-             
-             }
-               if("3".equals(consulta)){
-                   
-                   Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadasXSede").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
-           
-             }
-                if("4".equals(consulta)){
-                    
-                    Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladasXSede").setParameter("fechaIni",fechaini).setParameter("fechaFin",fechafin).setParameter("idsed",new BigDecimal(idsede)).getResultList();
-            
-             }
-             
-          
-         }
-         return Resultado;
-       
+
+    public List<Valija> estadisticasValija(Date fechaini, Date fechafin, String consulta, String idsede) {
+        List<Valija> Resultado = new ArrayList<Valija>();
+        if ("0".equals(idsede)) {
+            if ("1".equals(consulta)) {
+                Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadas").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).getResultList();
+            }
+            if ("2".equals(consulta)) {
+                Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidas").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).getResultList();
+            }
+            if ("3".equals(consulta)) {
+                Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasErradas").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).getResultList();
+            }
+            if ("4".equals(consulta)) {
+                Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladas").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).getResultList();
+            }
+        } else {
+            Sede idSed = new Sede();
+            idSed.setIdsed(new BigDecimal(idsede));
+            if ("1".equals(consulta)) {
+                Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasEnviadasXSede").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).setParameter("idsed", idSed).getResultList();
+            }
+            if ("2".equals(consulta)) {
+                Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasRecibidasXSede").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).setParameter("idsed", idSed).getResultList();
+            }
+            if ("3".equals(consulta)) {
+                Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasErradasXSede").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).setParameter("idsed", idSed).getResultList();
+            }
+            if ("4".equals(consulta)) {
+                Resultado = (List<Valija>) em.createNamedQuery("Valija.totalValijasAnuladasXSede").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).setParameter("idsed", idSed).getResultList();
+            }
+        }
+        return Resultado;
     }
-    
 
     public void editarStatusValija(BigDecimal idValija, String status) {
         Query q = em.createNativeQuery("UPDATE valija SET statusval=? WHERE idval=?");
         q.setParameter(1, status);
         q.setParameter(2, idValija);
         q.executeUpdate();
-    }
-
-    public List<Valija> listarValijasXFechaYUsuario(Usuario idUsuario, String fechaInicio, String fechaFin) {
-        List<Valija> Resultado = null;
-        Date fechaI;
-        Date fechaF;
-        fechaI=ParseFecha(fechaInicio);
-        fechaF=ParseFecha(fechaFin);
-        Query consulta = em.createNamedQuery("Valija.findByFechavalYUsuario").setParameter("fechaIni", fechaI).setParameter("fechaFin", fechaF).setParameter("idusu", idUsuario);
-        Resultado = consulta.getResultList();
-        return Resultado;
     }
 
     public Valija consultarPaquete(BigDecimal idValija) {
@@ -222,17 +159,5 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         cal.set(Calendar.MILLISECOND, 0);
         fecha = cal.getTime();
         return fecha;
-    }
-    
-    public Date ParseFecha(String fecha){
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-        Date fechaDate = null;
-        try {
-            fechaDate = formato.parse(fecha);
-        } 
-        catch (ParseException ex){
-            System.out.println(ex);
-        }
-        return fechaDate;
     }
 }
