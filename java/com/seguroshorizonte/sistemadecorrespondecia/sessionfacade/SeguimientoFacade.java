@@ -5,10 +5,8 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Rol;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
-import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede;
 import java.math.BigDecimal;
 import java.util.Calendar;

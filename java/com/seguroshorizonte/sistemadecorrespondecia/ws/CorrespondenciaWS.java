@@ -106,7 +106,6 @@ public class CorrespondenciaWS {
     private AlertaFacade ejbAlerta;
     @EJB
     private ProveedorFacade ejbProveedor;
-    
     @EJB
     private ProveedorsedeFacade ejbProveedorSede;
 
@@ -233,7 +232,7 @@ public class CorrespondenciaWS {
      */
     @WebMethod(operationName = "insertarSede")
     public int insertarSede(@WebParam(name = "registroSede") Sede registroSede, @WebParam(name = "idorg") String idorg) {
-        
+
         Organizacion org = ejbOrganizacion.find(new BigDecimal(idorg));
         registroSede.setIdorg(org);
         int Resultado;
@@ -245,11 +244,15 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     @WebMethod(operationName = "insertarProveedor")
+
+    /**
+     *
+     * @param registroP
+     * @return
+     */
+    @WebMethod(operationName = "insertarProveedor")
     public int insertarProveedor(@WebParam(name = "registroProveedor") Proveedor registroP) {
-        
-       
+
         int Resultado;
         try {
             ejbProveedor.create(registroP);
@@ -268,7 +271,7 @@ public class CorrespondenciaWS {
      */
     @WebMethod(operationName = "insertarArea")
     public int insertarArea(@WebParam(name = "registroArea") Areatrabajo registroArea, @WebParam(name = "idsed") String idsed) {
-        
+
         Sede sed = ejbSede.find(new BigDecimal(idsed));
         registroArea.setIdsed(sed);
         int Resultado;
@@ -1376,8 +1379,7 @@ public class CorrespondenciaWS {
     }
 
     /**
-     * Método que lista las valijas con fecha de creación del día de hoy,
-     * depediendo del usuario y de la sede
+     * Método que lista las valijas dependiendo del rango de fecha y de la sede
      *
      * @param fechaInicio
      * @param idsede
@@ -1385,8 +1387,8 @@ public class CorrespondenciaWS {
      * @param consulta
      * @return lista tipo valija con toda la información
      */
-    @WebMethod(operationName = "consultarEstadisticas")
-    public List<Valija> consultarEstadisticas(@WebParam(name = "fechaInicio") String fechaInicio, @WebParam(name = "fechaFinal") String fechaFinal, @WebParam(name = "consulta") String consulta, @WebParam(name = "idsede") String idsede) {
+    @WebMethod(operationName = "consultarEstadisticasValijas")
+    public List<Valija> consultarEstadisticasValijas(@WebParam(name = "fechaInicio") String fechaInicio, @WebParam(name = "fechaFinal") String fechaFinal, @WebParam(name = "consulta") String consulta, @WebParam(name = "idsede") String idsede) {
 
         List<Valija> Resultado = new ArrayList<Valija>();
         Calendar calendario = GregorianCalendar.getInstance();
@@ -1397,6 +1399,33 @@ public class CorrespondenciaWS {
             Date fechaini = formatoDeFecha.parse(fechaInicio);
             Date fechafin = formatoDeFecha.parse(fechaFinal);
             Resultado = ejbValija.estadisticasValija(fechaini, fechafin, consulta, idsede);
+        } catch (Exception e) {
+            Resultado = null;
+        }
+        return Resultado;
+    }
+
+    /**
+     * Método que lista los paquetes dependiendo del rango de fecha y de la sede
+     *
+     * @param fechaInicio
+     * @param idsede
+     * @param fechaFinal
+     * @param consulta
+     * @return lista tipo paquete con toda la información
+     */
+    @WebMethod(operationName = "consultarEstadisticasPaquetes")
+    public List<Paquete> consultarEstadisticasPaquetes(@WebParam(name = "fechaInicio") String fechaInicio, @WebParam(name = "fechaFinal") String fechaFinal, @WebParam(name = "consulta") String consulta, @WebParam(name = "idsede") String idsede) {
+
+        List<Paquete> Resultado = new ArrayList<Paquete>();
+        Calendar calendario = GregorianCalendar.getInstance();
+        Date fecha = calendario.getTime();
+        System.out.println(fecha);
+        SimpleDateFormat formatoDeFecha = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date fechaini = formatoDeFecha.parse(fechaInicio);
+            Date fechafin = formatoDeFecha.parse(fechaFinal);
+            Resultado = ejbPaquete.estadisticasPaquete(fechaini, fechafin, consulta, idsede);
         } catch (Exception e) {
             Resultado = null;
         }
@@ -1547,8 +1576,13 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     @WebMethod(operationName = "consultarProveedorXNombre")
+
+    /**
+     *
+     * @param nombre
+     * @return
+     */
+    @WebMethod(operationName = "consultarProveedorXNombre")
     public List<Proveedor> consultarProveedorXNombre(@WebParam(name = "nombre") String nombre) {
 
         List<Proveedor> Resultado;

@@ -57,7 +57,13 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.findMaxPaqXOrigen", query = "SELECT MAX(p.idpaq) FROM Paquete p WHERE p.origenpaq.idusu = :origenpaq"),
     @NamedQuery(name = "Paquete.findPaqXBuscarArea", query = "SELECT p FROM Paquete p WHERE  p.destinopaq.idatr.idatr=:idatr AND p.destinopaq.idatr.idsed.idsed= :idsed AND p.localizacionpaq= :sede"),
     @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq"),
-    @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusu = :destinopaq")})
+    @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusu = :destinopaq"),
+    @NamedQuery(name = "Paquete.totalPaquetesEnviadosXSede", query = "SELECT p FROM Paquete p WHERE p.fechapaq BETWEEN :fechaIni AND :fechaFin AND p.idsed = :idsed"),
+    @NamedQuery(name = "Paquete.totalPaquetesEnviados", query = "SELECT p FROM Paquete p WHERE p.fechapaq BETWEEN :fechaIni AND :fechaFin"),
+    @NamedQuery(name = "Paquete.totalPaquetesRecibidosXSede", query = "SELECT p FROM Paquete p WHERE p.fechapaq BETWEEN :fechaIni AND :fechaFin AND p.idsed = :idsed AND p.statuspaq='1'"),
+    @NamedQuery(name = "Paquete.totalPaquetesRecibidos", query = "SELECT p FROM Paquete p WHERE p.fechapaq BETWEEN :fechaIni AND :fechaFin AND p.statuspaq='1'"),
+    @NamedQuery(name = "Paquete.totalPaquetesPorEntregarXSede", query = "SELECT p FROM Paquete p WHERE p.fechapaq BETWEEN :fechaIni AND :fechaFin AND p.idsed = :idsed AND p.statuspaq='0'"),
+    @NamedQuery(name = "Paquete.totalPaquetesPorEntregar", query = "SELECT p FROM Paquete p WHERE p.fechapaq BETWEEN :fechaIni AND :fechaFin AND p.statuspaq='0'")})
 public class Paquete implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idpaq")

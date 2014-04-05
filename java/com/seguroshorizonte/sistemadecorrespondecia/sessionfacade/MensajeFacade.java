@@ -8,7 +8,6 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Mensaje;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *

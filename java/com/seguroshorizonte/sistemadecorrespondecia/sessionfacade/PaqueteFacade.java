@@ -9,6 +9,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -108,7 +109,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
     public void ActualizacionLocalizacionyValijaDelPaquete(String idPaq, String idVal) {
         Query q = em.createNativeQuery("UPDATE paquete SET idval=?  WHERE idpaq=?");
-
         q.setParameter(1, idVal);
         q.setParameter(2, idPaq);
         q.executeUpdate();
@@ -163,7 +163,6 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public List<Paquete> BuscarArea(BigDecimal idatr, BigDecimal idsede) {
-
         String sede = "Sede Destino";
         Query consulta = em.createNamedQuery("Paquete.findPaqXBuscarArea").setParameter("idatr", idatr).setParameter("idsed", idsede).setParameter("sede", sede);
         List<Paquete> Resultado = consulta.getResultList();
@@ -182,5 +181,33 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.setParameter(1, tipo);
         q.setParameter(2, idusu);
         q.executeUpdate();
+    }
+
+    public List<Paquete> estadisticasPaquete(Date fechaini, Date fechafin, String consulta, String idsede) {
+        List<Paquete> Resultado = new ArrayList<Paquete>();
+        if ("0".equals(idsede)) {
+            if ("1".equals(consulta)) {
+                Resultado = (List<Paquete>) em.createNamedQuery("Paquete.totalPaquetesEnviados").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).getResultList();
+            }
+            if ("2".equals(consulta)) {
+                Resultado = (List<Paquete>) em.createNamedQuery("Paquete.totalPaquetesRecibidos").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).getResultList();
+            }
+            if ("3".equals(consulta)) {
+                Resultado = (List<Paquete>) em.createNamedQuery("Paquete.totalPaquetesPorEntregar").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).getResultList();
+            }
+        } else {
+            Sede idSed = new Sede();
+            idSed.setIdsed(new BigDecimal(idsede));
+            if ("1".equals(consulta)) {
+                Resultado = (List<Paquete>) em.createNamedQuery("Paquete.totalPaquetesEnviadosXSede").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).setParameter("idsed", idSed).getResultList();
+            }
+            if ("2".equals(consulta)) {
+                Resultado = (List<Paquete>) em.createNamedQuery("Paquete.totalPaquetesRecibidosXSede").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).setParameter("idsed", idSed).getResultList();
+            }
+            if ("3".equals(consulta)) {
+                Resultado = (List<Paquete>) em.createNamedQuery("Paquete.totalPaquetesPorEntregarXSede").setParameter("fechaIni", fechaini).setParameter("fechaFin", fechafin).setParameter("idsed", idSed).getResultList();
+            }
+        }
+        return Resultado;
     }
 }

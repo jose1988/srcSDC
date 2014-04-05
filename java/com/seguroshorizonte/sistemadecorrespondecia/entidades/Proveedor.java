@@ -32,10 +32,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proveedor.findByIdpro", query = "SELECT p FROM Proveedor p WHERE p.idpro = :idpro"),
     @NamedQuery(name = "Proveedor.findByNombrepro", query = "SELECT p FROM Proveedor p WHERE p.nombrepro = :nombrepro")})
 public class Proveedor implements Serializable {
+
     @Size(max = 20)
     @Column(name = "CODIGOPRO")
     private String codigopro;
-
     @Size(max = 20)
     @Column(name = "TELEFONOPRO")
     private String telefonopro;

@@ -21,7 +21,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -38,26 +37,21 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Buzon.findByIdbuz", query = "SELECT b FROM Buzon b WHERE b.idbuz = :idbuz"),
     @NamedQuery(name = "Buzon.findByTipobuz", query = "SELECT b FROM Buzon b WHERE b.tipobuz = :tipobuz"),
     @NamedQuery(name = "Buzon.findByTelefonobuz", query = "SELECT b FROM Buzon b WHERE b.telefonobuz = :telefonobuz"),
-    //@NamedQuery(name = "Buzon.findInternoByUsuarioYSede", query = "SELECT b FROM Buzon b WHERE b.idusu = :idusu AND b.idsed != :idsede AND b.tipobuz='0'"),
-    //@NamedQuery(name = "Buzon.findExternoByUsuario", query = "SELECT b FROM Buzon b WHERE b.idusu = :idusu AND b.tipobuz='1'"),
-    //@NamedQuery(name = "Buzon.findInternoByNombreUsuario", query = "SELECT b FROM Buzon b WHERE b.idusubuz.userusu = :user AND b.idusu = :idusu"),
     @NamedQuery(name = "Buzon.findExternoByNombreUsuario", query = "SELECT b FROM Buzon b WHERE b.nombrebuz = :nombre AND b.idusu = :idusu"),
-    //@NamedQuery(name = "Buzon.findByDuenoYContacto", query = "SELECT b FROM Buzon b WHERE b.idatr = :area AND b.idusu = :idusu AND b.idsed = :idsed"),
     @NamedQuery(name = "Buzon.findByNombrebuz", query = "SELECT b FROM Buzon b WHERE b.nombrebuz = :nombrebuz"),
     @NamedQuery(name = "Buzon.findByUsuarioSede", query = "SELECT b FROM Buzon b WHERE b.idatr.idsed.idsed = :idsed AND b.idusu.idusu= :idusu"),
     @NamedQuery(name = "Buzon.findByNASA", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido and b.idatr.idatr= :area and b.tipobuz='0'"),
-    @NamedQuery(name = "Buzon.findByNAS", query = "SELECT b FROM Usuario u , Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido and b.tipobuz='0'"),
-     @NamedQuery(name = "Buzon.findByNBE", query = "SELECT b FROM Usuario u , Buzon b WHERE u.idusu=b.idusu.idusu and upper(b.nombrebuz) like :nombre and b.tipobuz='1'"),
-   
+    @NamedQuery(name = "Buzon.findByNAS", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido and b.tipobuz='0'"),
+    @NamedQuery(name = "Buzon.findByNBE", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(b.nombrebuz) like :nombre and b.tipobuz='1'"),
     @NamedQuery(name = "Buzon.findByUsuario", query = "SELECT b FROM Buzon b WHERE b.idusu.idusu = :idusu")})
 public class Buzon implements Serializable {
+
     @Size(max = 20)
     @Column(name = "IDENTIFICACIONBUZ")
     private String identificacionbuz;
     @Size(max = 20)
     @Column(name = "CORREOBUZ")
     private String correobuz;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "destinopaq")
     private Collection<Paquete> paqueteCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "origenpaq")

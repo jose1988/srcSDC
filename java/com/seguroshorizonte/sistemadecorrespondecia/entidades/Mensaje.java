@@ -6,7 +6,6 @@ package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,13 +16,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -38,10 +35,10 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Mensaje.findByNombremen", query = "SELECT m FROM Mensaje m WHERE m.nombremen = :nombremen"),
     @NamedQuery(name = "Mensaje.findByDescripcionmen", query = "SELECT m FROM Mensaje m WHERE m.descripcionmen = :descripcionmen")})
 public class Mensaje implements Serializable {
+
     @JoinColumn(name = "IDPAQ", referencedColumnName = "IDPAQ")
     @ManyToOne(optional = false)
     private Paquete idpaq;
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -61,7 +58,6 @@ public class Mensaje implements Serializable {
     @Size(min = 1, max = 2000)
     @Column(name = "DESCRIPCIONMEN")
     private String descripcionmen;
-   
 
     public Mensaje() {
     }
@@ -99,8 +95,6 @@ public class Mensaje implements Serializable {
     public void setDescripcionmen(String descripcionmen) {
         this.descripcionmen = descripcionmen;
     }
-
-    
 
     @Override
     public int hashCode() {
