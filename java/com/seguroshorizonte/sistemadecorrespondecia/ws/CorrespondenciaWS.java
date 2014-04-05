@@ -106,6 +106,7 @@ public class CorrespondenciaWS {
     private AlertaFacade ejbAlerta;
     @EJB
     private ProveedorFacade ejbProveedor;
+    
     @EJB
     private ProveedorsedeFacade ejbProveedorSede;
 
@@ -238,6 +239,20 @@ public class CorrespondenciaWS {
         int Resultado;
         try {
             ejbSede.create(registroSede);
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
+    
+     @WebMethod(operationName = "insertarProveedor")
+    public int insertarProveedor(@WebParam(name = "registroProveedor") Proveedor registroP) {
+        
+       
+        int Resultado;
+        try {
+            ejbProveedor.create(registroP);
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
@@ -1527,6 +1542,18 @@ public class CorrespondenciaWS {
         List<Proveedor> Resultado;
         try {
             Resultado = ejbProveedorSede.consultarProveedorXSede(sede);
+        } catch (Exception e) {
+            Resultado = null;
+        }
+        return Resultado;
+    }
+    
+     @WebMethod(operationName = "consultarProveedorXNombre")
+    public List<Proveedor> consultarProveedorXNombre(@WebParam(name = "nombre") String nombre) {
+
+        List<Proveedor> Resultado;
+        try {
+            Resultado = (List<Proveedor>) ejbProveedor.consultarProveedorNombre(nombre);
         } catch (Exception e) {
             Resultado = null;
         }
