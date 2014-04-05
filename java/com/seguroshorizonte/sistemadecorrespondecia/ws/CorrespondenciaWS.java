@@ -2552,5 +2552,27 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+
+    @WebMethod(operationName = "consultarPaqueteXIdOCodigoBarras")
+    public Paquete consultarPaqueteXIdOCodigoBarras(@WebParam(name = "codigo") String codigo) {
+        Paquete Resultado = null;
+        try {
+            Resultado = ejbPaquete.consultarPaqueteXIdOCodigoBarras(codigo);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "consultarValijaXIdOCodigoBarras")
+    public Valija consultarValijaXIdOCodigoBarras(@WebParam(name = "codigo") String codigo, @WebParam(name = "sede") String sede) {
+        Valija Resultado = null;
+        try {
+            Resultado = ejbValija.consultarValijaXIdOCodigoBarras(codigo, sede);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
     //////////////// FIN MARIELA //////////////// 
 }

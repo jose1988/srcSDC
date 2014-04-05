@@ -210,4 +210,25 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         }
         return Resultado;
     }
+
+    public Paquete consultarPaqueteXIdOCodigoBarras(String Codigo) {
+        Paquete Resultado = null;
+        if (Codigo.toString().length() > 8) {
+            String sede = new String(Codigo.substring(0, 4));
+            String año = new String(Codigo.substring(6, 8));
+            BigDecimal id = new BigDecimal(Codigo.substring(8, Codigo.toString().length()));
+            try {
+                Query consulta = em.createNamedQuery("Paquete.findByCodigoBarras").setParameter("idpaq", id).setParameter("anio", año).setParameter("idsed", sede);
+                Resultado = (Paquete) consulta.getSingleResult();
+            } catch (Exception e) {
+                Query consulta = em.createNamedQuery("Paquete.findByIdpaq").setParameter("idpaq", new BigDecimal(Codigo));
+                Resultado = (Paquete) consulta.getSingleResult();
+            }
+        } else {
+            Query consulta = em.createNamedQuery("Paquete.findByIdpaq").setParameter("idpaq", new BigDecimal(Codigo));
+            Resultado = (Paquete) consulta.getSingleResult();
+        }
+        return Resultado;
+    }
+
 }

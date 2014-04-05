@@ -160,4 +160,35 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         fecha = cal.getTime();
         return fecha;
     }
+
+    public Valija consultarValijaXIdOCodigoBarras(String Codigo, String sedeVal) {
+        Valija Resultado = null;
+        Sede resultSede = null;
+        String status1 = "0";
+        String status2 = "4";
+        if (Codigo.toString().length() > 8) {
+            String sede = new String(Codigo.substring(0, 4));
+            String año = new String(Codigo.substring(6, 8));
+            BigDecimal id = new BigDecimal(Codigo.substring(8, Codigo.toString().length()));
+            try {
+                Query consultaSede = em.createNamedQuery("Sede.findByCodigosed").setParameter("codigo", sede);
+                resultSede = (Sede) consultaSede.getSingleResult();
+                Query consulta = em.createNamedQuery("Valija.findByIdYAnio").setParameter("idval", id).setParameter("anio", año).setParameter("sede", sedeVal);
+                Resultado = (Valija) consulta.getSingleResult();
+                if (Resultado.getOrigenval().toString().compareTo(resultSede.getIdsed().toString()) == 0) {
+                    return Resultado;
+                } else {
+                    consulta = em.createNamedQuery("Valija.findByIdvalXentregar").setParameter("idval", new BigDecimal(Codigo)).setParameter("sede", sedeVal).setParameter("status1", status1).setParameter("status2", status2);
+                    Resultado = (Valija) consulta.getSingleResult();
+                }
+            } catch (Exception e) {
+                Query consulta = em.createNamedQuery("Valija.findByIdvalXentregar").setParameter("idval", new BigDecimal(Codigo)).setParameter("sede", sedeVal).setParameter("status1", status1).setParameter("status2", status2);
+                Resultado = (Valija) consulta.getSingleResult();
+            }
+        } else {
+            Query consulta = em.createNamedQuery("Valija.findByIdvalXentregar").setParameter("idval", new BigDecimal(Codigo)).setParameter("sede", sedeVal).setParameter("status1", status1).setParameter("status2", status2);
+            Resultado = (Valija) consulta.getSingleResult();
+        }
+        return Resultado;
+    }
 }
