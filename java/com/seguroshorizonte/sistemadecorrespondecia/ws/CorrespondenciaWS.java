@@ -1204,7 +1204,7 @@ public class CorrespondenciaWS {
         try {
             registroPaq = new Paquete();
             idPaq = new BigDecimal(registroPaquete);
-            registroPaq = ejbPaquete.consultarPaquete(idPaq);
+             registroPaq = ejbPaquete.consultarPaqueteXIdOCodigoBarras(registroPaquete);
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
@@ -1262,9 +1262,7 @@ public class CorrespondenciaWS {
         Paquete registroPaq;
         Mensaje nuevoMensaje;
         try {
-            registroPaq = new Paquete();
-            idPaq = new BigDecimal(registroPaquete);
-            registroPaq = ejbPaquete.consultarPaquete(idPaq);
+            registroPaq = ejbPaquete.consultarPaqueteXIdOCodigoBarras(registroPaquete);
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
