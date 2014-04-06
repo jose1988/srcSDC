@@ -590,6 +590,19 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+    
+    @WebMethod(operationName = "estadoArea")
+     public int estadoArea(@WebParam(name = "area") String area) {
+
+        int Resultado = 0;
+        try {
+           ejbAreaTrabajo.estadoArea(area);
+           Resultado = 1;
+        } catch (Exception e) {
+            return 0;
+        }
+        return Resultado;
+    }
 
     /**
      *

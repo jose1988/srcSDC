@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -53,5 +54,23 @@ public class AreatrabajoFacade extends AbstractFacade<Areatrabajo> {
         BigDecimal idsed = new BigDecimal(sede);
         c = (Areatrabajo) em.createNamedQuery("Areatrabajo.findByNombreatr").setParameter("nombreatr", nombre).setParameter("idsed", idsed).getSingleResult();
         return c;
+    }
+    
+    public void estadoArea(String area) {
+        Areatrabajo are = this.find(new BigDecimal(area));
+        
+        if("1".equals(are.getBorradoatr())){
+        Query q = em.createNativeQuery("UPDATE Areatrabajo SET borradoatr=? WHERE idatr=?");
+        q.setParameter(1, "0");
+        q.setParameter(2, new BigDecimal(area));
+        q.executeUpdate();
+        }else{
+        Query q2 = em.createNativeQuery("UPDATE Areatrabajo SET borradoatr=? WHERE idatr=?");
+        q2.setParameter(1, "1");
+        q2.setParameter(2, new BigDecimal(area));
+        q2.executeUpdate();
+        }
+        
+        
     }
 }

@@ -10,10 +10,13 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -33,6 +36,20 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proveedor.findByNombrepro", query = "SELECT p FROM Proveedor p WHERE p.nombrepro = :nombrepro")})
 public class Proveedor implements Serializable {
 
+    
+    private static final long serialVersionUID = 1L;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PROVEEDOR")
+    @SequenceGenerator(name = "SEQ_PROVEEDOR", sequenceName = "SEQ_PROVEEDOR", allocationSize = 1)
+   
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "IDPRO")
+    private BigDecimal idpro;
+    @Size(max = 200)
+    @Column(name = "NOMBREPRO")
+    private String nombrepro;
     @Size(max = 20)
     @Column(name = "CODIGOPRO")
     private String codigopro;
@@ -41,18 +58,7 @@ public class Proveedor implements Serializable {
     private String telefonopro;
     @OneToMany(mappedBy = "idpro")
     private Collection<Proveedorsede> proveedorsedeCollection;
-    @OneToMany(mappedBy = "idpro")
-    private Collection<Valija> valijaCollection;
-    private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "IDPRO")
-    private BigDecimal idpro;
-    @Size(max = 200)
-    @Column(name = "NOMBREPRO")
-    private String nombrepro;
+    
 
     public Proveedor() {
     }
@@ -119,14 +125,7 @@ public class Proveedor implements Serializable {
         this.proveedorsedeCollection = proveedorsedeCollection;
     }
 
-    @XmlTransient
-    public Collection<Valija> getValijaCollection() {
-        return valijaCollection;
-    }
-
-    public void setValijaCollection(Collection<Valija> valijaCollection) {
-        this.valijaCollection = valijaCollection;
-    }
+   
 
     public String getCodigopro() {
         return codigopro;
