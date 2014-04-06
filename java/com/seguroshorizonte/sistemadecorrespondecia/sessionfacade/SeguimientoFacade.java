@@ -70,14 +70,16 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
 
     public List<Paquete> consultarPaquetesConfirmadosXRol(Usuariosede Registro) {
         List<Paquete> Resultado = null;
-        String nivel = "";
-        if (Registro.getIdrol().getIdrol().toString().compareTo("5") == 0) {
-            nivel = "Sede";
-        } else {
-            nivel = Registro.getIdrol().getNombrerol();
+        Query consulta;
+        //caso multirol o sede
+        if (Registro.getIdrol().getIdrol().toString().compareTo("5") == 0 || Registro.getIdrol().getIdrol().toString().compareTo("2") == 0) {
+            consulta = em.createNamedQuery("Seguimiento.findPaqueteByRolSede").setParameter("idsed", Registro.getIdsed());
+            Resultado = consulta.getResultList();
+        } else { //caso area o emisario
+            consulta = em.createNamedQuery("Seguimiento.findPaqueteByRol").setParameter("idrol", Registro.getIdrol()).setParameter("idsed", Registro.getIdsed());
+            Resultado = consulta.getResultList();
         }
-        Query consulta = em.createNamedQuery("Seguimiento.findPaqueteByRol").setParameter("nivel", nivel).setParameter("idsed", Registro.getIdsed());
-        Resultado = consulta.getResultList();
+
 
         return Resultado;
     }
