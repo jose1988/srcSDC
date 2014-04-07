@@ -61,19 +61,19 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         Resultado = (Paquete) consulta.getSingleResult();
         return Resultado;
     }
-    
-     public List<Paquete> consultarStatusPaquete(Usuariosede use) {
-          List<Paquete> Resultado = new ArrayList<Paquete>();
+
+    public List<Paquete> consultarStatusPaquete(Usuariosede use) {
+        List<Paquete> Resultado = new ArrayList<Paquete>();
         Query consulta = em.createNamedQuery("Seguimiento.findByExtraviado").setParameter("iduse", use.getIduse());
-        List<Seguimiento> Resultad = (List<Seguimiento>)  consulta.getResultList();
-        
+        List<Seguimiento> Resultad = (List<Seguimiento>) consulta.getResultList();
+
         Iterator<Seguimiento> lista = Resultad.iterator();
-            while (lista.hasNext()) {
-                Seguimiento aux = lista.next();
-               Resultado.add(aux.getIdpaq());
-                
-            }
-        
+        while (lista.hasNext()) {
+            Seguimiento aux = lista.next();
+            Resultado.add(aux.getIdpaq());
+
+        }
+
         return Resultado;
     }
 
@@ -248,5 +248,4 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         }
         return Resultado;
     }
-
 }

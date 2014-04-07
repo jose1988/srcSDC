@@ -110,9 +110,8 @@ public class CorrespondenciaWS {
     private ProveedorFacade ejbProveedor;
     @EJB
     private ProveedorsedeFacade ejbProveedorSede;
-     @EJB
+    @EJB
     private NivelFacade ejbNivel;
-
 
     /**
      * This is a sample web service operation
@@ -483,11 +482,17 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-        
-          @WebMethod(operationName = "actualizarTiempoNivel")
+
+    /**
+     *
+     * @param tiempo
+     * @param idniv
+     * @return
+     */
+    @WebMethod(operationName = "actualizarTiempoNivel")
     public int actualizarTiempoNivel(@WebParam(name = "tiempo") String tiempo, @WebParam(name = "idniv") String idniv) {
 
-       int Resultado = 0;
+        int Resultado = 0;
         try {
             ejbNivel.editarTiempoNivel(tiempo, idniv);
             Resultado = 1;
@@ -608,8 +613,13 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-      @WebMethod(operationName = "consultarNivel")
+
+    /**
+     *
+     * @param pri
+     * @return
+     */
+    @WebMethod(operationName = "consultarNivel")
     public List<Nivel> consultarNivel(@WebParam(name = "prioridad") String pri) {
 
         List<Nivel> Resultado = null;
@@ -620,14 +630,19 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
+
+    /**
+     *
+     * @param area
+     * @return
+     */
     @WebMethod(operationName = "estadoArea")
-     public int estadoArea(@WebParam(name = "area") String area) {
+    public int estadoArea(@WebParam(name = "area") String area) {
 
         int Resultado = 0;
         try {
-           ejbAreaTrabajo.estadoArea(area);
-           Resultado = 1;
+            ejbAreaTrabajo.estadoArea(area);
+            Resultado = 1;
         } catch (Exception e) {
             return 0;
         }
@@ -823,14 +838,20 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
+
+    /**
+     *
+     * @param idusu
+     * @param idsede
+     * @return
+     */
     @WebMethod(operationName = "consultarStatusPaquete")
-    public List<Paquete> consultarStatusPaquete(@WebParam(name = "idusu") String idusu, @WebParam(name = "idsede")  String idsede) {
+    public List<Paquete> consultarStatusPaquete(@WebParam(name = "idusu") String idusu, @WebParam(name = "idsede") String idsede) {
 
         List<Paquete> Resultado = new ArrayList<Paquete>();
-          Usuario usu = ejbUsuario.consultarUsuario(idusu);
-          Sede origen = ejbSede.consultarSedeXId(new BigDecimal(idsede));
-           Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
+        Usuario usu = ejbUsuario.consultarUsuario(idusu);
+        Sede origen = ejbSede.consultarSedeXId(new BigDecimal(idsede));
+        Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
         try {
             Resultado = ejbPaquete.consultarStatusPaquete(use);
         } catch (Exception e) {
@@ -838,16 +859,22 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     @WebMethod(operationName = "consultarStatusValija")
-    public List<Valija> consultarStatusValija(@WebParam(name = "idusu")  String idusu,@WebParam(name = "idsede")  String idsede) {
+
+    /**
+     *
+     * @param idusu
+     * @param idsede
+     * @return
+     */
+    @WebMethod(operationName = "consultarStatusValija")
+    public List<Valija> consultarStatusValija(@WebParam(name = "idusu") String idusu, @WebParam(name = "idsede") String idsede) {
 
         List<Valija> Resultado = new ArrayList<Valija>();
-         Usuario usu = ejbUsuario.consultarUsuario(idusu);
-          Sede origen = ejbSede.consultarSedeXId(new BigDecimal(idsede));
-           
+        Usuario usu = ejbUsuario.consultarUsuario(idusu);
+        Sede origen = ejbSede.consultarSedeXId(new BigDecimal(idsede));
+
         try {
-             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
+            Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
             Resultado = ejbValija.consultarStatusValija(use);
         } catch (Exception e) {
             Resultado = null;
@@ -1265,7 +1292,7 @@ public class CorrespondenciaWS {
         try {
             registroPaq = new Paquete();
             idPaq = new BigDecimal(registroPaquete);
-             registroPaq = ejbPaquete.consultarPaqueteXIdOCodigoBarras(registroPaquete);
+            registroPaq = ejbPaquete.consultarPaqueteXIdOCodigoBarras(registroPaquete);
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
@@ -1369,7 +1396,7 @@ public class CorrespondenciaWS {
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
             Valija val = ejbValija.consultarValijaXIdOCodigoBarra(registroValija);
-           
+
             //Incidente
             nuevoIncidente = new Incidente();
             nuevoIncidente.setNombreinc("Valija Incorrecta");
@@ -1418,7 +1445,7 @@ public class CorrespondenciaWS {
         List<Paquete> lista;
         BigDecimal idPaq;
         Incidente nuevoIncidente;
-     
+
         try {
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
@@ -2620,6 +2647,11 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param codigo
+     * @return
+     */
     @WebMethod(operationName = "consultarPaqueteXIdOCodigoBarras")
     public Paquete consultarPaqueteXIdOCodigoBarras(@WebParam(name = "codigo") String codigo) {
         Paquete Resultado = null;
@@ -2631,6 +2663,12 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param codigo
+     * @param sede
+     * @return
+     */
     @WebMethod(operationName = "consultarValijaXIdOCodigoBarras")
     public Valija consultarValijaXIdOCodigoBarras(@WebParam(name = "codigo") String codigo, @WebParam(name = "sede") String sede) {
         Valija Resultado = null;
@@ -2641,9 +2679,12 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    
-    
-    
+
+    /**
+     *
+     * @param codigo
+     * @return
+     */
     @WebMethod(operationName = "consultarValijaXIdOCodigoBarra")
     public Valija consultarValijaXIdOCodigoBarra(@WebParam(name = "codigo") String codigo) {
         Valija Resultado = null;
@@ -2654,5 +2695,4 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-   
 }

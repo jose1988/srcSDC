@@ -75,11 +75,17 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         if (Registro.getIdrol().getIdrol().toString().compareTo("5") == 0 || Registro.getIdrol().getIdrol().toString().compareTo("2") == 0) {
             consulta = em.createNamedQuery("Seguimiento.findPaqueteByRolSede").setParameter("idsed", Registro.getIdsed());
             Resultado = consulta.getResultList();
-        } else { //caso area o emisario
-            consulta = em.createNamedQuery("Seguimiento.findPaqueteByRol").setParameter("idrol", Registro.getIdrol()).setParameter("idsed", Registro.getIdsed());
+        }
+        if (Registro.getIdrol().getIdrol().toString().compareTo("1") == 0) { //caso area
+
+            consulta = em.createNamedQuery("Seguimiento.findPaqueteByArea").setParameter("idsed", Registro.getIdsed());
             Resultado = consulta.getResultList();
         }
+        if (Registro.getIdrol().getIdrol().toString().compareTo("3") == 0) { //caso emisario
 
+            consulta = em.createNamedQuery("Seguimiento.findPaqueteByEmisario").setParameter("idsed", Registro.getIdsed());
+            Resultado = consulta.getResultList();
+        }
 
         return Resultado;
     }
