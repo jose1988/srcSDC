@@ -2693,4 +2693,25 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+
+   /**
+     *
+     * @param autenticacion
+     * @return
+     */
+    @WebMethod(operationName = "auntenticarLDAP")
+    public String auntenticarLDAP(@WebParam(name = "user") String user,@WebParam(name = "password") String password) {
+
+        String Resultado;
+        try {
+            Resultado=ejbUsuario.auntenticarLDAPauntenticarLDAP(user, password);
+            
+        } catch (Exception e) {
+            Resultado = "Fail";
+        }
+        return Resultado;
+    }
+
+
+
 }

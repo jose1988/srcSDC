@@ -107,7 +107,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         return Id;
     }
 
-    public String auntenticarLDAP(String user, String password) {
+    public String auntenticarLDAPauntenticarLDAP(String user, String password) {
         int ldapPort;
         int ldapVersion;
         String base = "@seguroshorizonte.com";
