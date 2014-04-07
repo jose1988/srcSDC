@@ -191,4 +191,24 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         }
         return Resultado;
     }
+    
+     public Valija consultarValijaXIdOCodigoBarra(String Codigo) {
+        Valija Resultado = null;
+   
+        if (Codigo.toString().length() > 8) {
+            String sede = new String(Codigo.substring(0, 4));
+            String año = new String(Codigo.substring(6, 8));
+            BigDecimal id = new BigDecimal(Codigo.substring(8, Codigo.toString().length()));
+           
+           
+               Query consulta = em.createNamedQuery("Valija.findByIdval").setParameter("idval", id);
+                Resultado = (Valija) consulta.getSingleResult();
+                
+           
+        } else {
+            Query consulta = em.createNamedQuery("Valija.findByIdval").setParameter("idval", new BigDecimal(Codigo));
+            Resultado = (Valija) consulta.getSingleResult();
+        }
+        return Resultado;
+    }
 }

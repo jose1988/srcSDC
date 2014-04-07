@@ -1299,7 +1299,6 @@ public class CorrespondenciaWS {
         int Resultado = 0;
         List<Paquete> lista;
         BigDecimal idPaq;
-        BigDecimal idVal;
         Seguimiento nuevoSeg;
         Incidente nuevoIncidente;
         Paquete registroPaquete;
@@ -1308,16 +1307,15 @@ public class CorrespondenciaWS {
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
-            idVal = new BigDecimal(registroValija);
-            idValija = new Valija();
-            idValija.setIdval(idVal);
+            Valija val = ejbValija.consultarValijaXIdOCodigoBarra(registroValija);
+           
             //Incidente
             nuevoIncidente = new Incidente();
             nuevoIncidente.setNombreinc("Valija Incorrecta");
             nuevoIncidente.setDescripcioninc(datosValija);
-            nuevoIncidente.setIdval(idValija);
+            nuevoIncidente.setIdval(val);
             ejbIncidente.insertarIncidente(nuevoIncidente);
-            lista = ejbPaquete.listarPaquetesXValija(idValija);
+            lista = ejbPaquete.listarPaquetesXValija(val);
             for (int i = 0; i < lista.size(); i++) {
                 idPaq = lista.get(i).getIdpaq();
                 registroPaquete = new Paquete();
@@ -1335,7 +1333,7 @@ public class CorrespondenciaWS {
                 ejbPaquete.editarStatusPaquete(idPaq, "3");
             }
             //Cambio de Status de Valija a Reenviada (4)
-            ejbValija.editarStatusValija(idVal, "4");
+            ejbValija.editarStatusValija(val.getIdval(), "4");
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
@@ -1358,30 +1356,27 @@ public class CorrespondenciaWS {
         int Resultado = 0;
         List<Paquete> lista;
         BigDecimal idPaq;
-        BigDecimal idVal;
         Incidente nuevoIncidente;
-        Valija idValija;
+     
         try {
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
-            idVal = new BigDecimal(registroValija);
-            idValija = new Valija();
-            idValija.setIdval(idVal);
+            Valija val = ejbValija.consultarValijaXIdOCodigoBarra(registroValija);
             //Incidente
             nuevoIncidente = new Incidente();
             nuevoIncidente.setNombreinc("Valija extraviada");
             nuevoIncidente.setDescripcioninc(datosValija);
-            nuevoIncidente.setIdval(idValija);
+            nuevoIncidente.setIdval(val);
             ejbIncidente.insertarIncidente(nuevoIncidente);
-            lista = ejbPaquete.listarPaquetesXValija(idValija);
+            lista = ejbPaquete.listarPaquetesXValija(val);
             for (int i = 0; i < lista.size(); i++) {
                 idPaq = lista.get(i).getIdpaq();
                 //Cambio de Status de Paquete a extraviado (4)
                 ejbPaquete.ActualizacionPaqueteExtraviado(idPaq.toString());
             }
             //Cambio de Status de Valija a extraviada (5)
-            ejbValija.editarStatusValija(idVal, "5");
+            ejbValija.editarStatusValija(val.getIdval(), "5");
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
@@ -2585,5 +2580,18 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
-    //////////////// FIN MARIELA //////////////// 
+    
+    
+    
+    @WebMethod(operationName = "consultarValijaXIdOCodigoBarra")
+    public Valija consultarValijaXIdOCodigoBarra(@WebParam(name = "codigo") String codigo) {
+        Valija Resultado = null;
+        try {
+            Resultado = ejbValija.consultarValijaXIdOCodigoBarra(codigo);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+   
 }
