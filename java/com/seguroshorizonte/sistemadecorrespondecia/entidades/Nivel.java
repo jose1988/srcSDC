@@ -32,6 +32,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Nivel.findByIdniv", query = "SELECT n FROM Nivel n WHERE n.idniv = :idniv"),
     @NamedQuery(name = "Nivel.findByOperadorniv", query = "SELECT n FROM Nivel n WHERE n.operadorniv = :operadorniv"),
     @NamedQuery(name = "Nivel.findByTiemponiv", query = "SELECT n FROM Nivel n WHERE n.tiemponiv = :tiemponiv"),
+     @NamedQuery(name = "Nivel.findBypri", query = "SELECT n FROM Nivel n WHERE n.idpri.idpri = :idpri"),
+   
     @NamedQuery(name = "Nivel.findByDescripcionniv", query = "SELECT n FROM Nivel n WHERE n.descripcionniv = :descripcionniv")})
 public class Nivel implements Serializable {
 

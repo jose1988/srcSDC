@@ -40,7 +40,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Valija.findByOrigenval", query = "SELECT v FROM Valija v WHERE v.origenval = :origenval"),
     @NamedQuery(name = "Valija.findByAsuntoval", query = "SELECT v FROM Valija v WHERE v.asuntoval = :asuntoval"),
     @NamedQuery(name = "Valija.findByFechaval", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval"),
-    @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval = :statusval"),
+    @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval ='5' AND ( v.iduse.iduse= :iduse OR v.idruse.iduse = :iduser) "),
     @NamedQuery(name = "Valija.maxVal", query = "SELECT MAX(v.idval) FROM Valija v WHERE v.iduse.idusu.idusu = :idusu"),
     @NamedQuery(name = "Valija.totalValijasEnviadasXSede", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin AND v.iduse.idsed = :idsed"),
     @NamedQuery(name = "Valija.totalValijasEnviadas", query = "SELECT v FROM Valija v WHERE v.fechaval BETWEEN :fechaIni AND :fechaFin"),

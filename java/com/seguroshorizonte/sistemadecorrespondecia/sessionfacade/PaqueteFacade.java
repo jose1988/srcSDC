@@ -6,12 +6,15 @@ package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuario;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Usuariosede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -56,6 +59,21 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         Paquete Resultado;
         Query consulta = em.createNamedQuery("Paquete.findByIdpaq").setParameter("idpaq", idPaquete);
         Resultado = (Paquete) consulta.getSingleResult();
+        return Resultado;
+    }
+    
+     public List<Paquete> consultarStatusPaquete(Usuariosede use) {
+          List<Paquete> Resultado = new ArrayList<Paquete>();
+        Query consulta = em.createNamedQuery("Seguimiento.findByExtraviado").setParameter("iduse", use.getIduse());
+        List<Seguimiento> Resultad = (List<Seguimiento>)  consulta.getResultList();
+        
+        Iterator<Seguimiento> lista = Resultad.iterator();
+            while (lista.hasNext()) {
+                Seguimiento aux = lista.next();
+               Resultado.add(aux.getIdpaq());
+                
+            }
+        
         return Resultado;
     }
 

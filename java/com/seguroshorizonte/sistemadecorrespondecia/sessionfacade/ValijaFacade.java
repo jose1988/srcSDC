@@ -211,4 +211,11 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         }
         return Resultado;
     }
+     
+      public List<Valija> consultarStatusValija(Usuariosede iduse) {
+        List<Valija>  Resultado;
+        Query consulta = em.createNamedQuery("Valija.findByStatusval").setParameter("iduse", iduse.getIduse()).setParameter("iduser", iduse.getIduse());
+        Resultado = (List<Valija>)  consulta.getResultList();
+        return Resultado;
+    }
 }

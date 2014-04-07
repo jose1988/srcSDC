@@ -5,9 +5,13 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Nivel;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -26,5 +30,19 @@ public class NivelFacade extends AbstractFacade<Nivel> {
 
     public NivelFacade() {
         super(Nivel.class);
+    }
+    
+    public void editarTiempoNivel(String tiempo, String idniv) {
+        Query q = em.createNativeQuery("UPDATE nivel SET tiemponiv=?,  WHERE idniv=?");
+        q.setParameter(1, new BigInteger(tiempo));
+        q.setParameter(2, new BigDecimal(idniv));
+        q.executeUpdate();
+    }
+    
+     public List<Nivel> consultarNivel(String pri) {
+        List<Nivel> c = null;
+        BigDecimal p= new BigDecimal(pri);
+        c = (List<Nivel>) em.createNamedQuery("Nivel.findBypri").setParameter("idpri", p).getResultList();
+        return c;
     }
 }

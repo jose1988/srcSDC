@@ -13,6 +13,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Documento;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Incidente;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Infobandeja;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Mensaje;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Nivel;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Organizacion;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Prioridad;
@@ -33,6 +34,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.DocumentoFacad
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.IncidenteFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.InfobandejaFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.MensajeFacade;
+import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.NivelFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.OrganizacionFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PaqueteFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.PrioridadFacade;
@@ -108,6 +110,9 @@ public class CorrespondenciaWS {
     private ProveedorFacade ejbProveedor;
     @EJB
     private ProveedorsedeFacade ejbProveedorSede;
+     @EJB
+    private NivelFacade ejbNivel;
+
 
     /**
      * This is a sample web service operation
@@ -478,6 +483,19 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+        
+          @WebMethod(operationName = "actualizarTiempoNivel")
+    public int actualizarTiempoNivel(@WebParam(name = "tiempo") String tiempo, @WebParam(name = "idniv") String idniv) {
+
+       int Resultado = 0;
+        try {
+            ejbNivel.editarTiempoNivel(tiempo, idniv);
+            Resultado = 1;
+        } catch (Exception e) {
+            return 0;
+        }
+        return Resultado;
+    }
 
     /**
      *
@@ -585,6 +603,18 @@ public class CorrespondenciaWS {
         List<Areatrabajo> Resultado = null;
         try {
             Resultado = ejbAreaTrabajo.consultarAreasXSede(sede);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+    
+      @WebMethod(operationName = "consultarNivel")
+    public List<Nivel> consultarNivel(@WebParam(name = "prioridad") String pri) {
+
+        List<Nivel> Resultado = null;
+        try {
+            Resultado = ejbNivel.consultarNivel(pri);
         } catch (Exception e) {
             return null;
         }
@@ -788,6 +818,37 @@ public class CorrespondenciaWS {
         List<Rol> Resultado = new ArrayList<Rol>();
         try {
             Resultado = ejbRol.findAll();
+        } catch (Exception e) {
+            Resultado = null;
+        }
+        return Resultado;
+    }
+    
+    @WebMethod(operationName = "consultarStatusPaquete")
+    public List<Paquete> consultarStatusPaquete(@WebParam(name = "idusu") String idusu, @WebParam(name = "idsede")  String idsede) {
+
+        List<Paquete> Resultado = new ArrayList<Paquete>();
+          Usuario usu = ejbUsuario.consultarUsuario(idusu);
+          Sede origen = ejbSede.consultarSedeXId(new BigDecimal(idsede));
+           Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
+        try {
+            Resultado = ejbPaquete.consultarStatusPaquete(use);
+        } catch (Exception e) {
+            Resultado = null;
+        }
+        return Resultado;
+    }
+    
+     @WebMethod(operationName = "consultarStatusValija")
+    public List<Valija> consultarStatusValija(@WebParam(name = "idusu")  String idusu,@WebParam(name = "idsede")  String idsede) {
+
+        List<Valija> Resultado = new ArrayList<Valija>();
+         Usuario usu = ejbUsuario.consultarUsuario(idusu);
+          Sede origen = ejbSede.consultarSedeXId(new BigDecimal(idsede));
+           
+        try {
+             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
+            Resultado = ejbValija.consultarStatusValija(use);
         } catch (Exception e) {
             Resultado = null;
         }
