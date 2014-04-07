@@ -33,7 +33,7 @@ public class NivelFacade extends AbstractFacade<Nivel> {
     }
     
     public void editarTiempoNivel(String tiempo, String idniv) {
-        Query q = em.createNativeQuery("UPDATE nivel SET tiemponiv=?,  WHERE idniv=?");
+        Query q = em.createNativeQuery("UPDATE nivel SET tiemponiv=?  WHERE idniv=?");
         q.setParameter(1, new BigInteger(tiempo));
         q.setParameter(2, new BigDecimal(idniv));
         q.executeUpdate();
