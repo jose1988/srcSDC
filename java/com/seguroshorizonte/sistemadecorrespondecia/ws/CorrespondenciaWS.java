@@ -1161,7 +1161,7 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-    //////////////// INICIO NIUSKA ////////////////
+  
     /**
      * Método que inserta los datos en bitacora
      *
@@ -1688,8 +1688,6 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-    //////////////// FIN NIUSKA ////////////////
-    //////////////// INICIO MARIELA ////////////////
     /**
      * Registra el seguimiento del paquete retorna 0 si ya fue confirmado
      * retorna 1 si confirmo retorna 2 si aún no le corresponde confirmar
