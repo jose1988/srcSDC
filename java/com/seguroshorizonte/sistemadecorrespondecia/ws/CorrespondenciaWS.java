@@ -2743,4 +2743,16 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+
+    @WebMethod(operationName = "editarRespuestaPaquete")
+    public int editarRespuestaPaquete(@WebParam(name = "idpaq") String idpaq) {
+        int Resultado;
+        try {
+            ejbPaquete.editarRespaqDePaquete(new BigDecimal(idpaq));
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
 }

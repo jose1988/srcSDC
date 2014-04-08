@@ -181,6 +181,12 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.executeUpdate();
     }
 
+    public void editarRespaqDePaquete(BigDecimal idPaquete) {
+        Query q = em.createNativeQuery("UPDATE paquete SET respaq='2' WHERE idpaq=?");
+        q.setParameter(1, idPaquete);
+        q.executeUpdate();
+    }
+
     public String ultimoPaqueteXOrigen(Usuario idUsuario) {
         String Resultado;
         Query consulta = em.createNamedQuery("Paquete.findMaxPaqXOrigen").setParameter("origenpaq", idUsuario);
