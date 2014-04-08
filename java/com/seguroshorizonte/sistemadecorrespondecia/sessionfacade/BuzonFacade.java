@@ -120,18 +120,26 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         q.executeUpdate();
     }
 
-    public List<Buzon> buscarBuzonParaEnviar(String nombre, String apellido, String area) {
+    public List<Buzon> buscarBuzonParaEnviar(String nombre, String apellido, String area, Buzon myBuzon) {
         List<Buzon> emp;
         List<Buzon> empexterno;
         if (!"".equals(area)) {
-            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNASA").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("area", new BigDecimal(area)).getResultList();
+            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNASA").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("area", new BigDecimal(area)).setParameter("idbuz", myBuzon.getIdbuz()).getResultList();
         } else {
-            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNAS").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").getResultList();
+            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNAS").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("idbuz", myBuzon.getIdbuz()).getResultList();
         }
         empexterno = (List<Buzon>) em.createNamedQuery("Buzon.findByNBE").setParameter("nombre", "%" + nombre.toUpperCase() + "%").getResultList();
         if (empexterno != null) {
             emp.addAll(empexterno);
         }
         return emp;
+    }
+
+    public int myIdBuzon(Usuario registroUsuario) {
+        int resultado = 0;
+        BigDecimal result;
+        result = (BigDecimal) em.createNamedQuery("Buzon.findMinIdMyBuzon").setParameter("idusu", registroUsuario).getSingleResult();
+        resultado = result.intValue();
+        return resultado;
     }
 }

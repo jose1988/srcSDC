@@ -2002,11 +2002,11 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "consultarBuzonParaEnviar")
-    public List<Buzon> consultarBuzonParaEnviar(@WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "area") String area) {
+    public List<Buzon> consultarBuzonParaEnviar(@WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "area") String area, @WebParam(name = "miBuzon") Buzon miBuzon) {
 
         List<Buzon> Resultado;
         try {
-            Resultado = ejbBuzon.buscarBuzonParaEnviar(nombre, apellido, area);
+            Resultado = ejbBuzon.buscarBuzonParaEnviar(nombre, apellido, area, miBuzon);
         } catch (Exception e) {
             return null;
         }
@@ -2727,6 +2727,17 @@ public class CorrespondenciaWS {
             ejbBandeja.actualizacionBandejaEnvioExterno(paq);
             ejbSeguimiento.actualizacionEstadoEnvioExterno(paq);
             Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "miIdBuzon")
+    public int miIdBuzon(@WebParam(name = "idUsuario") Usuario idUsuario) {
+        int Resultado = 0;
+        try {
+            Resultado = ejbBuzon.myIdBuzon(idUsuario);
         } catch (Exception e) {
             Resultado = 0;
         }
