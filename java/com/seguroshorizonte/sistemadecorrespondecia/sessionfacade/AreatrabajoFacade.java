@@ -55,22 +55,26 @@ public class AreatrabajoFacade extends AbstractFacade<Areatrabajo> {
         c = (Areatrabajo) em.createNamedQuery("Areatrabajo.findByNombreatr").setParameter("nombreatr", nombre).setParameter("idsed", idsed).getSingleResult();
         return c;
     }
-    
+
     public void estadoArea(String area) {
         Areatrabajo are = this.find(new BigDecimal(area));
-        
-        if("1".equals(are.getBorradoatr())){
-        Query q = em.createNativeQuery("UPDATE Areatrabajo SET borradoatr=? WHERE idatr=?");
-        q.setParameter(1, "0");
-        q.setParameter(2, new BigDecimal(area));
-        q.executeUpdate();
-        }else{
-        Query q2 = em.createNativeQuery("UPDATE Areatrabajo SET borradoatr=? WHERE idatr=?");
-        q2.setParameter(1, "1");
-        q2.setParameter(2, new BigDecimal(area));
-        q2.executeUpdate();
+        if ("1".equals(are.getBorradoatr())) {
+            Query q = em.createNativeQuery("UPDATE Areatrabajo SET borradoatr=? WHERE idatr=?");
+            q.setParameter(1, "0");
+            q.setParameter(2, new BigDecimal(area));
+            q.executeUpdate();
+        } else {
+            Query q2 = em.createNativeQuery("UPDATE Areatrabajo SET borradoatr=? WHERE idatr=?");
+            q2.setParameter(1, "1");
+            q2.setParameter(2, new BigDecimal(area));
+            q2.executeUpdate();
         }
-        
-        
+    }
+
+    public Areatrabajo consultarAreasXId(String idArea) {
+        BigDecimal idAreaTrabajo = new BigDecimal(idArea);
+        Areatrabajo c = null;
+        c = (Areatrabajo) em.createNamedQuery("Areatrabajo.findByIdatr").setParameter("idatr", idAreaTrabajo).getSingleResult();
+        return c;
     }
 }

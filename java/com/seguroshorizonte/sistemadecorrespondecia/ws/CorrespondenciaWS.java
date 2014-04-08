@@ -2375,7 +2375,7 @@ public class CorrespondenciaWS {
             Usuariosede registroUsuSede = new Usuariosede();
             Rol rol = ejbRol.find(new BigDecimal("6"));
             Sede sed = ejbSede.ConsultarSedeXNombre(idsed);
-            registroUsuSede.setIdatr(ejbAreaTrabajo.consultarAreasXNombre(idatr));
+            registroUsuSede.setIdatr(ejbAreaTrabajo.consultarAreasXId(idatr));
             registroUsuSede.setIdsed(sed);
             registroUsuSede.setIdusu(ejbUsuario.find(new BigDecimal(idusu)));
             registroUsuSede.setIdrol(rol);
