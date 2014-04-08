@@ -142,6 +142,14 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         q.executeUpdate();
     }
 
+    public void ActualizacionLocalizacionyDelPaqueteExterno(Paquete idPaq) {
+        Query q = em.createNativeQuery("UPDATE paquete SET localizacionpaq=?, statuspaq=?  WHERE idpaq=?");
+        q.setParameter(1, "Externo: " + idPaq.getDestinopaq().getNombrebuz());
+        q.setParameter(2, "1");
+        q.setParameter(3, idPaq.getIdpaq());
+        q.executeUpdate();
+    }
+
     public void ActualizacionPaqueteExtraviado(String idPaq) {
         BigDecimal id = new BigDecimal(idPaq);
         Paquete paq = this.find(id);

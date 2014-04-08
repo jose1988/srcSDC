@@ -98,6 +98,12 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         return Resultado;
     }
 
+    public void actualizacionEstadoEnvioExterno(Paquete idPaq) {
+        Query q = em.createNativeQuery("UPDATE SEGUIMIENTO SET STATUSSEG=1 WHERE idpaq = " + idPaq.getIdpaq() + " AND NIVELSEG ='Externo' " );
+        q.executeUpdate();
+
+    }
+
     public Date FechaActual() {
         Date fecha = new Date();
         Calendar cal = Calendar.getInstance();

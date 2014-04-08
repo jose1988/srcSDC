@@ -1161,7 +1161,6 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-  
     /**
      * Método que inserta los datos en bitacora
      *
@@ -2694,24 +2693,43 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
-   /**
+    /**
      *
      * @param autenticacion
      * @return
      */
     @WebMethod(operationName = "auntenticarLDAP")
-    public String auntenticarLDAP(@WebParam(name = "user") String user,@WebParam(name = "password") String password) {
+    public String auntenticarLDAP(@WebParam(name = "user") String user, @WebParam(name = "password") String password) {
 
         String Resultado;
         try {
-            Resultado=ejbUsuario.auntenticarLDAPauntenticarLDAP(user, password);
-            
+            Resultado = ejbUsuario.auntenticarLDAPauntenticarLDAP(user, password);
+
         } catch (Exception e) {
             Resultado = "Fail";
         }
         return Resultado;
     }
 
+    /**
+     *
+     * @param idpaq
+     * @return
+     */
+    @WebMethod(operationName = "confirmarCorrespondenciaExterna")
+    public int confirmarCorrespondenciaExterna(@WebParam(name = "idpaq") String idpaq) {
 
-
+        int Resultado;
+        try {
+            BigDecimal idu = new BigDecimal(idpaq);
+            Paquete paq = ejbPaquete.find(idu);
+            ejbPaquete.ActualizacionLocalizacionyDelPaqueteExterno(paq);
+            ejbBandeja.actualizacionBandejaEnvioExterno(paq);
+            ejbSeguimiento.actualizacionEstadoEnvioExterno(paq);
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
 }
