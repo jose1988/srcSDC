@@ -752,7 +752,7 @@ public class CorrespondenciaWS {
             Sede sed = ejbSede.consultarSedeXId(new BigDecimal(sede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, sed);
             Resultado = ejbPaquete.BuscarArea(use.getIdatr().getIdatr(), sed.getIdsed());
-            
+
         } catch (Exception e) {
             Resultado = null;
         }
@@ -2386,6 +2386,12 @@ public class CorrespondenciaWS {
             registroUsuSede.setIdsed(sed);
             registroUsuSede.setIdusu(ejbUsuario.find(new BigDecimal(idusu)));
             registroUsuSede.setIdrol(rol);
+            Usuario usuario = ejbUsuario.find(new BigDecimal(idusu));
+            try {
+                Usuariosede registro = ejbUsuariosede.ConsultarXUsuarioYSede(usuario, sed);
+                return 2;
+            } catch (Exception e) {
+            }
             ejbUsuariosede.insertarUsuarioSede(registroUsuSede);
             Resultado = 1;
             Resultado = insertarBuzon(idusu, sed.getIdsed().toString());
