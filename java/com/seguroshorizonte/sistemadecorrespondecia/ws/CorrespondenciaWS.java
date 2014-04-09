@@ -752,6 +752,7 @@ public class CorrespondenciaWS {
             Sede sed = ejbSede.consultarSedeXId(new BigDecimal(sede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, sed);
             Resultado = ejbPaquete.BuscarArea(use.getIdatr().getIdatr(), sed.getIdsed());
+            
         } catch (Exception e) {
             Resultado = null;
         }
@@ -1052,15 +1053,21 @@ public class CorrespondenciaWS {
             if ("0".equals(paq.getRespaq())) {
                 ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido(idpaq);
                 ejbBandeja.actualizacionBandeja(usu, usud, paq);
+                String idP = ejbSeguimiento.ultimoSegXPaq(idpaq);
+                ejbSeguimiento.editarSeguimiento(new BigDecimal(idP), "1");
             }
             if ("1".equals(paq.getRespaq())) {
                 ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido(idpaq);
                 ejbBandeja.actualizacionBandeja(usu, usud, paq);
+                String idP = ejbSeguimiento.ultimoSegXPaq(idpaq);
+                ejbSeguimiento.editarSeguimiento(new BigDecimal(idP), "1");
             }
             if ("2".equals(paq.getRespaq())) {
                 //ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido("entregado con respuesta", paq.getIdpaqres().toString());
                 ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido(idpaq);
                 ejbBandeja.actualizacionBandeja(usu, usud, paq);
+                String idP = ejbSeguimiento.ultimoSegXPaq(idpaq);
+                ejbSeguimiento.editarSeguimiento(new BigDecimal(idP), "1");
             }
             Resultado = 1;
         } catch (Exception e) {

@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findMaxIdXuserUsu", query = "SELECT MAX(u.idusu) FROM Usuario u where u.userusu = :userusu")})
 public class Usuario implements Serializable {
 
-    @Size(max = 20)
+    @Size(max = 200)
     @Column(name = "CARGOUSU")
     private String cargousu;
     private static final long serialVersionUID = 1L;

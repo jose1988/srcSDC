@@ -195,9 +195,11 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
     }
 
     public List<Paquete> BuscarArea(BigDecimal idatr, BigDecimal idsede) {
-        String sede = "Sede Destino";
+        String sede = "Sede";
         Query consulta = em.createNamedQuery("Paquete.findPaqXBuscarArea").setParameter("idatr", idatr).setParameter("idsed", idsede).setParameter("sede", sede);
         List<Paquete> Resultado = consulta.getResultList();
+        
+        
         return Resultado;
     }
 

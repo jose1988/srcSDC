@@ -56,7 +56,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Paquete.SedeByValija", query = "SELECT DISTINCT p.destinopaq.idatr.idsed.nombresed FROM Paquete p, Usuariosede s WHERE  p.origenpaq.idusu.idusu = s.idusu.idusu AND s.idsed.nombresed = :sede AND p.localizacionpaq= :sed AND p.destinopaq.tipobuz =:tipo"),
     @NamedQuery(name = "Paquete.findByidPaqueteYSedeDeValija", query = "SELECT p FROM Paquete p WHERE p.idval.destinoval = :idSede AND p.idpaq =:idpaq"),
     @NamedQuery(name = "Paquete.findMaxPaqXOrigen", query = "SELECT MAX(p.idpaq) FROM Paquete p WHERE p.origenpaq.idusu = :origenpaq"),
-    @NamedQuery(name = "Paquete.findPaqXBuscarArea", query = "SELECT p FROM Paquete p WHERE  p.destinopaq.idatr.idatr=:idatr AND p.destinopaq.idatr.idsed.idsed= :idsed AND p.localizacionpaq= :sede"),
+    @NamedQuery(name = "Paquete.findPaqXBuscarArea", query = "SELECT p FROM Paquete p, Seguimiento s WHERE  p.destinopaq.idatr.idatr=:idatr AND p.destinopaq.idatr.idsed.idsed= :idsed AND p.localizacionpaq= :sede AND p.idpaq=s.idpaq.idpaq AND s.tiposeg='1'"),
     @NamedQuery(name = "Paquete.findPaqXOrigen", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.origenpaq = :origenpaq"),
     @NamedQuery(name = "Paquete.findPaqXDestino", query = "SELECT p FROM Paquete p WHERE p.idpaq = :idpaq AND p.destinopaq.idusu = :destinopaq"),
     @NamedQuery(name = "Paquete.totalPaquetesEnviadosXSede", query = "SELECT p FROM Paquete p WHERE p.fechapaq BETWEEN :fechaIni AND :fechaFin AND p.idsed = :idsed"),
