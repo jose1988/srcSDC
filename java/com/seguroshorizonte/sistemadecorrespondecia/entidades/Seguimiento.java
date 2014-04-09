@@ -48,7 +48,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findPaqueteByEmisario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Emisario' AND s.iduse.idsed = :idsed "),
     @NamedQuery(name = "Seguimiento.findPaqueteByRolSede", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.iduse.idsed = :idsed AND s.nivelseg = 'Sede' "),
     @NamedQuery(name = "Seguimiento.findPaqByUsuario", query = "SELECT s FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed"),
-    @NamedQuery(name = "Seguimiento.findPaqByExterno", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Externo' AND s.iduse.idsed = :idsed"),
+    @NamedQuery(name = "Seguimiento.findPaqByArea", query = "SELECT s FROM Seguimiento s WHERE s.idpaq.destinopaq.idatr.idatr=:idatr AND s.idpaq.destinopaq.idatr.idsed.idsed = :idsed AND s.nivelseg=:sede AND s.tiposeg='1' "),
+   @NamedQuery(name = "Seguimiento.findPaqByExterno", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Externo' AND s.iduse.idsed = :idsed"),
     @NamedQuery(name = "Seguimiento.findUltimoSegXPaq", query = "SELECT MAX(s.idseg) FROM Seguimiento s WHERE s.idpaq.idpaq= :idpaq ")})
 public class Seguimiento implements Serializable {
 
