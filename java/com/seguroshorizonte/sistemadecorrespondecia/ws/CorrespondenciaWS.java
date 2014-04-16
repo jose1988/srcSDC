@@ -164,14 +164,24 @@ public class CorrespondenciaWS {
         while (iterator.hasNext()) {
             Bandeja aux = iterator.next();
             if (banj.equals(b1) || banj.equals(b2)) {
-                if (aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
+                boolean x=aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu());
+                boolean y=aux.getIdusu().getIdusu().equals(usuario.getIdusu());
+                if(x && y)
+                {
+                    String nu="dd";
+                    
+                }
+                
+                if(aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu()) && aux.getIdusu().getIdusu().equals(usuario.getIdusu()))
+                {
                     Registro.add(aux.getIdpaq());
-                } else {
+                } 
+                else{
                     iterator.remove();
                 }
             }
             if (banj.equals(b3) || banj.equals(b4)) {
-                if (aux.getIdpaq().getDestinopaq().getIdusu().getIdusu() == usuario.getIdusu() && aux.getIdusu().getIdusu() == usuario.getIdusu()) {
+                if (aux.getIdpaq().getDestinopaq().getIdusu().getIdusu().equals(usuario.getIdusu()) && aux.getIdusu().getIdusu().equals(usuario.getIdusu())) {
                     Registro.add(aux.getIdpaq());
                 } else {
                     iterator.remove();
