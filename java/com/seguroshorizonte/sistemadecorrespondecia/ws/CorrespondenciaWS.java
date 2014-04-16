@@ -416,7 +416,7 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "crearPaquete")
-    public int insertarPaquete(@WebParam(name = "registroPaquete") Paquete registroPaquete) {
+    public int crearPaquete(@WebParam(name = "registroPaquete") Paquete registroPaquete) {
 
         int Resultado;
         try {
@@ -2006,14 +2006,16 @@ public class CorrespondenciaWS {
      * @param nombre
      * @param apellido
      * @param area
+     * @param miBuzon 
+     * @param sede 
      * @return
      */
     @WebMethod(operationName = "consultarBuzonParaEnviar")
-    public List<Buzon> consultarBuzonParaEnviar(@WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "area") String area, @WebParam(name = "miBuzon") Buzon miBuzon) {
+    public List<Buzon> consultarBuzonParaEnviar(@WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "area") String area, @WebParam(name = "miBuzon") Buzon miBuzon, @WebParam(name = "sede") String sede) {
 
         List<Buzon> Resultado;
         try {
-            Resultado = ejbBuzon.buscarBuzonParaEnviar(nombre, apellido, area, miBuzon);
+            Resultado = ejbBuzon.buscarBuzonParaEnviar(nombre, apellido, area, miBuzon, sede);
         } catch (Exception e) {
             return null;
         }
@@ -2708,7 +2710,8 @@ public class CorrespondenciaWS {
 
     /**
      *
-     * @param autenticacion
+     * @param user 
+     * @param password 
      * @return
      */
     @WebMethod(operationName = "auntenticarLDAP")
@@ -2746,6 +2749,11 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param idUsuario
+     * @return
+     */
     @WebMethod(operationName = "miIdBuzon")
     public int miIdBuzon(@WebParam(name = "idUsuario") Usuario idUsuario) {
         int Resultado = 0;
@@ -2757,6 +2765,11 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param idpaq
+     * @return
+     */
     @WebMethod(operationName = "editarRespuestaPaquete")
     public int editarRespuestaPaquete(@WebParam(name = "idpaq") String idpaq) {
         int Resultado;
@@ -2765,6 +2778,23 @@ public class CorrespondenciaWS {
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
+        }
+        return Resultado;
+    }
+
+    /**
+     *
+     * @param idSede
+     * @return
+     */
+    @WebMethod(operationName = "listarSedesParaEnvio")
+    public List<Sede> listarSedesParaEnvio(@WebParam(name = "idSede") String idSede) {
+
+        List<Sede> Resultado = null;
+        try {
+            Resultado = ejbSede.listarSedesParaEnvio(new BigDecimal(idSede));
+        } catch (Exception e) {
+            return null;
         }
         return Resultado;
     }

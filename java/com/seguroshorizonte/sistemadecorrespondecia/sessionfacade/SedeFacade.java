@@ -67,4 +67,11 @@ public class SedeFacade extends AbstractFacade<Sede> {
         Nombre = Registro.getNombresed();
         return Nombre;
     }
+
+    public List<Sede> listarSedesParaEnvio(BigDecimal idSede) {
+        List<Sede> Registros;
+        Query Consulta = em.createNamedQuery("Sede.findparaEnvio").setParameter("idsed", idSede);
+        Registros = Consulta.getResultList();
+        return Registros;
+    }
 }

@@ -120,15 +120,15 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         q.executeUpdate();
     }
 
-    public List<Buzon> buscarBuzonParaEnviar(String nombre, String apellido, String area, Buzon myBuzon) {
+    public List<Buzon> buscarBuzonParaEnviar(String nombre, String apellido, String area, Buzon myBuzon, String sede) {
         List<Buzon> emp;
         List<Buzon> empexterno;
         if (!"".equals(area)) {
-            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNASA").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("area", new BigDecimal(area)).setParameter("idbuz", myBuzon.getIdbuz()).getResultList();
+            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNASA").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("area", new BigDecimal(area)).setParameter("idbuz", myBuzon.getIdbuz()).setParameter("idsed", new BigDecimal(sede)).getResultList();
         } else {
-            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNAS").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("idbuz", myBuzon.getIdbuz()).getResultList();
+            emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNAS").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("idbuz", myBuzon.getIdbuz()).setParameter("idsed", new BigDecimal(sede)).getResultList();
         }
-        empexterno = (List<Buzon>) em.createNamedQuery("Buzon.findByNBE").setParameter("nombre", "%" + nombre.toUpperCase() + "%").getResultList();
+        empexterno = (List<Buzon>) em.createNamedQuery("Buzon.findByNBE").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("idusu", myBuzon.getIdusu()).getResultList();
         if (empexterno != null) {
             emp.addAll(empexterno);
         }

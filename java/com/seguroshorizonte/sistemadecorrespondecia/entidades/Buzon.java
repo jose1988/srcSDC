@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Buzon.findExternoByNombreUsuario", query = "SELECT b FROM Buzon b WHERE b.nombrebuz = :nombre AND b.idusu = :idusu"),
     @NamedQuery(name = "Buzon.findByNombrebuz", query = "SELECT b FROM Buzon b WHERE b.nombrebuz = :nombrebuz"),
     @NamedQuery(name = "Buzon.findByUsuarioSede", query = "SELECT b FROM Buzon b WHERE b.idatr.idsed.idsed = :idsed AND b.idusu.idusu= :idusu"),
-    @NamedQuery(name = "Buzon.findByNASA", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido and b.idatr.idatr= :area and b.tipobuz='0' AND b.idbuz != :idbuz"),
-    @NamedQuery(name = "Buzon.findByNAS", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido and b.tipobuz='0' AND b.idbuz != :idbuz"),
-    @NamedQuery(name = "Buzon.findByNBE", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(b.nombrebuz) like :nombre and b.tipobuz='1'"),
+    @NamedQuery(name = "Buzon.findByNASA", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido and b.idatr.idatr= :area and b.tipobuz='0' AND b.idbuz != :idbuz AND b.idbuz != :idbuz AND b.idatr.idsed.idsed != :idsed"),
+    @NamedQuery(name = "Buzon.findByNAS", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(u.nombreusu) like :nombre and upper(u.apellidousu) like :apellido and b.tipobuz='0' AND b.idbuz != :idbuz AND b.idatr.idsed.idsed != :idsed"),
+    @NamedQuery(name = "Buzon.findByNBE", query = "SELECT b FROM Usuario u, Buzon b WHERE u.idusu=b.idusu.idusu and upper(b.nombrebuz) like :nombre and b.tipobuz='1' AND b.idusu = :idusu "),
     @NamedQuery(name = "Buzon.findMinIdMyBuzon", query = "SELECT MIN(b.idbuz) FROM  Buzon b WHERE b.idusu = :idusu"),
     @NamedQuery(name = "Buzon.findByUsuario", query = "SELECT b FROM Buzon b WHERE b.idusu.idusu = :idusu")})
 public class Buzon implements Serializable {
