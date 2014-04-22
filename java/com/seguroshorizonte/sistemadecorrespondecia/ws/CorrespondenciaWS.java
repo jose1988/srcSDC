@@ -164,19 +164,16 @@ public class CorrespondenciaWS {
         while (iterator.hasNext()) {
             Bandeja aux = iterator.next();
             if (banj.equals(b1) || banj.equals(b2)) {
-                boolean x=aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu());
-                boolean y=aux.getIdusu().getIdusu().equals(usuario.getIdusu());
-                if(x && y)
-                {
-                    String nu="dd";
-                    
+                boolean x = aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu());
+                boolean y = aux.getIdusu().getIdusu().equals(usuario.getIdusu());
+                if (x && y) {
+                    String nu = "dd";
+
                 }
-                
-                if(aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu()) && aux.getIdusu().getIdusu().equals(usuario.getIdusu()))
-                {
+
+                if (aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu()) && aux.getIdusu().getIdusu().equals(usuario.getIdusu())) {
                     Registro.add(aux.getIdpaq());
-                } 
-                else{
+                } else {
                     iterator.remove();
                 }
             }
@@ -430,6 +427,7 @@ public class CorrespondenciaWS {
 
         int Resultado;
         try {
+            registroPaquete.setFechapaq(new Date());
             ejbPaquete.crearPaquete(registroPaquete);
             Resultado = 1;
         } catch (Exception e) {
@@ -2016,8 +2014,8 @@ public class CorrespondenciaWS {
      * @param nombre
      * @param apellido
      * @param area
-     * @param miBuzon 
-     * @param sede 
+     * @param miBuzon
+     * @param sede
      * @return
      */
     @WebMethod(operationName = "consultarBuzonParaEnviar")
@@ -2720,8 +2718,8 @@ public class CorrespondenciaWS {
 
     /**
      *
-     * @param user 
-     * @param password 
+     * @param user
+     * @param password
      * @return
      */
     @WebMethod(operationName = "auntenticarLDAP")
