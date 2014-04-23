@@ -5,9 +5,12 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Incidente;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Valija;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,5 +33,12 @@ public class IncidenteFacade extends AbstractFacade<Incidente> {
 
     public void insertarIncidente(Incidente registroIncidente) {
         this.create(registroIncidente);
+    }
+
+    public List<Incidente> consultarIncidenteXValija(Valija idValija) {
+        List<Incidente> Resultado;
+        Query Consulta = em.createNamedQuery("Incidente.findByValija").setParameter("idval", idValija);
+        Resultado = Consulta.getResultList();
+        return Resultado;
     }
 }

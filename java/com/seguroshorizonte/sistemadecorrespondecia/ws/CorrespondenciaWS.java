@@ -2816,11 +2816,35 @@ public class CorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param idpaq
+     * @return
+     */
     @WebMethod(operationName = "listarMensajesXPaquete")
     public List<Mensaje> listarMensajesXPaquete(@WebParam(name = "idpaq") Paquete idpaq) {
         List<Mensaje> Resultado = null;
         try {
             Resultado = ejbMensaje.consultarMensajeXIdPaquete(idpaq);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
+
+    /**
+     *
+     * @param idval
+     * @return
+     */
+    @WebMethod(operationName = "listarIncidentesXValija")
+    public List<Incidente> listarIncidentesXValija(@WebParam(name = "idval") String idval) {
+        List<Incidente> Resultado = null;
+        Valija idValija;
+        try {
+            idValija = new Valija();
+            idValija.setIdval(new BigDecimal(idval));
+            Resultado = ejbIncidente.consultarIncidenteXValija(idValija);
         } catch (Exception e) {
             return null;
         }
