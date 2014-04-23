@@ -1801,6 +1801,8 @@ public class CorrespondenciaWS {
                     } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
                         ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
                     }
+                    RegistrosSeguimiento.get(0).setStatusseg("1");
+                    ejbSeguimiento.edit(RegistrosSeguimiento.get(0));
                     return 1;
                 } else {
                     return 2;
