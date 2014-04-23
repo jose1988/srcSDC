@@ -5,9 +5,12 @@
 package com.seguroshorizonte.sistemadecorrespondecia.sessionfacade;
 
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Mensaje;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,5 +33,12 @@ public class MensajeFacade extends AbstractFacade<Mensaje> {
 
     public void insertarMensaje(Mensaje registroMensaje) {
         this.create(registroMensaje);
+    }
+
+    public List<Mensaje> consultarMensajeXIdPaquete(Paquete registroPaquete) {
+        List<Mensaje> Resultado = null;
+        Query consulta = em.createNamedQuery("Mensaje.findByidPaq").setParameter("idpaq", registroPaquete);
+        Resultado = consulta.getResultList();
+        return Resultado;
     }
 }

@@ -2815,4 +2815,15 @@ public class CorrespondenciaWS {
         }
         return Resultado;
     }
+
+    @WebMethod(operationName = "listarMensajesXPaquete")
+    public List<Mensaje> listarMensajesXPaquete(@WebParam(name = "idpaq") Paquete idpaq) {
+        List<Mensaje> Resultado = null;
+        try {
+            Resultado = ejbMensaje.consultarMensajeXIdPaquete(idpaq);
+        } catch (Exception e) {
+            return null;
+        }
+        return Resultado;
+    }
 }
