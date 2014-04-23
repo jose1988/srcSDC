@@ -62,7 +62,7 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     }
 
     public void editarSeguimiento(BigDecimal idpaq, String status) {
-        Query q = em.createNativeQuery("UPDATE Seguimiento SET statusseg=? WHERE idpaq=?");
+        Query q = em.createNativeQuery("UPDATE Seguimiento SET statusseg=? WHERE idseg=?");
         q.setParameter(1, status);
         q.setParameter(2, idpaq);
         q.executeUpdate();
