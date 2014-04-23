@@ -41,7 +41,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByFechaseg", query = "SELECT s FROM Seguimiento s WHERE s.fechaseg = :fechaseg"),
     @NamedQuery(name = "Seguimiento.findByStatusseg", query = "SELECT s FROM Seguimiento s WHERE s.statusseg = :statusseg"),
     @NamedQuery(name = "Seguimiento.Temporal", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse = :idusu "),
-    @NamedQuery(name = "Seguimiento.findByExtraviado", query = "SELECT s FROM Seguimiento s WHERE s.statusseg ='3' AND s.iduse.iduse = :iduse"),
+    @NamedQuery(name = "Seguimiento.findByExtraviado", query = "SELECT s FROM Seguimiento s WHERE s.statusseg ='4' AND s.iduse.iduse = :iduse"),
     @NamedQuery(name = "Seguimiento.findByFechasegYUsuario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed AND s.fechaseg = :fechaseg"),
     @NamedQuery(name = "Seguimiento.findPaqueteByUsuarioSede", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse = :idusu AND s.nivelseg != 'Valija' AND s.nivelseg != 'Usuario' AND s.nivelseg != 'Externo'"),
     @NamedQuery(name = "Seguimiento.findPaqueteByArea", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Area de Trabajo' AND s.iduse.idsed = :idsed "),

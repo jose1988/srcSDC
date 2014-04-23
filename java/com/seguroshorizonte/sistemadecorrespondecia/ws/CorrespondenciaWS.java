@@ -1370,7 +1370,7 @@ public class CorrespondenciaWS {
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
             String idP = ejbSeguimiento.ultimoSegXPaq(registroPaquete);
             //Edito Seguimiento
-            ejbSeguimiento.editarSeguimiento(new BigDecimal(idP), "3");
+            ejbSeguimiento.editarSeguimiento(new BigDecimal(idP), "4");
             //Mensaje
             nuevoMensaje = new Mensaje();
             nuevoMensaje.setNombremen("Paquete Extraviado");
