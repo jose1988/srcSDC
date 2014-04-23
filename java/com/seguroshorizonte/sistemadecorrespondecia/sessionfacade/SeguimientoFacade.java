@@ -99,7 +99,7 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
     }
 
     public void actualizacionEstadoEnvioExterno(Paquete idPaq) {
-        Query q = em.createNativeQuery("UPDATE SEGUIMIENTO SET STATUSSEG=1 WHERE idpaq = " + idPaq.getIdpaq() + " AND NIVELSEG ='Externo' " );
+        Query q = em.createNativeQuery("UPDATE SEGUIMIENTO SET STATUSSEG=1 WHERE idpaq = " + idPaq.getIdpaq() + " AND NIVELSEG ='Externo' ");
         q.executeUpdate();
 
     }

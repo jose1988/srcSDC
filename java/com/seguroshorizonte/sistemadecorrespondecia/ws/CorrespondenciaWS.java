@@ -1656,12 +1656,19 @@ public class CorrespondenciaWS {
     @WebMethod(operationName = "consultarSeguimientoXPaquete")
     public List<Seguimiento> consultarSeguimientoXPaquete(@WebParam(name = "idPaquete") String idPaquete) {
 
-        List<Seguimiento> Resultado;
+        List<Seguimiento> Resultado = new ArrayList<Seguimiento>();
+        List<Seguimiento> Result;
         Paquete idPaq;
         try {
             idPaq = new Paquete();
             idPaq.setIdpaq(new BigDecimal(idPaquete));
-            Resultado = ejbSeguimiento.consultarSeguimientoXPaquete(idPaq);
+            Result = ejbSeguimiento.consultarSeguimientoXPaquete(idPaq);
+            Iterator<Seguimiento> lista = Result.iterator();
+            while (lista.hasNext()) {
+                Seguimiento aux = lista.next();
+                aux.setAlerta(null);
+                Resultado.add(aux);
+            }
         } catch (Exception e) {
             Resultado = null;
         }
