@@ -463,8 +463,8 @@ public class CorrespondenciaWS {
         registroValija.setFechaval(hoy);
         registroValija.setTipoval(tipo);
         registroValija.setStatusval("0");
-        
-        
+
+
         try {
             Resultado = ejbValija.crearValija(registroValija);
             ejbBitacora.insertarBitacora(destino, usu, "INSERCIÓN", "Creacion de Valija");
@@ -1724,7 +1724,7 @@ public class CorrespondenciaWS {
     public int registroSeguimiento(@WebParam(name = "registroPaquete") Paquete registroPaquete, @WebParam(name = "registroUsuario") Usuario registroUsuario, @WebParam(name = "registroSede") Sede registroSede, @WebParam(name = "Caso") String Caso) {
 
         int Resultado = 0, primeraVez = 0;
-        boolean reenvio = false, aunNo = false;
+        boolean aunNo = false;
         String nivelSeg = "", Tipo;
         Seguimiento nuevoSeg = new Seguimiento();
         Usuariosede usuarioSede = null;
@@ -1816,18 +1816,12 @@ public class CorrespondenciaWS {
                     return 2;
                 }
             }
+
             for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                //pregunto ya un envajilador habia tocado el paquete y el q recibo como parametro es envajilador quiere decir que es un reenvio de paquete
-                if (RegistrosSeguimiento.get(i).getNivelseg().compareTo(nivelSeg) == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") == 0) {
-                    reenvio = true;
-                } else {
-                    if (RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(nivelSeg) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Emisario") != 0) {
-                        return Resultado;
-                    }
+                if (RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(nivelSeg) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") != 0) {
+                    return Resultado;
                 }
             }
-            //caso de multirol cuando esta en la vista de confirmacion
-
             //Caso  Receptor nivel 1 Origen o Receptor nivel 3 Origen
             if ((usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) && Tipo.compareTo("0") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
@@ -1925,11 +1919,7 @@ public class CorrespondenciaWS {
                 nuevoSeg.setIduse(usuarioSede);
                 nuevoSeg.setTiposeg(Tipo);
                 nuevoSeg.setNivelseg(nivelSeg);
-                if (reenvio) {
-                    nuevoSeg.setStatusseg("2");
-                } else {
-                    nuevoSeg.setStatusseg("0");
-                }
+                nuevoSeg.setStatusseg("0");
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                     RegistrosSeguimiento.get(i).setStatusseg("1");
                     ejbSeguimiento.edit(RegistrosSeguimiento.get(i));
@@ -1937,14 +1927,11 @@ public class CorrespondenciaWS {
                 ejbSeguimiento.insertarSeguimiento(nuevoSeg);
                 ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), nivelSeg);
                 if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Area de trabajo");
+                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Área de trabajo");
                 } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0) {
                     ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Sede");
                 } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
                     ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
-                    if (reenvio) {
-                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "REENVIO", "Reenvio correspondencia");
-                    }
                 } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0) {
                     ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Valija");
                 } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0) {
