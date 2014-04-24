@@ -446,7 +446,7 @@ public class CorrespondenciaWS {
      * @throws ParseException
      */
     @WebMethod(operationName = "insertarValija")
-    public String insertarValija(@WebParam(name = "idusu") String idusu, @WebParam(name = "sorigen") String IdsedeO, @WebParam(name = "sdestino") String sedeD, @WebParam(name = "fechaapaq") String fechapaq) throws ParseException {
+    public String insertarValija(@WebParam(name = "idusu") String idusu, @WebParam(name = "sorigen") String IdsedeO, @WebParam(name = "sdestino") String sedeD, @WebParam(name = "tipoval") String tipo) throws ParseException {
 
         Usuario usu = ejbUsuario.consultarUsuario(idusu);
         Sede origen = ejbSede.consultarSedeXId(new BigDecimal(IdsedeO));
@@ -461,9 +461,10 @@ public class CorrespondenciaWS {
         registroValija.setOrigenval(id);
         registroValija.setIduse(use);
         registroValija.setFechaval(hoy);
+        registroValija.setTipoval(tipo);
         registroValija.setStatusval("0");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        java.util.Date d = sdf.parse(fechapaq);
+        
+        
         try {
             Resultado = ejbValija.crearValija(registroValija);
             ejbBitacora.insertarBitacora(destino, usu, "INSERCIÓN", "Creacion de Valija");
