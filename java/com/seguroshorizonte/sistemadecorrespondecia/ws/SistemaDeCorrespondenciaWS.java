@@ -65,8 +65,8 @@ import javax.jws.WebParam;
  *
  * @author Pangea
  */
-@WebService(serviceName = "CorrespondeciaWS")
-public class CorrespondenciaWS {
+@WebService(serviceName = "SistemaDeCorrespondenciaWS")
+public class SistemaDeCorrespondenciaWS {
 
     @EJB
     private UsuarioFacade ejbUsuario;
@@ -681,11 +681,11 @@ public class CorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "consultarUsuariosXSede")
-    public List<Usuario> consultarUsuariosXSede(@WebParam(name = "sede") String sede) {
+    public List<Usuario> consultarUsuariosXSede(@WebParam(name = "sede") String sed) {
 
         List<Usuario> Resultado = null;
         try {
-            Resultado = ejbUsuario.consultarUsuariosXSede(sede);
+            Resultado = ejbUsuario.consultarUsuariosXSede(sed);
         } catch (Exception e) {
             return null;
         }
