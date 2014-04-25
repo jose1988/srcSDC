@@ -226,6 +226,14 @@ public class SistemaDeCorrespondenciaWS {
 
         int Resultado;
         try {
+            registroUsuario.setApellidousu(registroUsuario.getApellidousu().trim());
+            registroUsuario.setCargousu(registroUsuario.getCargousu().trim());
+            registroUsuario.setCorreousu(registroUsuario.getCorreousu().trim());
+            registroUsuario.setDireccionusu(registroUsuario.getDireccionusu().trim());
+            registroUsuario.setNombreusu(registroUsuario.getNombreusu().trim());
+            registroUsuario.setTelefono2usu(registroUsuario.getTelefono2usu().trim());
+            registroUsuario.setTelefonousu(registroUsuario.getTelefonousu().trim());
+            registroUsuario.setUserusu(registroUsuario.getUserusu().trim());
             ejbUsuario.insertar(registroUsuario);
             Resultado = 1;
         } catch (Exception e) {
@@ -427,6 +435,9 @@ public class SistemaDeCorrespondenciaWS {
 
         int Resultado;
         try {
+            registroPaquete.setAsuntopaq(registroPaquete.getAsuntopaq().trim());
+            registroPaquete.setTextopaq(registroPaquete.getTextopaq());
+            registroPaquete.setFechapaq(new Date());
             registroPaquete.setFechapaq(new Date());
             ejbPaquete.crearPaquete(registroPaquete);
             Resultado = 1;
@@ -2070,9 +2081,14 @@ public class SistemaDeCorrespondenciaWS {
      */
     @WebMethod(operationName = "editarUsuario")
     public int editarUsuario(@WebParam(name = "registroUsuario") Usuario registroUsuario) {
-
         int Resultado = 0;
         try {
+            registroUsuario.setApellidousu(registroUsuario.getApellidousu().trim());
+            registroUsuario.setCorreousu(registroUsuario.getCorreousu().trim());
+            registroUsuario.setDireccionusu(registroUsuario.getDireccionusu().trim());
+            registroUsuario.setNombreusu(registroUsuario.getNombreusu().trim());
+            registroUsuario.setTelefono2usu(registroUsuario.getTelefono2usu().trim());
+            registroUsuario.setTelefonousu(registroUsuario.getTelefonousu().trim());
             ejbUsuario.editarUsuario(registroUsuario);
             Resultado = 1;
         } catch (Exception e) {
