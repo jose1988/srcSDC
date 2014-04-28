@@ -1334,6 +1334,7 @@ public class SistemaDeCorrespondenciaWS {
         Paquete registroPaq;
         Mensaje nuevoMensaje;
         try {
+            datosPaquete = datosPaquete.trim();
             registroPaq = ejbPaquete.consultarPaqueteXIdOCodigoBarras(registroPaquete);
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
@@ -1431,6 +1432,7 @@ public class SistemaDeCorrespondenciaWS {
         Incidente nuevoIncidente;
 
         try {
+            datosValija = datosValija.trim();
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
