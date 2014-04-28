@@ -53,13 +53,15 @@ public class AreatrabajoFacade extends AbstractFacade<Areatrabajo> {
         
        int Resultado = 0;
         BigDecimal idsed = new BigDecimal(sede);
-        Query consulta = em.createNamedQuery("Areatrabajo.findByNombreatr").setParameter("nombreatr", nombre).setParameter("idsed", idsed);
-        
-         if(consulta==null){
-            Resultado = 0;
-        }else{
-            Resultado = 1;
+      try {
+           Query consulta = em.createNamedQuery("Areatrabajo.findByNombreatr").setParameter("nombreatr", nombre).setParameter("idsed", idsed);
+          Object rr = consulta.getSingleResult();
+           Resultado = 1;
+        } catch (Exception e) {
+             Resultado = 0;
         }
+      
+     
         return Resultado;
     }
 

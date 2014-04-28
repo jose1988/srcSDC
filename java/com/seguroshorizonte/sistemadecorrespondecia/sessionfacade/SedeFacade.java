@@ -40,13 +40,15 @@ public class SedeFacade extends AbstractFacade<Sede> {
 
     public int ConsultarSedeExistente(String sede) {
         int Resultado = 0;
-        Query consulta = em.createNamedQuery("Sede.findByNombresed").setParameter("nombresed", sede);
-       
-        if(consulta==null){
-            Resultado = 0;
-        }else{
-            Resultado = 1;
+
+        try {
+            Query consulta = em.createNamedQuery("Sede.findByNombresed").setParameter("nombresed", sede);
+            Object rr = consulta.getSingleResult();
+              Resultado = 1;
+        } catch (Exception e) {
+             Resultado = 0;
         }
+      
         return Resultado;
     }
 

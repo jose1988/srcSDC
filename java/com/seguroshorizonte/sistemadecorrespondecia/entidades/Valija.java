@@ -38,7 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Valija.findByIdYAnio", query = "SELECT v FROM Valija v WHERE v.idval = :idval AND SUBSTRING( v.fechaval , 7, 2) = :anio AND v.destinoval.nombresed = :sede  AND (v.statusval = '0' OR v.statusval = '4')"),
     @NamedQuery(name = "Valija.findByIdvalXentregar", query = "SELECT v FROM Valija v WHERE v.idval = :idval AND v.destinoval.nombresed = :sede  AND (v.statusval = :status1 OR v.statusval = :status2)"),
     @NamedQuery(name = "Valija.findByOrigenval", query = "SELECT v FROM Valija v WHERE v.origenval = :origenval"),
-    @NamedQuery(name = "Valija.findByAsuntoval", query = "SELECT v FROM Valija v WHERE v.asuntoval = :asuntoval"),
     @NamedQuery(name = "Valija.findByFechaval", query = "SELECT v FROM Valija v WHERE v.fechaval = :fechaval"),
     @NamedQuery(name = "Valija.findByStatusval", query = "SELECT v FROM Valija v WHERE v.statusval ='5' AND ( v.iduse.iduse= :iduse OR v.idruse.iduse = :iduser) "),
     @NamedQuery(name = "Valija.maxVal", query = "SELECT MAX(v.idval) FROM Valija v WHERE v.iduse.idusu.idusu = :idusu"),
@@ -69,9 +68,7 @@ public class Valija implements Serializable {
     @Basic(optional = false)
     @Column(name = "IDVAL")
     private BigDecimal idval;
-    @Size(max = 20)
-    @Column(name = "ASUNTOVAL")
-    private String asuntoval;
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "FECHAVAL")
@@ -117,13 +114,6 @@ public class Valija implements Serializable {
         this.idval = idval;
     }
 
-    public String getAsuntoval() {
-        return asuntoval;
-    }
-
-    public void setAsuntoval(String asuntoval) {
-        this.asuntoval = asuntoval;
-    }
 
     public Date getFechaval() {
         return fechaval;

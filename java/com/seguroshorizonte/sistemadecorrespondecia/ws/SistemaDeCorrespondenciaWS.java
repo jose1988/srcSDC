@@ -731,7 +731,6 @@ public class SistemaDeCorrespondenciaWS {
         int Resultado = 0;
         try {
            Resultado= ejbSede.ConsultarSedeExistente(sede);
-            Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
         }
@@ -749,8 +748,8 @@ public class SistemaDeCorrespondenciaWS {
 
         int Resultado = 0;
         try {
-            ejbAreaTrabajo.consultarAreaExistente(area, sede);
-            Resultado = 1;
+            Resultado= ejbAreaTrabajo.consultarAreaExistente(area, sede);
+           
         } catch (Exception e) {
             Resultado = 0;
         }
