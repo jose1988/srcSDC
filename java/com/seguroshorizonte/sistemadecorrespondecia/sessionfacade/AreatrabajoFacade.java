@@ -49,11 +49,18 @@ public class AreatrabajoFacade extends AbstractFacade<Areatrabajo> {
         return c;
     }
 
-    public Areatrabajo consultarAreaExistente(String nombre, String sede) {
-        Areatrabajo c = null;
+    public int consultarAreaExistente(String nombre, String sede) {
+        
+       int Resultado = 0;
         BigDecimal idsed = new BigDecimal(sede);
-        c = (Areatrabajo) em.createNamedQuery("Areatrabajo.findByNombreatr").setParameter("nombreatr", nombre).setParameter("idsed", idsed).getSingleResult();
-        return c;
+        Query consulta = em.createNamedQuery("Areatrabajo.findByNombreatr").setParameter("nombreatr", nombre).setParameter("idsed", idsed);
+        
+         if(consulta==null){
+            Resultado = 0;
+        }else{
+            Resultado = 1;
+        }
+        return Resultado;
     }
 
     public void estadoArea(String area) {

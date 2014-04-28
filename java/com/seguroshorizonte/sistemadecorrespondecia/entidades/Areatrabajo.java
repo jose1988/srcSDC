@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Areatrabajo.findAll", query = "SELECT a FROM Areatrabajo a"),
     @NamedQuery(name = "Areatrabajo.findByIdatr", query = "SELECT a FROM Areatrabajo a WHERE a.idatr = :idatr"),
-    @NamedQuery(name = "Areatrabajo.findByNombreatr", query = "SELECT a FROM Areatrabajo a WHERE a.nombreatr = :nombreatr"),
+    @NamedQuery(name = "Areatrabajo.findByNombreatr", query = "SELECT a FROM Areatrabajo a WHERE a.nombreatr = :nombreatr AND a.idsed.idsed = :idsed"),
     @NamedQuery(name = "Areatrabajo.findBySedeXId", query = "SELECT a FROM Areatrabajo a WHERE a.idsed.idsed= :sede"),
     @NamedQuery(name = "Areatrabajo.findBySedeXNombre", query = "SELECT a FROM Areatrabajo a WHERE a.idsed.nombresed= :sede"),
     @NamedQuery(name = "Areatrabajo.findByAreaExistente", query = "SELECT a FROM Areatrabajo a WHERE A.nombreatr= :nombreatr AND a.idsed.idsed= :sede")})

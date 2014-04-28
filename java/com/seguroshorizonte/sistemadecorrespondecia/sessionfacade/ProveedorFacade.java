@@ -43,4 +43,15 @@ public class ProveedorFacade extends AbstractFacade<Proveedor> {
         Resultado = (Proveedor) consulta.getResultList();
         return Resultado;
     }
+    
+     public int consultarProveedorexistente(String nombre, String idsed) {
+        int Resultado=0;
+        Query consulta = em.createNamedQuery("Proveedor.findByExistente").setParameter("nombrepro", nombre).setParameter("idsed",new BigDecimal(idsed));
+        if(consulta==null){
+            Resultado = 0;
+        }else{
+            Resultado = 1;
+        }
+        return Resultado;
+    }
 }
