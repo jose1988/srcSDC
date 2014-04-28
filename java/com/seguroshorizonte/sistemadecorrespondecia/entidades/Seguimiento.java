@@ -41,15 +41,15 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Seguimiento.findByFechaseg", query = "SELECT s FROM Seguimiento s WHERE s.fechaseg = :fechaseg"),
     @NamedQuery(name = "Seguimiento.findByStatusseg", query = "SELECT s FROM Seguimiento s WHERE s.statusseg = :statusseg"),
     @NamedQuery(name = "Seguimiento.Temporal", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse = :idusu "),
-    @NamedQuery(name = "Seguimiento.findByExtraviado", query = "SELECT s FROM Seguimiento s WHERE s.statusseg ='4' AND s.iduse.iduse = :iduse"),
+    @NamedQuery(name = "Seguimiento.findByExtraviado", query = "SELECT s FROM Seguimiento s WHERE s.statusseg ='4' AND s.iduse.iduse = :iduse order by s.fechaseg"),
     @NamedQuery(name = "Seguimiento.findByFechasegYUsuario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed AND s.fechaseg = :fechaseg"),
-    @NamedQuery(name = "Seguimiento.findPaqueteByUsuarioSede", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse = :idusu AND s.nivelseg != 'Valija' AND s.nivelseg != 'Usuario' AND s.nivelseg != 'Externo'"),
-    @NamedQuery(name = "Seguimiento.findPaqueteByArea", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Area de Trabajo' AND s.iduse.idsed = :idsed "),
-    @NamedQuery(name = "Seguimiento.findPaqueteByEmisario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Emisario' AND s.iduse.idsed = :idsed "),
-    @NamedQuery(name = "Seguimiento.findPaqueteByRolSede", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.iduse.idsed = :idsed AND s.nivelseg = 'Sede' "),
-    @NamedQuery(name = "Seguimiento.findPaqByUsuario", query = "SELECT s FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed"),
+    @NamedQuery(name = "Seguimiento.findPaqueteByUsuarioSede", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.iduse = :idusu AND s.nivelseg != 'Valija' AND s.nivelseg != 'Usuario' AND s.nivelseg != 'Externo' order by s.fechaseg desc"),
+    @NamedQuery(name = "Seguimiento.findPaqueteByArea", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Area de Trabajo' AND s.iduse.idsed = :idsed order by s.fechaseg desc"),
+    @NamedQuery(name = "Seguimiento.findPaqueteByEmisario", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Emisario' AND s.iduse.idsed = :idsed order by s.fechaseg desc"),
+    @NamedQuery(name = "Seguimiento.findPaqueteByRolSede", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.iduse.idsed = :idsed AND s.nivelseg = 'Sede' order by s.fechaseg desc"),
+    @NamedQuery(name = "Seguimiento.findPaqByUsuario", query = "SELECT s FROM Seguimiento s WHERE s.iduse.idusu.idusu = :idusu AND s.iduse.idsed.idsed = :idsed order by s.fechaseg desc"),
     @NamedQuery(name = "Seguimiento.findPaqByArea", query = "SELECT s FROM Seguimiento s WHERE s.idpaq.destinopaq.idatr.idatr=:idatr AND s.idpaq.destinopaq.idatr.idsed.idsed = :idsed AND s.nivelseg=:sede AND s.tiposeg='1' "),
-   @NamedQuery(name = "Seguimiento.findPaqByExterno", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Externo' AND s.iduse.idsed = :idsed"),
+   @NamedQuery(name = "Seguimiento.findPaqByExterno", query = "SELECT s.idpaq FROM Seguimiento s WHERE s.statusseg='0' AND s.nivelseg='Externo' AND s.iduse.idsed = :idsed order by s.fechaseg desc"),
     @NamedQuery(name = "Seguimiento.findUltimoSegXPaq", query = "SELECT MAX(s.idseg) FROM Seguimiento s WHERE s.idpaq.idpaq= :idpaq ")})
 public class Seguimiento implements Serializable {
 

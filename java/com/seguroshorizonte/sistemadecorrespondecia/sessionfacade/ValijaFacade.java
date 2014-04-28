@@ -127,7 +127,7 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         List<BigDecimal> consulta = null;
         consulta = em.createNativeQuery("SELECT  v.idval FROM  NIVEL N, VALIJA V\n"
                 + "WHERE N.OPERADORNIV='Valija' AND v.statusval='0' AND v.origenval=" + idSedeOrigen + " \n"
-                + "AND horaslaborables(TO_DATE (TO_CHAR (v.fechaval, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI'),TO_DATE (TO_CHAR (SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI')) > N.TIEMPONIV group by  v.idval ").getResultList();
+                + "AND horaslaborables(TO_DATE (TO_CHAR (v.fechaval, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI'),TO_DATE (TO_CHAR (SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI')) > N.TIEMPONIV group by  v.idval order by v.idval desc").getResultList();
         for (int i = 0; i < consulta.size(); i++) {
             Query consultaValija = em.createNamedQuery("Valija.findByIdval").setParameter("idval", consulta.get(i));
             Resultado.add((Valija) consultaValija.getSingleResult());
@@ -141,7 +141,7 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         consulta = em.createNativeQuery("SELECT  v.idval\n"
                 + "FROM  NIVEL N, VALIJA V\n"
                 + "WHERE N.OPERADORNIV='Valija' AND v.statusval='0' AND v.destinoval=" + idSede.getIdsed() + "\n"
-                + "AND horaslaborables(TO_DATE (TO_CHAR (v.fechaval, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI'),TO_DATE (TO_CHAR (SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI')) > N.TIEMPONIV group by  v.idval").getResultList();
+                + "AND horaslaborables(TO_DATE (TO_CHAR (v.fechaval, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI'),TO_DATE (TO_CHAR (SYSTIMESTAMP, 'YYYY-MM-DD HH24:MI'),'YYYY-MM-DD HH24:MI')) > N.TIEMPONIV group by  v.idval order by v.idval desc").getResultList();
         for (int i = 0; i < consulta.size(); i++) {
             Query consultaValija = em.createNamedQuery("Valija.findByIdval").setParameter("idval", consulta.get(i));
             Resultado.add((Valija) consultaValija.getSingleResult());
