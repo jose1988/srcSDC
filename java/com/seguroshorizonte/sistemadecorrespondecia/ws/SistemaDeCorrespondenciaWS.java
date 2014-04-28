@@ -730,7 +730,7 @@ public class SistemaDeCorrespondenciaWS {
 
         int Resultado = 0;
         try {
-            ejbSede.ConsultarSedeExistente(sede);
+           Resultado= ejbSede.ConsultarSedeExistente(sede);
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
@@ -1687,6 +1687,17 @@ public class SistemaDeCorrespondenciaWS {
         return Resultado;
     }
 
+     @WebMethod(operationName = "consultarProveedorexistente")
+	    public int consultarProveedorexistente(@WebParam(name = "nombre") String nombre,@WebParam(name = "idsed") String idsed) {
+	
+	        int Resultado=0;
+	        try {
+	            Resultado =  ejbProveedor.consultarProveedorexistente(nombre, idsed);
+	        } catch (Exception e) {
+	            Resultado = 0;
+	        }
+	        return Resultado;
+	    }
     /**
      *
      * @param sede
