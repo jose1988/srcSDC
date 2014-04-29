@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Pangea
  */
 @Entity
-@Table(name = "AREATRABAJO")
+@Table(name = "AREA_TRABAJO")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Areatrabajo.findAll", query = "SELECT a FROM Areatrabajo a"),
