@@ -1350,7 +1350,7 @@ public class SistemaDeCorrespondenciaWS {
             nuevoMensaje.setIdpaq(registroPaq);
             ejbMensaje.insertarMensaje(nuevoMensaje);
             //Cambio de Status de Paquete a extraviado (4)
-            ejbPaquete.ActualizacionPaqueteExtraviado(idP);
+            ejbPaquete.ActualizacionPaqueteExtraviado(registroPaquete);
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
