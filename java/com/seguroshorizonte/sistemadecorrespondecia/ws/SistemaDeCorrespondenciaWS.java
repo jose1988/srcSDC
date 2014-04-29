@@ -1707,7 +1707,6 @@ public class SistemaDeCorrespondenciaWS {
      */
     @WebMethod(operationName = "registroSeguimiento")
     public int registroSeguimiento(@WebParam(name = "registroPaquete") Paquete registroPaquete, @WebParam(name = "registroUsuario") Usuario registroUsuario, @WebParam(name = "registroSede") Sede registroSede, @WebParam(name = "Caso") String Caso) {
-
         int Resultado = 0, primeraVez = 0;
         boolean aunNo = false;
         String nivelSeg = "", Tipo;
@@ -1717,171 +1716,123 @@ public class SistemaDeCorrespondenciaWS {
             List<Seguimiento> RegistrosSeguimiento = ejbSeguimiento.consultarSeguimientoXPaquete(registroPaquete);
             usuarioSede = consultarUsuarioSede(registroUsuario, registroSede);
             registroPaquete = ejbPaquete.ConsultarPaqueteXId(registroPaquete.getIdpaq());
-            try {
-                Paquete Registro = ejbPaquete.ConsultarPaqueteXIdPaqueteYSedeDeValija(registroSede, registroPaquete.getIdpaq());
-                Tipo = "1";
-            } catch (Exception e) {
-                Tipo = "0";
-            }
-            if (RegistrosSeguimiento.isEmpty()) {
-                if (Caso.compareTo("Confirmar") == 0) {
-                    primeraVez = 1;
-                } else {
-                    nuevoSeg = new Seguimiento();
-                    nuevoSeg.setFechaseg(new Date());
-                    nuevoSeg.setIdpaq(registroPaquete);
-                    nuevoSeg.setIduse(usuarioSede);
-                    nuevoSeg.setTiposeg(Tipo);
-                    nuevoSeg.setNivelseg("Usuario");
-                    nuevoSeg.setStatusseg("0");
-                    ejbSeguimiento.insertarSeguimiento(nuevoSeg);
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Usuario Normal");
-                    primeraVez = 2;
-                    return 1;
+            if (registroPaquete.getStatuspaq().compareTo("1") != 0 && registroPaquete.getStatuspaq().compareTo("4") != 0) {
+                try {
+                    Paquete Registro = ejbPaquete.ConsultarPaqueteXIdPaqueteYSedeDeValija(registroSede, registroPaquete.getIdpaq());
+                    Tipo = "1";
+                } catch (Exception e) {
+                    Tipo = "0";
                 }
-                if (primeraVez == 1) {
-                    return 2;
-                } else if (primeraVez == 2) {
-                    return 1;
-                }
-            }
-
-            if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
-                nivelSeg = "Area de Trabajo";
-            } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0) {
-                nivelSeg = "Sede";
-            } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
-                nivelSeg = "Emisario";
-            } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0) {
-                nivelSeg = "Valija";
-            } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0) {//caso del multirol
-                if (Tipo.compareTo("0") == 0) {
-                    if (registroPaquete.getLocalizacionpaq().compareTo("Sede") == 0) {//REVISAR LOCALIZACION
-                        nivelSeg = "Valija";
-                    } else {
-                        nivelSeg = "Sede";
-                    }
+                if (RegistrosSeguimiento.isEmpty()) {
                     if (Caso.compareTo("Confirmar") == 0) {
-                        for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                            if (RegistrosSeguimiento.get(i).getIduse().getIdusu().getIdusu().toString().compareTo(usuarioSede.getIdusu().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
-                                return Resultado;
+                        primeraVez = 1;
+                    } else {
+                        nuevoSeg = new Seguimiento();
+                        nuevoSeg.setFechaseg(new Date());
+                        nuevoSeg.setIdpaq(registroPaquete);
+                        nuevoSeg.setIduse(usuarioSede);
+                        nuevoSeg.setTiposeg(Tipo);
+                        nuevoSeg.setNivelseg("Usuario");
+                        nuevoSeg.setStatusseg("0");
+                        ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Usuario Normal");
+                        primeraVez = 2;
+                        return 1;
+                    }
+                    if (primeraVez == 1) {
+                        return 2;
+                    } else if (primeraVez == 2) {
+                        return 1;
+                    }
+                }
+
+                if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
+                    nivelSeg = "Area de Trabajo";
+                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0) {
+                    nivelSeg = "Sede";
+                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
+                    nivelSeg = "Emisario";
+                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0) {
+                    nivelSeg = "Valija";
+                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0) {//caso del multirol
+                    if (Tipo.compareTo("0") == 0) {
+                        if (registroPaquete.getLocalizacionpaq().compareTo("Sede") == 0) {//REVISAR LOCALIZACION
+                            nivelSeg = "Valija";
+                        } else {
+                            nivelSeg = "Sede";
+                        }
+                        if (Caso.compareTo("Confirmar") == 0) {
+                            for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                                if (RegistrosSeguimiento.get(i).getIduse().getIdusu().getIdusu().toString().compareTo(usuarioSede.getIdusu().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
+                                    return Resultado;
+                                }
+                            }
+                        }
+                    } else {//destino 
+                        if (registroPaquete.getLocalizacionpaq().compareTo("Valija") == 0) {//REVISAR LOCALIZACION
+                            nivelSeg = "Sede";
+                        } else {
+                            nivelSeg = "Valija";
+                        }
+                        if (Caso.compareTo("Confirmar") == 0) {
+                            for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                                if (RegistrosSeguimiento.get(i).getIduse().getIdusu().getIdusu().toString().compareTo(usuarioSede.getIdusu().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
+                                    return Resultado;
+                                }
                             }
                         }
                     }
-                } else {//destino 
-                    if (registroPaquete.getLocalizacionpaq().compareTo("Valija") == 0) {//REVISAR LOCALIZACION
-                        nivelSeg = "Sede";
-                    } else {
-                        nivelSeg = "Valija";
-                    }
-                    if (Caso.compareTo("Confirmar") == 0) {
-                        for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                            if (RegistrosSeguimiento.get(i).getIduse().getIdusu().getIdusu().toString().compareTo(usuarioSede.getIdusu().getIdusu().toString()) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
-                                return Resultado;
-                            }
+                }
+                if (RegistrosSeguimiento.size() == 1) {
+                    if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0 || Tipo.compareTo("0") == 0) {
+                        nuevoSeg = new Seguimiento();
+                        nuevoSeg.setFechaseg(new Date());
+                        nuevoSeg.setIdpaq(registroPaquete);
+                        nuevoSeg.setIduse(usuarioSede);
+                        nuevoSeg.setTiposeg(Tipo);
+                        nuevoSeg.setNivelseg(nivelSeg);
+                        nuevoSeg.setStatusseg("0");
+                        ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+                        ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), nivelSeg);
+                        if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
+                            ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Area de trabajo");
+                        } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0) {
+                            ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Sede");
+                        } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
+                            ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
                         }
+                        RegistrosSeguimiento.get(0).setStatusseg("1");
+                        ejbSeguimiento.edit(RegistrosSeguimiento.get(0));
+                        return 1;
+                    } else {
+                        return 2;
                     }
                 }
-            }
-            if (RegistrosSeguimiento.size() == 1) {
-                if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0 || Tipo.compareTo("0") == 0) {
-                    nuevoSeg = new Seguimiento();
-                    nuevoSeg.setFechaseg(new Date());
-                    nuevoSeg.setIdpaq(registroPaquete);
-                    nuevoSeg.setIduse(usuarioSede);
-                    nuevoSeg.setTiposeg(Tipo);
-                    nuevoSeg.setNivelseg(nivelSeg);
-                    nuevoSeg.setStatusseg("0");
-                    ejbSeguimiento.insertarSeguimiento(nuevoSeg);
-                    ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), nivelSeg);
-                    if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
-                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Area de trabajo");
-                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0) {
-                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Sede");
-                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
-                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
-                    }
-                    RegistrosSeguimiento.get(0).setStatusseg("1");
-                    ejbSeguimiento.edit(RegistrosSeguimiento.get(0));
-                    return 1;
-                } else {
-                    return 2;
-                }
-            }
 
-            for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                if (RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(nivelSeg) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") != 0) {
-                    return Resultado;
-                }
-            }
-            //Caso  Receptor nivel 1 Origen o Receptor nivel 3 Origen
-            if ((usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) && Tipo.compareTo("0") == 0) {
                 for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
+                    if (RegistrosSeguimiento.get(i).getTiposeg().compareTo(Tipo) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo(nivelSeg) == 0 && RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") != 0) {
                         return Resultado;
                     }
                 }
-                Resultado = 1;
-
-            } //Caso  Receptor nivel 2 Origen
-            else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 && Tipo.compareTo("0") == 0) {
-                Resultado = 1;
-            } //Caso  MultiRol Origen
-            else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 && Tipo.compareTo("0") == 0) {
-                Resultado = 1;
-            } //Caso  Empaquetador 
-            else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("0") == 0) {
-                for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
-                        Resultado = 1;
-                        aunNo = true;
-                        break;
-                    }
-                }
-                if (!aunNo) {
-                    return 2;
-                }
-            }//Caso  Desenvalijador 
-            else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("1") == 0) {
-                for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0 && registroPaquete.getIdval().getCodproveedorval() != null) {
-                        Resultado = 1;
-                        aunNo = true;
-                        break;
-                    }
-                }
-                if (!aunNo) {
-                    return 2;
-                }
-            }//Caso  Receptor nivel 1 Destino o Caso  Receptor nivel 3 Destino
-            else if ((usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) && Tipo.compareTo("1") == 0) {
-                for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
-                        Resultado = 1;
-                        aunNo = true;
-                        break;
-                    }
-                }
-                if (!aunNo) {
-                    return 2;
-                }
-            } //Caso  Receptor nivel 2 Destino
-            else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 && Tipo.compareTo("1") == 0) {
-                for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
-                        Resultado = 1;
-                        aunNo = true;
-                        break;
-                    }
-                }
-                if (!aunNo) {
-                    return 2;
-                }
-            }//Caso  MultiRol Destino
-            else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 && Tipo.compareTo("1") == 0) {
-                if (nivelSeg.compareTo("Sede") == 0) { //si es sede 
+                //Caso  Receptor nivel 1 Origen o Receptor nivel 3 Origen
+                if ((usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) && Tipo.compareTo("0") == 0) {
                     for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                        if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
+                        if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
+                            return Resultado;
+                        }
+                    }
+                    Resultado = 1;
+
+                } //Caso  Receptor nivel 2 Origen
+                else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 && Tipo.compareTo("0") == 0) {
+                    Resultado = 1;
+                } //Caso  MultiRol Origen
+                else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 && Tipo.compareTo("0") == 0) {
+                    Resultado = 1;
+                } //Caso  Empaquetador 
+                else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("0") == 0) {
+                    for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                        if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0) {
                             Resultado = 1;
                             aunNo = true;
                             break;
@@ -1890,7 +1841,8 @@ public class SistemaDeCorrespondenciaWS {
                     if (!aunNo) {
                         return 2;
                     }
-                } else { // si es desenvajilador
+                }//Caso  Desenvalijador 
+                else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0 && Tipo.compareTo("1") == 0) {
                     for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
                         if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0 && registroPaquete.getIdval().getCodproveedorval() != null) {
                             Resultado = 1;
@@ -1901,39 +1853,91 @@ public class SistemaDeCorrespondenciaWS {
                     if (!aunNo) {
                         return 2;
                     }
+                }//Caso  Receptor nivel 1 Destino o Caso  Receptor nivel 3 Destino
+                else if ((usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0 || usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) && Tipo.compareTo("1") == 0) {
+                    for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                        if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Sede") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
+                            Resultado = 1;
+                            aunNo = true;
+                            break;
+                        }
+                    }
+                    if (!aunNo) {
+                        return 2;
+                    }
+                } //Caso  Receptor nivel 2 Destino
+                else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0 && Tipo.compareTo("1") == 0) {
+                    for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                        if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
+                            Resultado = 1;
+                            aunNo = true;
+                            break;
+                        }
+                    }
+                    if (!aunNo) {
+                        return 2;
+                    }
+                }//Caso  MultiRol Destino
+                else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0 && Tipo.compareTo("1") == 0) {
+                    if (nivelSeg.compareTo("Sede") == 0) { //si es sede 
+                        for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                            if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("1") == 0) {
+                                Resultado = 1;
+                                aunNo = true;
+                                break;
+                            }
+                        }
+                        if (!aunNo) {
+                            return 2;
+                        }
+                    } else { // si es desenvajilador
+                        for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                            if (RegistrosSeguimiento.get(i).getNivelseg().compareTo("Valija") == 0 && RegistrosSeguimiento.get(i).getTiposeg().compareTo("0") == 0 && registroPaquete.getIdval().getCodproveedorval() != null) {
+                                Resultado = 1;
+                                aunNo = true;
+                                break;
+                            }
+                        }
+                        if (!aunNo) {
+                            return 2;
+                        }
+                    }
+                    Resultado = 1;
                 }
-                Resultado = 1;
-            }
-            if (Resultado == 1) {
-                nuevoSeg = new Seguimiento();
-                nuevoSeg.setFechaseg(new Date());
-                nuevoSeg.setIdpaq(registroPaquete);
-                nuevoSeg.setIduse(usuarioSede);
-                nuevoSeg.setTiposeg(Tipo);
-                nuevoSeg.setNivelseg(nivelSeg);
-                nuevoSeg.setStatusseg("0");
-                for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
-                    RegistrosSeguimiento.get(i).setStatusseg("1");
-                    ejbSeguimiento.edit(RegistrosSeguimiento.get(i));
-                }
-                ejbSeguimiento.insertarSeguimiento(nuevoSeg);
-                ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), nivelSeg);
-                if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Área de trabajo");
-                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0) {
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Sede");
-                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
-                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0) {
-                    ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Valija");
-                } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0) {
-                    if (nivelSeg.compareTo("Sede") == 0) {
+                if (Resultado == 1) {
+                    nuevoSeg = new Seguimiento();
+                    nuevoSeg.setFechaseg(new Date());
+                    nuevoSeg.setIdpaq(registroPaquete);
+                    nuevoSeg.setIduse(usuarioSede);
+                    nuevoSeg.setTiposeg(Tipo);
+                    nuevoSeg.setNivelseg(nivelSeg);
+                    nuevoSeg.setStatusseg("0");
+                    for (int i = 0; i < RegistrosSeguimiento.size(); i++) {
+                        RegistrosSeguimiento.get(i).setStatusseg("1");
+                        ejbSeguimiento.edit(RegistrosSeguimiento.get(i));
+                    }
+                    ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+                    ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), nivelSeg);
+                    if (usuarioSede.getIdrol().getIdrol().toString().compareTo("1") == 0) {
+                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Área de trabajo");
+                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("2") == 0) {
                         ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Sede");
-                    } else {
+                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("3") == 0) {
+                        ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Emisario");
+                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("4") == 0) {
                         ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Valija");
+                    } else if (usuarioSede.getIdrol().getIdrol().toString().compareTo("5") == 0) {
+                        if (nivelSeg.compareTo("Sede") == 0) {
+                            ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Sede");
+                        } else {
+                            ejbBitacora.insertarBitacora(registroSede, registroUsuario, "CONFIRMACIÓN", "Registro de paquete Valija");
+                        }
                     }
                 }
+            } else {
+                return 2;
             }
+
         } catch (Exception e) {
             return Resultado;
         }
