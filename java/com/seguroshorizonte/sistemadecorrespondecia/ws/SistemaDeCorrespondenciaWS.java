@@ -242,31 +242,7 @@ public class SistemaDeCorrespondenciaWS {
         return Resultado;
     }
 
-    /**
-     * Método encargado de insertar registros de la entidad Usuario
-     *
-     * @param registroSede
-     * @param idorg
-     * @return
-     */
-    @WebMethod(operationName = "insertarSede")
-    public int insertarSede(@WebParam(name = "registroSede") Sede registroSede, @WebParam(name = "idorg") String idorg) {
-        registroSede.setDireccionsed(registroSede.getDireccionsed().trim());
-        registroSede.setNombresed(registroSede.getDireccionsed().trim());
-        registroSede.setTelefono2sed(registroSede.getTelefono2sed());
-        registroSede.setTelefonosed(registroSede.getTelefonosed());
-        registroSede.setCodigosed(registroSede.getCodigosed().trim());
-        Organizacion org = ejbOrganizacion.find(new BigDecimal(idorg));
-        registroSede.setIdorg(org);
-        int Resultado;
-        try {
-            ejbSede.create(registroSede);
-            Resultado = 1;
-        } catch (Exception e) {
-            Resultado = 0;
-        }
-        return Resultado;
-    }
+  
 
     /**
      *
@@ -689,8 +665,7 @@ public class SistemaDeCorrespondenciaWS {
             Resultado = ejbSede.ConsultarSedeExistente(sede);
         } catch (Exception e) {
             Resultado = 0;
-        }
-        return Resultado;
+        }        return Resultado;
     }
 
     /**
@@ -705,7 +680,18 @@ public class SistemaDeCorrespondenciaWS {
         int Resultado = 0;
         try {
             Resultado = ejbAreaTrabajo.consultarAreaExistente(area, sede);
-
+            if(Resultado==0){
+            
+            Areatrabajo Areas=new Areatrabajo();
+            Areas.setNombreatr(area);
+            Sede sed = ejbSede.find(new BigDecimal(sede));
+            Areas.setIdsed(sed);
+            Areas.setBorradoatr("0");
+            ejbAreaTrabajo.create(Areas);
+            Resultado =2;
+            }else{
+             Resultado =1;    
+            }
         } catch (Exception e) {
             Resultado = 0;
         }
@@ -2804,6 +2790,32 @@ public class SistemaDeCorrespondenciaWS {
             Resultado = ejbIncidente.consultarIncidenteXValija(idValija);
         } catch (Exception e) {
             return null;
+        }
+        return Resultado;
+    }
+    
+     /**
+     * Método encargado de insertar registros de la entidad Usuario
+     *
+     * @param registroSede
+     * @param idorg
+     * @return
+     */
+    @WebMethod(operationName = "insertarNuevaSede")
+    public int insertarNuevaSede(@WebParam(name = "registroS") Sede registroSede) {
+        registroSede.setDireccionsed(registroSede.getDireccionsed().trim());
+        registroSede.setNombresed(registroSede.getDireccionsed().trim());
+        registroSede.setTelefono2sed(registroSede.getTelefono2sed());
+        registroSede.setTelefonosed(registroSede.getTelefonosed());
+        registroSede.setCodigosed(registroSede.getCodigosed().trim());
+        Organizacion org = ejbOrganizacion.find(registroSede.getIdorg().getIdorg());
+        registroSede.setIdorg(org);
+        int Resultado;
+        try {
+            ejbSede.create(registroSede);
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
         }
         return Resultado;
     }
