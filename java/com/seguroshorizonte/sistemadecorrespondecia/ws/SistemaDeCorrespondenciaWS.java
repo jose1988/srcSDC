@@ -18,6 +18,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.entidades.Organizacion;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Paquete;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Prioridad;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Proveedor;
+import com.seguroshorizonte.sistemadecorrespondecia.entidades.Proveedorsede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Rol;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Sede;
 import com.seguroshorizonte.sistemadecorrespondecia.entidades.Seguimiento;
@@ -2802,15 +2803,19 @@ public class SistemaDeCorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "insertarNuevaSede")
-    public int insertarNuevaSede(@WebParam(name = "registroS") Sede registroSede) {
-        registroSede.setDireccionsed(registroSede.getDireccionsed().trim());
-        registroSede.setNombresed(registroSede.getDireccionsed().trim());
-        registroSede.setTelefono2sed(registroSede.getTelefono2sed());
-        registroSede.setTelefonosed(registroSede.getTelefonosed());
-        registroSede.setCodigosed(registroSede.getCodigosed().trim());
-        Organizacion org = ejbOrganizacion.find(registroSede.getIdorg().getIdorg());
-        registroSede.setIdorg(org);
-        int Resultado;
+    public int insertarNuevaSede(@WebParam(name = "nombresed") String nombre,@WebParam(name = "direccionsed") String direccion,@WebParam(name = "telefonosed") String telefono,@WebParam(name = "telefono2sed") String telefono2,@WebParam(name = "idorg") String idorg,@WebParam(name = "codigosed") String codigo){
+                    
+        
+       Organizacion org = ejbOrganizacion.find(new BigDecimal(idorg));
+       Sede registroSede= new Sede();
+       registroSede.setNombresed(nombre);
+       registroSede.setDireccionsed(direccion);
+       registroSede.setTelefonosed(telefono);
+       registroSede.setTelefono2sed(telefono2);
+       registroSede.setCodigosed(codigo);
+       registroSede.setBorradosed("0");
+       
+       int Resultado;
         try {
             ejbSede.create(registroSede);
             Resultado = 1;
