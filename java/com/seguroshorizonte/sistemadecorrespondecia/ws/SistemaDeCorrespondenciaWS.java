@@ -48,6 +48,7 @@ import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.UsuarioFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.UsuariosedeFacade;
 import com.seguroshorizonte.sistemadecorrespondecia.sessionfacade.ValijaFacade;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -243,21 +244,38 @@ public class SistemaDeCorrespondenciaWS {
         return Resultado;
     }
 
-  
-
     /**
      *
      * @param registroP
      * @return
      */
     @WebMethod(operationName = "insertarProveedor")
-    public int insertarProveedor(@WebParam(name = "registroProveedor") Proveedor registroP) {
-        registroP.setNombrepro(registroP.getNombrepro().trim());
-        registroP.setCodigopro(registroP.getCodigopro().trim());
-        registroP.setTelefonopro(registroP.getTelefonopro().trim());
+    public int insertarProveedor(@WebParam(name = "registroProveedor") Proveedor registroProveedor, @WebParam(name = "registroSede") Sede registroSede) {
+        registroProveedor.setNombrepro(registroProveedor.getNombrepro().trim());
+        registroProveedor.setCodigopro(registroProveedor.getCodigopro().trim());
+        registroProveedor.setTelefonopro(registroProveedor.getTelefonopro().trim());
         int Resultado;
         try {
-            ejbProveedor.create(registroP);
+            ejbProveedor.create(registroProveedor);
+            Resultado = 1;
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
+
+    @WebMethod(operationName = "insertarProveedorSede")
+    public int insertarProveedorSede(@WebParam(name = "registroSede") Sede registroSede) {
+        int Resultado;
+        try {
+            Proveedorsede Nuevo = new Proveedorsede();
+            String idProveedor = ejbProveedor.ultimoidProveedor();
+            Proveedor regiPro = new Proveedor();
+            regiPro = ejbProveedor.find(new BigDecimal(idProveedor));
+            registroSede = ejbSede.find(registroSede.getIdsed());
+            Nuevo.setIdpro(regiPro);
+            Nuevo.setIdsed(registroSede);
+            ejbProveedorSede.create(Nuevo);
             Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
@@ -666,7 +684,8 @@ public class SistemaDeCorrespondenciaWS {
             Resultado = ejbSede.ConsultarSedeExistente(sede);
         } catch (Exception e) {
             Resultado = 0;
-        }        return Resultado;
+        }
+        return Resultado;
     }
 
     /**
@@ -681,17 +700,17 @@ public class SistemaDeCorrespondenciaWS {
         int Resultado = 0;
         try {
             Resultado = ejbAreaTrabajo.consultarAreaExistente(area, sede);
-            if(Resultado==0){
-            
-            Areatrabajo Areas=new Areatrabajo();
-            Areas.setNombreatr(area);
-            Sede sed = ejbSede.find(new BigDecimal(sede));
-            Areas.setIdsed(sed);
-            Areas.setBorradoatr("0");
-            ejbAreaTrabajo.create(Areas);
-            Resultado =2;
-            }else{
-             Resultado =1;    
+            if (Resultado == 0) {
+
+                Areatrabajo Areas = new Areatrabajo();
+                Areas.setNombreatr(area);
+                Sede sed = ejbSede.find(new BigDecimal(sede));
+                Areas.setIdsed(sed);
+                Areas.setBorradoatr("0");
+                ejbAreaTrabajo.create(Areas);
+                Resultado = 2;
+            } else {
+                Resultado = 1;
             }
         } catch (Exception e) {
             Resultado = 0;
@@ -2794,8 +2813,8 @@ public class SistemaDeCorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     /**
+
+    /**
      * Método encargado de insertar registros de la entidad Usuario
      *
      * @param registroSede
@@ -2803,19 +2822,19 @@ public class SistemaDeCorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "insertarNuevaSede")
-    public int insertarNuevaSede(@WebParam(name = "nombresed") String nombre,@WebParam(name = "direccionsed") String direccion,@WebParam(name = "telefonosed") String telefono,@WebParam(name = "telefono2sed") String telefono2,@WebParam(name = "idorg") String idorg,@WebParam(name = "codigosed") String codigo){
-                    
-        
-       Organizacion org = ejbOrganizacion.find(new BigDecimal(idorg));
-       Sede registroSede= new Sede();
-       registroSede.setNombresed(nombre);
-       registroSede.setDireccionsed(direccion);
-       registroSede.setTelefonosed(telefono);
-       registroSede.setTelefono2sed(telefono2);
-       registroSede.setCodigosed(codigo);
-       registroSede.setBorradosed("0");
-       
-       int Resultado;
+    public int insertarNuevaSede(@WebParam(name = "nombresed") String nombre, @WebParam(name = "direccionsed") String direccion, @WebParam(name = "telefonosed") String telefono, @WebParam(name = "telefono2sed") String telefono2, @WebParam(name = "idorg") String idorg, @WebParam(name = "codigosed") String codigo) {
+
+
+        Organizacion org = ejbOrganizacion.find(new BigDecimal(idorg));
+        Sede registroSede = new Sede();
+        registroSede.setNombresed(nombre);
+        registroSede.setDireccionsed(direccion);
+        registroSede.setTelefonosed(telefono);
+        registroSede.setTelefono2sed(telefono2);
+        registroSede.setCodigosed(codigo);
+        registroSede.setBorradosed("0");
+
+        int Resultado;
         try {
             ejbSede.create(registroSede);
             Resultado = 1;

@@ -37,19 +37,26 @@ public class ProveedorFacade extends AbstractFacade<Proveedor> {
         return Resultado;
     }
 
+    public String ultimoidProveedor() {
+        String Resultado;
+        Query consulta = em.createNamedQuery("Proveedor.findMaxProveedor");
+        Resultado = consulta.getSingleResult().toString();
+        return Resultado;
+    }
+
     public Proveedor consultarProveedorNombre(String nombre) {
         Proveedor Resultado;
         Query consulta = em.createNamedQuery("Proveedor.findByNombrepro").setParameter("nombrepro", nombre);
         Resultado = (Proveedor) consulta.getResultList();
         return Resultado;
     }
-    
-     public int consultarProveedorexistente(String nombre, String idsed) {
-        int Resultado=0;
-        Query consulta = em.createNamedQuery("Proveedor.findByExistente").setParameter("nombrepro", nombre).setParameter("idsed",new BigDecimal(idsed));
-        if(consulta==null){
+
+    public int consultarProveedorexistente(String nombre, String idsed) {
+        int Resultado = 0;
+        Query consulta = em.createNamedQuery("Proveedor.findByExistente").setParameter("nombrepro", nombre).setParameter("idsed", new BigDecimal(idsed));
+        if (consulta == null) {
             Resultado = 0;
-        }else{
+        } else {
             Resultado = 1;
         }
         return Resultado;

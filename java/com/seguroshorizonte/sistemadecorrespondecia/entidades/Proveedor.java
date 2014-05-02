@@ -34,16 +34,15 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proveedor.findAll", query = "SELECT p FROM Proveedor p"),
     @NamedQuery(name = "Proveedor.findByIdpro", query = "SELECT p FROM Proveedor p WHERE p.idpro = :idpro"),
     @NamedQuery(name = "Proveedor.findByNombrepro", query = "SELECT p FROM Proveedor p WHERE p.nombrepro = :nombrepro"),
+    @NamedQuery(name = "Proveedor.findMaxProveedor", query = "SELECT MAX(p.idpro) FROM Proveedor p"),
     @NamedQuery(name = "Proveedor.findByExistente", query = "SELECT p FROM Proveedor p , Proveedorsede s WHERE p.nombrepro = :nombrepro AND s.idsed= :idsed  AND s.idpro.idpro=p.idpro ")})
 public class Proveedor implements Serializable {
 
-    
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PROVEEDOR")
     @SequenceGenerator(name = "SEQ_PROVEEDOR", sequenceName = "SEQ_PROVEEDOR", allocationSize = 1)
-   
     @Basic(optional = false)
     @NotNull
     @Column(name = "IDPRO")
@@ -59,7 +58,6 @@ public class Proveedor implements Serializable {
     private String telefonopro;
     @OneToMany(mappedBy = "idpro")
     private Collection<Proveedorsede> proveedorsedeCollection;
-    
 
     public Proveedor() {
     }
@@ -125,8 +123,6 @@ public class Proveedor implements Serializable {
     public void setProveedorsedeCollection(Collection<Proveedorsede> proveedorsedeCollection) {
         this.proveedorsedeCollection = proveedorsedeCollection;
     }
-
-   
 
     public String getCodigopro() {
         return codigopro;

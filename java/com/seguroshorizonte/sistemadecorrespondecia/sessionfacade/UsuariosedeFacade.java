@@ -75,7 +75,7 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
     }
 
     public void insertarUsuarioSede(Usuariosede registroUsuSede) {
-        Query q = em.createNativeQuery("INSERT INTO USUARIOSEDE (IDUSE, IDUSU, IDSED, IDROL, IDATR) VALUES (SEQ_USUARIOSEDE.nextVal, ?, ?, ?,?)");
+        Query q = em.createNativeQuery("INSERT INTO USUARIO_SEDE (IDUSE, IDUSU, IDSED, IDROL, IDATR) VALUES (SEQ_USUARIOSEDE.nextVal, ?, ?, ?,?)");
         q.setParameter(1, registroUsuSede.getIdusu().getIdusu());
         q.setParameter(2, registroUsuSede.getIdsed().getIdsed());
         q.setParameter(3, registroUsuSede.getIdrol().getIdrol());
@@ -84,7 +84,7 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
     }
 
     public void editarRol(BigDecimal idusu, BigDecimal rol, BigDecimal idsede) {
-        Query q = em.createNativeQuery("UPDATE Usuariosede SET idrol=? WHERE idusu=? AND idsed=?");
+        Query q = em.createNativeQuery("UPDATE Usuario_sede SET idrol=? WHERE idusu=? AND idsed=?");
         q.setParameter(1, rol);
         q.setParameter(2, idusu);
         q.setParameter(3, idsede);
