@@ -2890,6 +2890,7 @@ public class SistemaDeCorrespondenciaWS {
         registroSede.setTelefono2sed(telefono2);
         registroSede.setCodigosed(codigo);
         registroSede.setBorradosed("0");
+        registroSede.setIdorg(org);
 
         int Resultado;
         try {
