@@ -51,6 +51,20 @@ public class SedeFacade extends AbstractFacade<Sede> {
       
         return Resultado;
     }
+    
+     public int ConsultarSedeCodigo(String codigo) {
+        int Resultado = 0;
+
+        try {
+            Query consulta = em.createNamedQuery("Sede.findByCodigosed").setParameter("codigosed", codigo);
+            Object rr = consulta.getSingleResult();
+              Resultado = 1;
+        } catch (Exception e) {
+             Resultado = 0;
+        }
+      
+        return Resultado;
+    }
 
     public Sede consultarSedeXId(BigDecimal idSede) {
         Sede Resultado;

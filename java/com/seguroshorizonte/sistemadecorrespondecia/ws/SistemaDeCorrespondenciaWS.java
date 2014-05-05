@@ -1689,6 +1689,18 @@ public class SistemaDeCorrespondenciaWS {
         }
         return Resultado;
     }
+    
+     @WebMethod(operationName = "consultarSedeCodigo")
+    public int consultarSedeCodigo(@WebParam(name = "codigo") String codigo) {
+
+        int Resultado = 0;
+        try {
+            Resultado = ejbSede.ConsultarSedeCodigo(codigo);
+        } catch (Exception e) {
+            Resultado = 0;
+        }
+        return Resultado;
+    }
 
     /**
      *
