@@ -61,6 +61,8 @@ import javax.ejb.EJB;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  *
@@ -142,6 +144,13 @@ public class SistemaDeCorrespondenciaWS {
         BigDecimal id = new BigDecimal(UsuarioActual);
         return ejbUsuario.find(id);
     }
+    static final Comparator<Paquete> SENIORITY_ORDER =
+            new Comparator<Paquete>() {
+        @Override
+        public int compare(Paquete e1, Paquete e2) {
+            return e2.getFechapaq().compareTo(e1.getFechapaq());
+        }
+    };
 
     /**
      *
@@ -186,6 +195,7 @@ public class SistemaDeCorrespondenciaWS {
                 }
             }
         }
+        Collections.sort(Registro, SENIORITY_ORDER);
         return Registro;
     }
 
@@ -1689,8 +1699,8 @@ public class SistemaDeCorrespondenciaWS {
         }
         return Resultado;
     }
-    
-     @WebMethod(operationName = "consultarSedeCodigo")
+
+    @WebMethod(operationName = "consultarSedeCodigo")
     public int consultarSedeCodigo(@WebParam(name = "codigo") String codigo) {
 
         int Resultado = 0;
