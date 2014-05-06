@@ -273,6 +273,11 @@ public class SistemaDeCorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param registroSede
+     * @return
+     */
     @WebMethod(operationName = "insertarProveedorSede")
     public int insertarProveedorSede(@WebParam(name = "registroSede") Sede registroSede) {
         int Resultado;
@@ -412,7 +417,7 @@ public class SistemaDeCorrespondenciaWS {
      * @param idusu
      * @param IdsedeO
      * @param sedeD
-     * @param fechapaq
+     * @param tipo
      * @return
      * @throws ParseException
      */
@@ -648,7 +653,7 @@ public class SistemaDeCorrespondenciaWS {
 
     /**
      *
-     * @param sede
+     * @param sed
      * @return
      */
     @WebMethod(operationName = "consultarUsuariosXSede")
@@ -1069,6 +1074,11 @@ public class SistemaDeCorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param idpaq
+     * @return
+     */
     @WebMethod(operationName = "localizacionPaquete")
     public int localizacionPaquete(@WebParam(name = "idpaq") String idpaq) {
 
@@ -1312,37 +1322,41 @@ public class SistemaDeCorrespondenciaWS {
             Usuario usu = ejbUsuario.consultarUsuario(registroUsuario);
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
-            //Seguimiento
-            nuevoSeg = new Seguimiento();
-            nuevoSeg.setIdpaq(registroPaq);
-            nuevoSeg.setIduse(use);
-            nuevoSeg.setFechaseg(new Date());
-            nuevoSeg.setStatusseg("2");
-            nuevoSeg.setTiposeg("1");
-            nuevoSeg.setNivelseg("Valija");
-            ejbSeguimiento.insertarSeguimiento(nuevoSeg);
-            //Mensaje
-            nuevoMensaje = new Mensaje();
-            nuevoMensaje.setNombremen("Paquete Excedente");
-            nuevoMensaje.setDescripcionmen(datosPaquete);
-            nuevoMensaje.setIdpaq(registroPaq);
-            ejbMensaje.insertarMensaje(nuevoMensaje);
-            //Cambio de Status de Paquete a Reenviado (3)
-            ejbPaquete.editarStatusPaquete(idPaq, "3");
-            if (registroPaq.getIdval() != null) {
-                idVal = registroPaq.getIdval().getIdval();
-                idValija = new Valija();
-                idValija.setIdval(idVal);
-                //Incidente
-                nuevoIncidente = new Incidente();
-                nuevoIncidente.setNombreinc("Paquete Excedente");
-                nuevoIncidente.setDescripcioninc("Reporte de paquete excedente");
-                nuevoIncidente.setIdval(idValija);
-                ejbIncidente.insertarIncidente(nuevoIncidente);
-                //Cambio de Status de Valija con Paquete Excedente (3)
-                ejbValija.editarStatusValija(idVal, "3");
+            if (registroPaq.getStatuspaq().equals("1")) {
+                Resultado = 2;
+            } else {
+                //Seguimiento
+                nuevoSeg = new Seguimiento();
+                nuevoSeg.setIdpaq(registroPaq);
+                nuevoSeg.setIduse(use);
+                nuevoSeg.setFechaseg(new Date());
+                nuevoSeg.setStatusseg("2");
+                nuevoSeg.setTiposeg("1");
+                nuevoSeg.setNivelseg("Valija");
+                ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+                //Mensaje
+                nuevoMensaje = new Mensaje();
+                nuevoMensaje.setNombremen("Paquete Excedente");
+                nuevoMensaje.setDescripcionmen(datosPaquete);
+                nuevoMensaje.setIdpaq(registroPaq);
+                ejbMensaje.insertarMensaje(nuevoMensaje);
+                //Cambio de Status de Paquete a Reenviado (3)
+                ejbPaquete.editarStatusPaquete(idPaq, "3");
+                if (registroPaq.getIdval() != null) {
+                    idVal = registroPaq.getIdval().getIdval();
+                    idValija = new Valija();
+                    idValija.setIdval(idVal);
+                    //Incidente
+                    nuevoIncidente = new Incidente();
+                    nuevoIncidente.setNombreinc("Paquete Excedente");
+                    nuevoIncidente.setDescripcioninc("Reporte de paquete excedente");
+                    nuevoIncidente.setIdval(idValija);
+                    ejbIncidente.insertarIncidente(nuevoIncidente);
+                    //Cambio de Status de Valija con Paquete Excedente (3)
+                    ejbValija.editarStatusValija(idVal, "3");
+                }
+                Resultado = 1;
             }
-            Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
         }
@@ -1418,33 +1432,36 @@ public class SistemaDeCorrespondenciaWS {
             Sede origen = ejbSede.consultarSedeXId(new BigDecimal(registroSede));
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
             Valija val = ejbValija.consultarValijaXIdOCodigoBarra(registroValija);
-
-            //Incidente
-            nuevoIncidente = new Incidente();
-            nuevoIncidente.setNombreinc("Valija Incorrecta");
-            nuevoIncidente.setDescripcioninc(datosValija);
-            nuevoIncidente.setIdval(val);
-            ejbIncidente.insertarIncidente(nuevoIncidente);
-            lista = ejbPaquete.listarPaquetesXValija(val);
-            for (int i = 0; i < lista.size(); i++) {
-                idPaq = lista.get(i).getIdpaq();
-                registroPaquete = new Paquete();
-                registroPaquete.setIdpaq(idPaq);
-                //Seguimiento
-                nuevoSeg = new Seguimiento();
-                nuevoSeg.setIdpaq(registroPaquete);
-                nuevoSeg.setIduse(use);
-                nuevoSeg.setFechaseg(new Date());
-                nuevoSeg.setStatusseg("2");
-                nuevoSeg.setTiposeg("1");
-                nuevoSeg.setNivelseg("Valija");
-                ejbSeguimiento.insertarSeguimiento(nuevoSeg);
-                //Cambio de Status de Paquete a Reenviado (3)
-                ejbPaquete.editarStatusPaquete(idPaq, "3");
+            if (val.getStatusval().equals("1")) {
+                Resultado = 2;
+            } else {
+                //Incidente
+                nuevoIncidente = new Incidente();
+                nuevoIncidente.setNombreinc("Valija Incorrecta");
+                nuevoIncidente.setDescripcioninc(datosValija);
+                nuevoIncidente.setIdval(val);
+                ejbIncidente.insertarIncidente(nuevoIncidente);
+                lista = ejbPaquete.listarPaquetesXValija(val);
+                for (int i = 0; i < lista.size(); i++) {
+                    idPaq = lista.get(i).getIdpaq();
+                    registroPaquete = new Paquete();
+                    registroPaquete.setIdpaq(idPaq);
+                    //Seguimiento
+                    nuevoSeg = new Seguimiento();
+                    nuevoSeg.setIdpaq(registroPaquete);
+                    nuevoSeg.setIduse(use);
+                    nuevoSeg.setFechaseg(new Date());
+                    nuevoSeg.setStatusseg("2");
+                    nuevoSeg.setTiposeg("1");
+                    nuevoSeg.setNivelseg("Valija");
+                    ejbSeguimiento.insertarSeguimiento(nuevoSeg);
+                    //Cambio de Status de Paquete a Reenviado (3)
+                    ejbPaquete.editarStatusPaquete(idPaq, "3");
+                }
+                //Cambio de Status de Valija a Reenviada (4)
+                ejbValija.editarStatusValija(val.getIdval(), "4");
+                Resultado = 1;
             }
-            //Cambio de Status de Valija a Reenviada (4)
-            ejbValija.editarStatusValija(val.getIdval(), "4");
-            Resultado = 1;
         } catch (Exception e) {
             Resultado = 0;
         }
@@ -1688,6 +1705,12 @@ public class SistemaDeCorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param nombre
+     * @param idsed
+     * @return
+     */
     @WebMethod(operationName = "consultarProveedorexistente")
     public int consultarProveedorexistente(@WebParam(name = "nombre") String nombre, @WebParam(name = "idsed") String idsed) {
 
@@ -1700,6 +1723,11 @@ public class SistemaDeCorrespondenciaWS {
         return Resultado;
     }
 
+    /**
+     *
+     * @param codigo
+     * @return
+     */
     @WebMethod(operationName = "consultarSedeCodigo")
     public int consultarSedeCodigo(@WebParam(name = "codigo") String codigo) {
 
@@ -1753,7 +1781,7 @@ public class SistemaDeCorrespondenciaWS {
 
     /**
      *
-     * @param nombre
+     * @param idpro
      * @return
      */
     @WebMethod(operationName = "consultarProveedorXId")
@@ -2884,8 +2912,12 @@ public class SistemaDeCorrespondenciaWS {
     /**
      * Método encargado de insertar registros de la entidad Usuario
      *
-     * @param registroSede
+     * @param nombre
+     * @param direccion
      * @param idorg
+     * @param telefono2
+     * @param telefono
+     * @param codigo
      * @return
      */
     @WebMethod(operationName = "insertarNuevaSede")
