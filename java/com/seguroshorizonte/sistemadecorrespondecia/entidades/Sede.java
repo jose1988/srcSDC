@@ -38,7 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Sede.findByNombresed", query = "SELECT s FROM Sede s WHERE s.nombresed = :nombresed"),
     @NamedQuery(name = "Sede.findByDireccionsed", query = "SELECT s FROM Sede s WHERE s.direccionsed = :direccionsed"),
     @NamedQuery(name = "Sede.findByTelefonosed", query = "SELECT s FROM Sede s WHERE s.telefonosed = :telefonosed"),
-    @NamedQuery(name = "Sede.findByCodigosed", query = "SELECT s FROM Sede s WHERE s.codigosed = :codigo"),
+    @NamedQuery(name = "Sede.findByCodigosed", query = "SELECT s FROM Sede s WHERE s.codigosed = :codigosed"),
     @NamedQuery(name = "Sede.findparaEnvio", query = "SELECT s FROM Sede s WHERE s.borradosed='0' AND s.idsed != :idsed"),
     @NamedQuery(name = "Sede.findByTelefono2sed", query = "SELECT s FROM Sede s WHERE s.telefono2sed = :telefono2sed")})
 public class Sede implements Serializable {
