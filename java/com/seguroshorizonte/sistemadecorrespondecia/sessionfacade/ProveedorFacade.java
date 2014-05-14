@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -20,6 +21,7 @@ public class ProveedorFacade extends AbstractFacade<Proveedor> {
 
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
+    private static Logger log = Logger.getLogger(ProveedorFacade.class);
 
     @Override
     protected EntityManager getEntityManager() {
@@ -53,13 +55,14 @@ public class ProveedorFacade extends AbstractFacade<Proveedor> {
 
     public int consultarProveedorexistente(String nombre, String idsed) {
         int Resultado = 0;
-       
         try {
             Query consulta = em.createNamedQuery("Proveedor.findByExistente").setParameter("nombrepro", nombre).setParameter("idsed", new BigDecimal(idsed));
             Object rr = consulta.getSingleResult();
-              Resultado = 1;
+            Resultado = 1;
         } catch (Exception e) {
-             Resultado = 0;
+            log.error("Error en consultarProveedorexistente");
+            log.fatal("Error fatal en consultarProveedorexistente");
+            Resultado = 0;
         }
         return Resultado;
     }

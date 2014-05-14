@@ -20,6 +20,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -30,6 +31,7 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
+    private static Logger log = Logger.getLogger(PaqueteFacade.class);
 
     @Override
     protected EntityManager getEntityManager() {
@@ -66,14 +68,11 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
         List<Paquete> Resultado = new ArrayList<Paquete>();
         Query consulta = em.createNamedQuery("Seguimiento.findByExtraviado").setParameter("iduse", use.getIduse());
         List<Seguimiento> Resultad = (List<Seguimiento>) consulta.getResultList();
-
         Iterator<Seguimiento> lista = Resultad.iterator();
         while (lista.hasNext()) {
             Seguimiento aux = lista.next();
             Resultado.add(aux.getIdpaq());
-
         }
-
         return Resultado;
     }
 
@@ -196,18 +195,14 @@ public class PaqueteFacade extends AbstractFacade<Paquete> {
 
     public List<Paquete> BuscarArea(BigDecimal idatr, BigDecimal idsede) {
         String sede = "Sede";
-         List<Paquete> Resultad = new ArrayList<Paquete>();
+        List<Paquete> Resultad = new ArrayList<Paquete>();
         Query consulta = em.createNamedQuery("Seguimiento.findPaqByArea").setParameter("idatr", idatr).setParameter("idsed", idsede).setParameter("sede", sede);
         List<Seguimiento> Resultado = consulta.getResultList();
-        
-         Iterator<Seguimiento> lista = Resultado.iterator();
+        Iterator<Seguimiento> lista = Resultado.iterator();
         while (lista.hasNext()) {
             Seguimiento aux = lista.next();
             Resultad.add(aux.getIdpaq());
-
         }
-        
-        
         return Resultad;
     }
 

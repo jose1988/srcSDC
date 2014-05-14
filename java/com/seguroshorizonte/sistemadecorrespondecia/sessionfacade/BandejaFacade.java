@@ -60,6 +60,5 @@ public class BandejaFacade extends AbstractFacade<Bandeja> {
     public void actualizacionBandejaEnvioExterno(Paquete idPaq) {
         Query q = em.createNativeQuery("UPDATE bandeja SET idiba=2 WHERE idpaq = " + idPaq.getIdpaq() + " AND idusu = " + idPaq.getOrigenpaq().getIdusu().getIdusu());
         q.executeUpdate();
-
     }
 }

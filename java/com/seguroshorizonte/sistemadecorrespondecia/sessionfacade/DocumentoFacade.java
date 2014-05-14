@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -19,6 +20,7 @@ public class DocumentoFacade extends AbstractFacade<Documento> {
 
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
+    private static Logger log = Logger.getLogger(DocumentoFacade.class);
 
     @Override
     protected EntityManager getEntityManager() {
@@ -59,6 +61,8 @@ public class DocumentoFacade extends AbstractFacade<Documento> {
         try {
             Registro = (Documento) (em.createNamedQuery("Documento.findByNombredoc").setParameter("nombredoc", doc).getSingleResult());
         } catch (Exception e) {
+            log.error("Error en consultarDocumentoXNombre");
+            log.fatal("Error fatal en consultarDocumentoXNombre");
             return null;
         }
         return Registro;

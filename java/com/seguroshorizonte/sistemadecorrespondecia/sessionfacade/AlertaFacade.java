@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.*;
 
 /**
  *
@@ -24,6 +25,7 @@ public class AlertaFacade extends AbstractFacade<Alerta> {
 
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
+    private static Logger log = Logger.getLogger(AlertaFacade.class);
 
     @Override
     protected EntityManager getEntityManager() {
@@ -39,11 +41,11 @@ public class AlertaFacade extends AbstractFacade<Alerta> {
         try {
             Query consulta = em.createNamedQuery("Alerta.findPaquetesVencidosXOrigen").setParameter("origen", usuarioId).setParameter("idsed", idSede);
             Resultado = consulta.getResultList();
-
         } catch (Exception e) {
+            log.error("Error en consultarPaquetesXUsuarioOrigen");
+            log.fatal("Error fatal en consultarPaquetesXUsuarioOrigen");
             return null;
         }
-
         return Resultado;
     }
 
@@ -52,11 +54,11 @@ public class AlertaFacade extends AbstractFacade<Alerta> {
         try {
             Query consulta = em.createNamedQuery("Alerta.findPaquetesVencidosXDestino").setParameter("destino", usuarioId).setParameter("idsed", idSede);
             Resultado = consulta.getResultList();
-
         } catch (Exception e) {
+            log.error("Error en consultarPaquetesXUsuarioDestino");
+            log.fatal("Error fatal en consultarPaquetesXUsuarioDestino");
             return null;
         }
-
         return Resultado;
     }
 
@@ -65,11 +67,11 @@ public class AlertaFacade extends AbstractFacade<Alerta> {
         try {
             Query consulta = em.createNamedQuery("Alerta.findPaquetesVencidosXSeguimiento").setParameter("usuarioSede", usuarioId);
             Resultado = consulta.getResultList();
-
         } catch (Exception e) {
+            log.error("Error en consultarPaquetesXSeguimiento");
+            log.fatal("Error fatal en consultarPaquetesXSeguimiento");
             return null;
         }
-
         return Resultado;
     }
 }

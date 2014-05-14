@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -23,6 +24,7 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
 
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
+    private static Logger log = Logger.getLogger(BuzonFacade.class);
 
     @Override
     protected EntityManager getEntityManager() {
@@ -38,6 +40,8 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         try {
             lista = em.createNamedQuery("Buzon.findInternoByUsuarioYSede").setParameter("idusu", idUsuario).setParameter("idsede", idSede).getResultList();
         } catch (Exception e) {
+            log.error("Error en ConsultarBuzonInternoXUsuario");
+            log.fatal("Error fatal en ConsultarBuzonInternoXUsuario");
             return null;
         }
         return lista;
@@ -48,6 +52,8 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         try {
             lista = em.createNamedQuery("Buzon.findByUsuario").setParameter("idusu", idUsuario).getResultList();
         } catch (Exception e) {
+            log.error("Error en ConsultarBuzonXUsuario");
+            log.fatal("Error fatal en ConsultarBuzonXUsuario");
             return null;
         }
         return lista;
@@ -59,6 +65,8 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
             lista = em.createNamedQuery("Buzon.findExternoByUsuario").setParameter("idusu", idUsuario).getResultList();
 
         } catch (Exception e) {
+            log.error("Error en ConsultarBuzonExternoXUsuario");
+            log.fatal("Error fatal en ConsultarBuzonExternoXUsuario");
             return null;
         }
         return lista;
@@ -73,6 +81,8 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         try {
             Resultado = (Buzon) em.createNamedQuery("Buzon.findInternoByNombreUsuario").setParameter("user", userUsu).setParameter("idusu", usuario).getSingleResult();
         } catch (Exception e) {
+            log.error("Error en ConsultarBuzonInternoXNombreUsuario");
+            log.fatal("Error fatal en ConsultarBuzonInternoXNombreUsuario");
             return null;
         }
         return Resultado;
@@ -83,6 +93,8 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         try {
             Resultado = (Buzon) em.createNamedQuery("Buzon.findByUsuarioSede").setParameter("idsed", new BigDecimal(idsed)).setParameter("idusu", new BigDecimal(idusu)).getSingleResult();
         } catch (Exception e) {
+            log.error("Error en ConsultarBuzonXNombreSede");
+            log.fatal("Error fatal en ConsultarBuzonXNombreSede");
             return null;
         }
         return Resultado;
@@ -93,6 +105,8 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
         try {
             Resultado = (Buzon) em.createNamedQuery("Buzon.findExternoByNombreUsuario").setParameter("nombre", Nombre).setParameter("idusu", usuario).getSingleResult();
         } catch (Exception e) {
+            log.error("Error en ConsultarBuzonExternoXNombreUsuario");
+            log.fatal("Error fatal en ConsultarBuzonExternoXNombreUsuario");
             return null;
         }
         return Resultado;
@@ -123,7 +137,7 @@ public class BuzonFacade extends AbstractFacade<Buzon> {
     public List<Buzon> buscarBuzonParaEnviar(String nombre, String apellido, String area, Buzon myBuzon, String sede) {
         List<Buzon> emp;
         List<Buzon> empexterno;
-            if (!"".equals(area)) {
+        if (!"".equals(area)) {
             emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNASA").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("area", new BigDecimal(area)).setParameter("idbuz", myBuzon.getIdbuz()).setParameter("idsed", new BigDecimal(sede)).getResultList();
         } else {
             emp = (List<Buzon>) em.createNamedQuery("Buzon.findByNAS").setParameter("nombre", "%" + nombre.toUpperCase() + "%").setParameter("apellido", "%" + apellido.toUpperCase() + "%").setParameter("idbuz", myBuzon.getIdbuz()).setParameter("idsed", new BigDecimal(sede)).getResultList();

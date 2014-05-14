@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,6 +22,7 @@ public class SedeFacade extends AbstractFacade<Sede> {
 
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
+    private static Logger log = Logger.getLogger(SedeFacade.class);
 
     @Override
     protected EntityManager getEntityManager() {
@@ -40,29 +42,29 @@ public class SedeFacade extends AbstractFacade<Sede> {
 
     public int ConsultarSedeExistente(String sede) {
         int Resultado = 0;
-
         try {
             Query consulta = em.createNamedQuery("Sede.findByNombresed").setParameter("nombresed", sede);
             Object rr = consulta.getSingleResult();
-              Resultado = 1;
+            Resultado = 1;
         } catch (Exception e) {
-             Resultado = 0;
+            log.error("Error en ConsultarSedeExistente");
+            log.fatal("Error fatal en ConsultarSedeExistente");
+            Resultado = 0;
         }
-      
         return Resultado;
     }
-    
-     public int ConsultarSedeCodigo(String codigo) {
-        int Resultado = 0;
 
+    public int ConsultarSedeCodigo(String codigo) {
+        int Resultado = 0;
         try {
             Query consulta = em.createNamedQuery("Sede.findByCodigosed").setParameter("codigosed", codigo);
             Object rr = consulta.getSingleResult();
-              Resultado = 1;
+            Resultado = 1;
         } catch (Exception e) {
-             Resultado = 0;
+            log.error("Error en ConsultarSedeCodigo");
+            log.fatal("Error fatal en ConsultarSedeCodigo");
+            Resultado = 0;
         }
-      
         return Resultado;
     }
 

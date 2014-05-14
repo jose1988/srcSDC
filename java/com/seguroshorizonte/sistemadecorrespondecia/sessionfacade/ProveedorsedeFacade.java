@@ -38,6 +38,4 @@ public class ProveedorsedeFacade extends AbstractFacade<Proveedorsede> {
         Resultado = consulta.getResultList();
         return Resultado;
     }
-    
-     
 }
