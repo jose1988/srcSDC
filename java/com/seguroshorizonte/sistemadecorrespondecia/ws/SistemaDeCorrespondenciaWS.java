@@ -132,8 +132,8 @@ public class SistemaDeCorrespondenciaWS {
             Registro = ejbInfobandeja.findAll();
         } catch (Exception e) {
             
-            log.error("Error en consultarBandejas");
-            log.fatal("Error fatal en consultarBandejas");
+            log.error("Error en Servicio consultarBandejas");
+            log.fatal("Error fatal en Servicio  consultarBandejas");
             
             Registro = null;
         }
@@ -183,11 +183,7 @@ public class SistemaDeCorrespondenciaWS {
             if (banj.equals(b1) || banj.equals(b2)) {
                 boolean x = aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu());
                 boolean y = aux.getIdusu().getIdusu().equals(usuario.getIdusu());
-                if (x && y) {
-                    String nu = "dd";
-
-                }
-
+              
                 if (aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu()) && aux.getIdusu().getIdusu().equals(usuario.getIdusu())) {
                     Registro.add(aux.getIdpaq());
                 } else {
@@ -255,6 +251,9 @@ public class SistemaDeCorrespondenciaWS {
             ejbUsuario.insertar(registroUsuario);
             Resultado = 1;
         } catch (Exception e) {
+            
+            log.error("Error en Servicio insertarUsuario");
+            log.fatal("Error fatal en Servicio  insertarUsuario");
             Resultado = 0;
         }
         return Resultado;
@@ -275,6 +274,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbProveedor.create(registroP);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio insertarProveedor");
+            log.fatal("Error fatal en Servicio  insertarProveedor");
             Resultado = 0;
         }
         return Resultado;
@@ -299,6 +300,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbProveedorSede.create(Nuevo);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio insertarProveedorSede");
+            log.fatal("Error fatal en Servicio  insertarProveedorSede");
             Resultado = 0;
         }
         return Resultado;
@@ -320,6 +323,9 @@ public class SistemaDeCorrespondenciaWS {
             ejbAreaTrabajo.create(registroArea);
             Resultado = 1;
         } catch (Exception e) {
+            
+            log.error("Error en Servicio insertarArea");
+            log.fatal("Error fatal en Servicio  insertarArea");
             Resultado = 0;
         }
         return Resultado;
@@ -363,6 +369,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbUsuario.consultarUsuario(idUsuario);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarUsuario");
+            log.fatal("Error fatal en Servicio  consultarUsuario");
             Resultado = null;
         }
         return Resultado;
@@ -381,6 +389,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbDocumento.consultarDocumento(idDocumento);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarDocumento");
+            log.fatal("Error fatal en Servicio  consultarDocumento");
             Resultado = null;
         }
         return Resultado;
@@ -414,6 +424,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbPaquete.crearPaquete(registroPaquete);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio crearPaquete");
+            log.fatal("Error fatal en Servicio  crearPaquete");
             Resultado = 0;
         }
         return Resultado;
@@ -452,6 +464,9 @@ public class SistemaDeCorrespondenciaWS {
             Resultado = ejbValija.crearValija(registroValija);
             ejbBitacora.insertarBitacora(destino, usu, "INSERCION", "Creacion de Valija");
         } catch (Exception e) {
+            log.error("Error en Servicio insertarValija");
+            log.fatal("Error fatal en Servicio  insertarValija");
+            
             Resultado = new BigDecimal(0);
         }
         return Resultado.toString();
@@ -470,6 +485,9 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbPaquete.ConsultarPaquetesXValija(registroValija, sede);
         } catch (Exception e) {
+            
+            log.error("Error en Servicio ConsultarPaquetesXValija");
+            log.fatal("Error fatal en Servicio  ConsultarPaquetesXValija");
             return null;
         }
         return Resultado;
@@ -489,6 +507,9 @@ public class SistemaDeCorrespondenciaWS {
             ejbNivel.editarTiempoNivel(tiempo, idniv);
             Resultado = 1;
         } catch (Exception e) {
+            
+            log.error("Error en Servicio actualizarTiempoNivel");
+            log.fatal("Error fatal en Servicio  actualizarTiempoNivel");
             return 0;
         }
         return Resultado;
@@ -512,6 +533,9 @@ public class SistemaDeCorrespondenciaWS {
                 valija = null;
             }
         } catch (Exception e) {
+            
+            log.error("Error en Servicio ConsultarValija");
+            log.fatal("Error fatal en Servicio  ConsultarValija");
             return null;
         }
         return valija;
@@ -539,6 +563,8 @@ public class SistemaDeCorrespondenciaWS {
                 }
             }
         } catch (Exception e) {
+            log.error("Error en Servicio ConsultarPaquetesParaValija");
+            log.fatal("Error fatal en Servicio  ConsultarPaquetesParaValija");
             return null;
         }
         return Resultado;
@@ -566,6 +592,8 @@ public class SistemaDeCorrespondenciaWS {
                 }
             }
         } catch (Exception e) {
+            log.error("Error en Servicio ConsultarPaquetesParaValija");
+            log.fatal("Error fatal en Servicio  ConsultarPaquetesParaValija");
             return null;
         }
         return Resultado;
@@ -584,6 +612,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSede.find(id);
         } catch (Exception e) {
+            log.error("Error en Servicio ConsultarSede");
+            log.fatal("Error fatal en Servicio  ConsultarSede");
             return null;
         }
         return Resultado;
@@ -601,6 +631,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbAreaTrabajo.consultarAreasXSede(sede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarAreasXSede");
+            log.fatal("Error fatal en Servicio  consultarAreasXSede");
             return null;
         }
         return Resultado;
@@ -618,6 +650,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbNivel.consultarNivel(pri);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarNivel");
+            log.fatal("Error fatal en Servicio  consultarNivel");
             return null;
         }
         return Resultado;
@@ -636,6 +670,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbAreaTrabajo.estadoArea(area);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio estadoArea");
+            log.fatal("Error fatal en Servicio  estadoArea");
             return 0;
         }
         return Resultado;
@@ -653,6 +689,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbAreaTrabajo.consultarAreasXSedeXNombre(sede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarAreasXSedeXNombre");
+            log.fatal("Error fatal en Servicio  consultarAreasXSedeXNombre");
             return null;
         }
         return Resultado;
@@ -670,6 +708,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbUsuario.consultarUsuariosXSede(sed);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarUsuariosXSede");
+            log.fatal("Error fatal en Servicio  consultarUsuariosXSede");
             return null;
         }
         return Resultado;
@@ -687,6 +727,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSede.ConsultarSedeXNombre(sede);
         } catch (Exception e) {
+            log.error("Error en Servicio ConsultarSedeXNombre");
+            log.fatal("Error fatal en Servicio  ConsultarSedeXNombre");
             return null;
         }
         return Resultado;
@@ -704,6 +746,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSede.ConsultarSedeExistente(sede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarSedeExistente");
+            log.fatal("Error fatal en Servicio  consultarSedeExistente");
             Resultado = 0;
         }
         return Resultado;
@@ -734,6 +778,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = 1;
             }
         } catch (Exception e) {
+            log.error("Error en Servicio consultarAreaExistente");
+            log.fatal("Error fatal en Servicio  consultarAreaExistente");
             Resultado = 0;
         }
         return Resultado;
@@ -756,6 +802,8 @@ public class SistemaDeCorrespondenciaWS {
             Resultado = ejbPaquete.BuscarArea(use.getIdatr().getIdatr(), sed.getIdsed());
 
         } catch (Exception e) {
+            log.error("Error en Servicio consultarPaquetesporArea");
+            log.fatal("Error fatal en Servicio  consultarPaquetesporArea");
             Resultado = null;
         }
         return Resultado;
@@ -774,6 +822,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             ejbPaquete.ActualizacionLocalizacionyValijaDelPaquete(idpaq, idval);
         } catch (Exception e) {
+            log.error("Error en Servicio ActualizacionLocalizacionyValijaDelPaquete");
+            log.fatal("Error fatal en Servicio  ActualizacionLocalizacionyValijaDelPaquete");
             return null;
         }
         return Resultado;
@@ -801,6 +851,9 @@ public class SistemaDeCorrespondenciaWS {
             buzoni.setTipobuz("0");
             ejbBuzon.insertarBuzon(buzoni);
         } catch (Exception e) {
+            log.error("Error en Servicio insertarBuzon");
+            log.fatal("Error fatal en Servicio  insertarBuzon");
+           
             return 0;
         }
         return 1;
@@ -824,6 +877,8 @@ public class SistemaDeCorrespondenciaWS {
             buz.setIdusu(usu);
             ejbBuzon.insertarBuzon(buz);
         } catch (Exception e) {
+            log.error("Error en Servicio insertarBuzonExterno");
+            log.fatal("Error fatal en Servicio  insertarBuzonExterno");
             return 0;
         }
         return 1;
@@ -840,6 +895,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbRol.findAll();
         } catch (Exception e) {
+            log.error("Error en Servicio consultarRoles");
+            log.fatal("Error fatal en Servicio  consultarRoles");
             Resultado = null;
         }
         return Resultado;
@@ -861,6 +918,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbPaquete.consultarStatusPaquete(use);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarStatusPaquete");
+            log.fatal("Error fatal en Servicio  consultarStatusPaquete");
             Resultado = null;
         }
         return Resultado;
@@ -883,6 +942,8 @@ public class SistemaDeCorrespondenciaWS {
             Usuariosede use = ejbUsuariosede.ConsultarXUsuarioYSede(usu, origen);
             Resultado = ejbValija.consultarStatusValija(use);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarStatusValija");
+            log.fatal("Error fatal en Servicio  consultarStatusValija");
             Resultado = null;
         }
         return Resultado;
@@ -902,6 +963,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbUsuariosede.sedeRolXId(idusu, sed);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarSedeRol");
+            log.fatal("Error fatal en Servicio  consultarSedeRol");
             Resultado = null;
         }
         return Resultado;
@@ -918,6 +981,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSede.findAll();
         } catch (Exception e) {
+            log.error("Error en Servicio ConsultarSedes");
+            log.fatal("Error fatal en Servicio  ConsultarSedes");
             return null;
         }
         return Resultado;
@@ -942,6 +1007,8 @@ public class SistemaDeCorrespondenciaWS {
                 }
             }
         } catch (Exception e) {
+            log.error("Error en Servicio ConsultarSedesBuzon");
+            log.fatal("Error fatal en Servicio  ConsultarSedesBuzon");
             return null;
         }
         return Result;
@@ -973,6 +1040,8 @@ public class SistemaDeCorrespondenciaWS {
             }
             Resultado.addAll((Collection<? extends Sede>) lista2);
         } catch (Exception e) {
+            log.error("Error en Servicio ConsultarSedesParaAsignar");
+            log.fatal("Error fatal en Servicio  ConsultarSedesParaAsignar");
             return null;
         }
         return Resultado;
@@ -991,6 +1060,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbPaquete.ActualizacionLocalizacionyDelPaqueteRecibido(idpaq);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio actualizacionLocalizacionRecibidoPaquete");
+            log.fatal("Error fatal en Servicio  actualizacionLocalizacionRecibidoPaquete");
             return 0;
         }
         return Resultado;
@@ -1016,6 +1087,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbMensaje.insertarMensaje(msj);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio actualizacionPaqueteextraviado");
+            log.fatal("Error fatal en Servicio  actualizacionPaqueteextraviado");
             return 0;
         }
         return Resultado;
@@ -1036,6 +1109,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbPaquete.editarLocalizacionPaquete(idu, Localizacion);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio actualizacionLocalizacionRecibidoValija");
+            log.fatal("Error fatal en Servicio  actualizacionLocalizacionRecibidoValija");
             return 0;
         }
         return Resultado;
@@ -1076,6 +1151,8 @@ public class SistemaDeCorrespondenciaWS {
             }
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio actualizarBandeja");
+            log.fatal("Error fatal en Servicio  actualizarBandeja");
             Resultado = 0;
         }
         return Resultado;
@@ -1097,6 +1174,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = 1;
             }
         } catch (Exception e) {
+            log.error("Error en Servicio localizacionPaquete");
+            log.fatal("Error fatal en Servicio  localizacionPaquete");
             return 0;
         }
         return Resultado;
@@ -1123,6 +1202,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbBitacora.insertarBitacora(destino, usu, "DESGLOSAR", "Desglozar Valija");
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio entregarValija");
+            log.fatal("Error fatal en Servicio  entregarValija");
             return 0;
         }
         return Resultado;
@@ -1146,6 +1227,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbUsuariosede.editarRol(idu, ro, sed.getIdsed());
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio editarRol");
+            log.fatal("Error fatal en Servicio  editarRol");
             return 0;
         }
         return Resultado;
@@ -1166,6 +1249,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbPaquete.editarTipo(usu.getIdusu(), tipo);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio editarTipoUsuario");
+            log.fatal("Error fatal en Servicio  editarTipoUsuario");
             return 0;
         }
         return Resultado;
@@ -1189,6 +1274,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbUsuariosede.asignarSede(usu, ro, sed);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio asignarSede");
+            log.fatal("Error fatal en Servicio  asignarSede");
             return 0;
         }
         return Resultado;
@@ -1214,6 +1301,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbBitacora.insertarBitacora(sed, usu, accion, observacion);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio insertarBitacora");
+            log.fatal("Error fatal en Servicio  insertarBitacora");
             Resultado = 0;
         }
         return Resultado;
@@ -1231,6 +1320,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbBitacora.listarBitacora();
         } catch (Exception e) {
+            log.error("Error en Servicio listarBitacora");
+            log.fatal("Error fatal en Servicio  listarBitacora");
             Resultado = null;
         }
         return Resultado;
@@ -1256,6 +1347,8 @@ public class SistemaDeCorrespondenciaWS {
             }
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio vaciarBitacora");
+            log.fatal("Error fatal en Servicio  vaciarBitacora");
             Resultado = 0;
         }
         return Resultado;
@@ -1296,6 +1389,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = 1;
             }
         } catch (Exception e) {
+            log.error("Error en Servicio confirmarValija");
+            log.fatal("Error fatal en Servicio  confirmarValija");
             Resultado = 0;
         }
         return Resultado;
@@ -1365,6 +1460,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = 1;
             }
         } catch (Exception e) {
+             log.error("Error en Servicio reportarPaqueteExcedente");
+            log.fatal("Error fatal en Servicio  reportarPaqueteExcedente");
             Resultado = 0;
         }
         return Resultado;
@@ -1409,6 +1506,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = 1;
             }
         } catch (Exception e) {
+            log.error("Error en Servicio reportarPaqueteExtravio");
+            log.fatal("Error fatal en Servicio  reportarPaqueteExtravio");
             Resultado = 0;
         }
         return Resultado;
@@ -1470,6 +1569,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = 1;
             }
         } catch (Exception e) {
+            log.error("Error en Servicio reportarValija");
+            log.fatal("Error fatal en Servicio  reportarValija");
             Resultado = 0;
         }
         return Resultado;
@@ -1518,6 +1619,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = 1;
             }
         } catch (Exception e) {
+            log.error("Error en Servicio reportarValijaExtravio");
+            log.fatal("Error fatal en Servicio  reportarValijaExtravio");
             Resultado = 0;
         }
         return Resultado;
@@ -1545,6 +1648,8 @@ public class SistemaDeCorrespondenciaWS {
             Date fechafin = formatoDeFecha.parse(fechaFinal);
             Resultado = ejbValija.estadisticasValija(fechaini, fechafin, consulta, idsede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarEstadisticasValijas");
+            log.fatal("Error fatal en Servicio  consultarEstadisticasValijas");
             Resultado = null;
         }
         return Resultado;
@@ -1572,6 +1677,8 @@ public class SistemaDeCorrespondenciaWS {
             Date fechafin = formatoDeFecha.parse(fechaFinal);
             Resultado = ejbPaquete.estadisticasPaquete(fechaini, fechafin, consulta, idsede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarEstadisticasPaquetes");
+            log.fatal("Error fatal en Servicio  consultarEstadisticasPaquetes");
             Resultado = null;
         }
         return Resultado;
@@ -1591,6 +1698,8 @@ public class SistemaDeCorrespondenciaWS {
             BigDecimal idSed = new BigDecimal(idSede);
             Resultado = ejbSede.consultarSedeXId(idSed);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarSedeXId");
+            log.fatal("Error fatal en Servicio  consultarSedeXId");
             Resultado = null;
         }
         return Resultado;
@@ -1617,6 +1726,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = ejbPaquete.consultarPaquete(idPaq);
             }
         } catch (Exception e) {
+            log.error("Error en Servicio ultimoPaqueteXOrigen");
+            log.fatal("Error fatal en Servicio  ultimoPaqueteXOrigen");
             Resultado = null;
         }
         return Resultado;
@@ -1636,6 +1747,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbPaquete.consultarPaquete(idPaq);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarPaqueteXId");
+            log.fatal("Error fatal en Servicio  consultarPaqueteXId");
             Resultado = null;
         }
         return Resultado;
@@ -1659,6 +1772,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = ejbValija.consultarPaquete(idUsu);
             }
         } catch (Exception e) {
+             log.error("Error en Servicio ultimaValijaXUsuario");
+            log.fatal("Error fatal en Servicio  ultimaValijaXUsuario");
             Resultado = null;
         }
         return Resultado;
@@ -1680,6 +1795,8 @@ public class SistemaDeCorrespondenciaWS {
             idPaq.setIdpaq(new BigDecimal(idPaquete));
             Resultado = ejbAdjunto.consultarAdjuntoXPaquete(idPaq);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarAdjuntoXPaquete");
+            log.fatal("Error fatal en Servicio  consultarAdjuntoXPaquete");
             Resultado = null;
         }
         return Resultado;
@@ -1707,6 +1824,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado.add(aux);
             }
         } catch (Exception e) {
+            log.error("Error en Servicio consultarSeguimientoXPaquete");
+            log.fatal("Error fatal en Servicio  consultarSeguimientoXPaquete");
             Resultado = null;
         }
         return Resultado;
@@ -1725,6 +1844,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbProveedor.consultarProveedorexistente(nombre, idsed);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarProveedorexistente");
+            log.fatal("Error fatal en Servicio  consultarProveedorexistente");
             Resultado = 0;
         }
         return Resultado;
@@ -1742,6 +1863,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSede.ConsultarSedeCodigo(codigo);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarSedeCodigo");
+            log.fatal("Error fatal en Servicio  consultarSedeCodigo");
             Resultado = 0;
         }
         return Resultado;
@@ -1759,6 +1882,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbProveedorSede.consultarProveedorXSede(sede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarProveedorXSede");
+            log.fatal("Error fatal en Servicio  consultarProveedorXSede");
             Resultado = null;
         }
         return Resultado;
@@ -1781,6 +1906,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = (List<Proveedor>) ejbProveedor.consultarProveedorNombre(nombre);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarProveedorXNombre");
+            log.fatal("Error fatal en Servicio  consultarProveedorXNombre");
             Resultado = null;
         }
         return Resultado;
@@ -1798,6 +1925,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbProveedor.consultarProveedorXId(new BigDecimal(idpro));
         } catch (Exception e) {
+            log.error("Error en Servicio consultarProveedorXId");
+            log.fatal("Error fatal en Servicio  consultarProveedorXId");
             Resultado = null;
         }
         return Resultado;
@@ -2047,6 +2176,8 @@ public class SistemaDeCorrespondenciaWS {
             }
 
         } catch (Exception e) {
+            log.error("Error en Servicio registroSeguimiento");
+            log.fatal("Error fatal en Servicio  registroSeguimiento");
             return Resultado;
         }
         //Caso  id1: nivel 1 
@@ -2070,6 +2201,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbUsuariosede.ConsultarXUsuarioYSede(registroUsuario, registroSede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarUsuarioSede");
+            log.fatal("Error fatal en Servicio  consultarUsuarioSede");
             return null;
         }
         return Resultado;
@@ -2088,6 +2221,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbBuzon.ConsultarBuzonXUsuario(new BigDecimal(registroUsuario));
         } catch (Exception e) {
+            log.error("Error en Servicio consultarBuzonUsuario");
+            log.fatal("Error fatal en Servicio consultarBuzonUsuario");
             return null;
         }
         return Resultado;
@@ -2105,6 +2240,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbBuzon.consultarBuzonXId(idbuz);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarBuzon");
+            log.fatal("Error fatal consultarBuzon");
             return null;
         }
         return Resultado;
@@ -2126,6 +2263,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbBuzon.buscarBuzonParaEnviar(nombre, apellido, area, miBuzon, sede);
         } catch (Exception e) {
+             log.error("Error en Servicio consultarBuzonParaEnviar");
+            log.fatal("Error fatal consultarBuzonParaEnviar");
             return null;
         }
         return Resultado;
@@ -2150,6 +2289,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbUsuario.editarUsuario(registroUsuario);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio editarUsuario");
+            log.fatal("Error fatal editarUsuario");
             return 0;
         }
         return Resultado;
@@ -2172,6 +2313,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbBuzon.editarBuzon(registroBuzon);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio editarBuzon");
+            log.fatal("Error fatal editarBuzon");
             return 0;
         }
         return Resultado;
@@ -2193,6 +2336,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             ResultadoVencidas = ejbAlerta.consultarPaquetesXUsuarioOrigen(registroUsuario, registroSede);
         } catch (Exception e) {
+            log.error("Error en Servicio paquetesVencidosXOrigen");
+            log.fatal("Error fatal en Servicio  paquetesVencidosXOrigen");
             return null;
         }
         return ResultadoVencidas;
@@ -2214,6 +2359,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbAlerta.consultarPaquetesXUsuarioDestino(registroUsuario, registroSede);
         } catch (Exception e) {
+            log.error("Error en Servicio paquetesVencidosXDestino");
+            log.fatal("Error fatal en Servicio  paquetesVencidosXDestino");
             return null;
         }
         return Resultado;
@@ -2231,6 +2378,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbAlerta.consultarPaquetesXSeguimiento(usuarioSede);
         } catch (Exception e) {
+            log.error("Error en Servicio paquetesVencidosXSeguimiento");
+            log.fatal("Error fatal en Servicio  paquetesVencidosXSeguimiento");
             return null;
         }
         return Resultado;
@@ -2260,6 +2409,9 @@ public class SistemaDeCorrespondenciaWS {
                 }
             }
         } catch (Exception e) {
+            
+            log.error("Error en Servicio consultarBuzonXUsuario");
+            log.fatal("Error fatal en Servicio  consultarBuzonXUsuario");
             return null;
         }
         return Interno;
@@ -2277,6 +2429,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbDocumento.listarDocumentos();
         } catch (Exception e) {
+            log.error("Error en Servicio listarDocumentos");
+            log.fatal("Error fatal en Servicio  listarDocumentos");
             return null;
         }
         return Resultado;
@@ -2294,6 +2448,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbPrioridad.listarPrioridades();
         } catch (Exception e) {
+            log.error("Error en Servicio listarPrioridad");
+            log.fatal("Error fatal en Servicio  listarPrioridad");
             return null;
         }
         return Resultado;
@@ -2312,6 +2468,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSeguimiento.listaPaquetesProcesadosXUsuarioSede(idUsuarioSede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarPaquetesConfirmadosXUsuarioSede");
+            log.fatal("Error fatal en Servicio  consultarPaquetesConfirmadosXUsuarioSede");
             return null;
         }
         return Resultado;
@@ -2329,6 +2487,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSeguimiento.consultarPaquetesConfirmadosXRol(idUsuarioSede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarPaquetesConfirmadosXRol");
+            log.fatal("Error fatal en Servicio  consultarPaquetesConfirmadosXRol");
             return null;
         }
         return Resultado;
@@ -2348,6 +2508,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbUsuariosede.ConsultarSedeDeUsuario(registroUsuario);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarSedeDeUsuario");
+            log.fatal("Error fatal en Servicio  consultarSedeDeUsuario");
             return null;
         }
         return Resultado;
@@ -2366,6 +2528,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resul = ejbUsuario.consultarUsuarioXUser(user);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarUsuarioXUser");
+            log.fatal("Error fatal en Servicio  consultarUsuarioXUser");
             return null;
         }
         if (Resul.getIdusu() == null) {
@@ -2388,6 +2552,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbAdjunto.insertarAdjunto(registroAdj);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio insertarAdjunto");
+            log.fatal("Error fatal en Servicio  insertarAdjunto");
             return 0;
         }
         return Resultado;
@@ -2405,6 +2571,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSede.listarSedes();
         } catch (Exception e) {
+            log.error("Error en Servicio listarSedes");
+            log.fatal("Error fatal en Servicio  listarSedes");
             return null;
         }
         return Resultado;
@@ -2422,6 +2590,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbOrganizacion.findAll();
         } catch (Exception e) {
+            log.error("Error en Servicio consultarOrganizaciones");
+            log.fatal("Error fatal en Servicio  consultarOrganizaciones");
             return null;
         }
         return Resultado;
@@ -2445,6 +2615,8 @@ public class SistemaDeCorrespondenciaWS {
             Resultado = 1;
             Resultado = insertarBuzon(RegUsu.getIdusu().toString(), registroUsuSede.getIdsed().getIdsed().toString());
         } catch (Exception e) {
+            log.error("Error en Servicio insertarUsuarioSedeXDefecto");
+            log.fatal("Error fatal en Servicio  insertarUsuarioSedeXDefecto");
             Resultado = 0;
         }
         return Resultado;
@@ -2475,11 +2647,15 @@ public class SistemaDeCorrespondenciaWS {
                 Usuariosede registro = ejbUsuariosede.ConsultarXUsuarioYSede(usuario, sed);
                 return 2;
             } catch (Exception e) {
+                log.error("Error en Servicio ConsultarXUsuarioYSede en insertarUsuarioSedeXAdicional");
+            log.fatal("Error fatal en Servicio  ConsultarXUsuarioYSede en insertarUsuarioSedeXAdicional");
             }
             ejbUsuariosede.insertarUsuarioSede(registroUsuSede);
             Resultado = 1;
             Resultado = insertarBuzon(idusu, sed.getIdsed().toString());
         } catch (Exception e) {
+              log.error("Error en Servicio insertarUsuarioSedeXAdicional");
+            log.fatal("Error fatal en Servicio  insertarUsuarioSedeXAdicional");
             Resultado = 0;
         }
         return Resultado;
@@ -2498,6 +2674,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSede.listarNombresXId(new BigDecimal(Id));
         } catch (Exception e) {
+                log.error("Error en Servicio consultaNombreSedeXId");
+            log.fatal("Error fatal en Servicio  consultaNombreSedeXId");
         }
         return Resultado;
     }
@@ -2520,6 +2698,8 @@ public class SistemaDeCorrespondenciaWS {
                 Resultado = ejbBuzon.ConsultarBuzonExternoXNombreUsuario(userUsu, idUsuario);
             }
         } catch (Exception e) {
+            log.error("Error en Servicio consultarBuzonXNombreUsuario");
+            log.fatal("Error fatal en Servicio  consultarBuzonXNombreUsuario");
             return null;
         }
         return Resultado;
@@ -2538,6 +2718,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbBuzon.ConsultarBuzonXNombreSede(idusu, sede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarBuzonXUsuarioSede");
+            log.fatal("Error fatal en Servicio  consultarBuzonXUsuarioSede");
             return null;
         }
         return Resultado;
@@ -2579,6 +2761,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbValija.listarValijasXFechaVencimientoOrigen(new BigDecimal(idSede));
         } catch (Exception e) {
+            log.error("Error en Servicio valijasXFechaVencidaXUsuarioOrigen");
+            log.fatal("Error fatal en Servicio  valijasXFechaVencidaXUsuarioOrigen");
             return null;
         }
         return Resultado;
@@ -2596,6 +2780,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbValija.listarValijasXFechaVencimientoDestino(registroSede);
         } catch (Exception e) {
+             log.error("Error en Servicio valijasXFechaVencidaXUsuarioDestino");
+            log.fatal("Error fatal en Servicio  valijasXFechaVencidaXUsuarioDestino");
             return null;
         }
         return Resultado;
@@ -2622,6 +2808,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbBandeja.insertarBandeja(nuevo);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio insertarBandejaOrigen");
+            log.fatal("Error fatal en Servicio  insertarBandejaOrigen");
             Resultado = 0;
         }
         return Resultado;
@@ -2648,6 +2836,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbBandeja.insertarBandeja(nuevo);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio insertarBandejaDestino");
+            log.fatal("Error fatal en Servicio  insertarBandejaDestino");
             Resultado = 0;
         }
         return Resultado;
@@ -2667,6 +2857,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbPaquete.editarStatusPaquete(new BigDecimal(idpaq), status);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio editarEstatusPaquete");
+            log.fatal("Error fatal en Servicio  editarEstatusPaquete");
             Resultado = 0;
         }
         return Resultado;
@@ -2684,6 +2876,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbPaquete.ConsultarPaquetesExternos(sede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarPaquetesExternosXEnviar");
+            log.fatal("Error fatal en Servicio  consultarPaquetesExternosXEnviar");
             return null;
         }
         return Resultado;
@@ -2719,6 +2913,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbPaquete.editarLocalizacionPaquete(registroPaquete.getIdpaq(), localizacion);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio seguimientoExterno");
+            log.fatal("Error fatal en Servicio  seguimientoExterno");
             return 0;
         }
         return Resultado;
@@ -2736,6 +2932,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSeguimiento.consultarPaquetesXConfirmarExternos(sede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarPaquetesXConfirmarExternos");
+            log.fatal("Error fatal en Servicio  consultarPaquetesXConfirmarExternos");
             return null;
         }
         return Resultado;
@@ -2752,6 +2950,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbPaquete.consultarPaqueteXIdOCodigoBarras(codigo);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarPaqueteXIdOCodigoBarras");
+            log.fatal("Error fatal en Servicio  consultarPaqueteXIdOCodigoBarras");
             return null;
         }
         return Resultado;
@@ -2769,6 +2969,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbValija.consultarValijaXIdOCodigoBarras(codigo, sede);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarValijaXIdOCodigoBarras");
+            log.fatal("Error fatal en Servicio  consultarValijaXIdOCodigoBarras");
             return null;
         }
         return Resultado;
@@ -2785,6 +2987,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbValija.consultarValijaXIdOCodigoBarra(codigo);
         } catch (Exception e) {
+            log.error("Error en Servicio consultarValijaXIdOCodigoBarra");
+            log.fatal("Error fatal en Servicio  consultarValijaXIdOCodigoBarra");
             return null;
         }
         return Resultado;
@@ -2804,6 +3008,9 @@ public class SistemaDeCorrespondenciaWS {
             Resultado = ejbUsuario.auntenticarLDAPauntenticarLDAP(user, password);
 
         } catch (Exception e) {
+            
+            log.error("Error en Servicio auntenticarLDAP no pertenece a la organizacion");
+            log.fatal("Error fatal en Servicio  auntenticarLDAP");
             Resultado = "Fail";
         }
         return Resultado;
@@ -2826,6 +3033,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbSeguimiento.actualizacionEstadoEnvioExterno(paq);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio confirmarCorrespondenciaExterna");
+            log.fatal("Error fatal en Servicio  confirmarCorrespondenciaExterna");
             Resultado = 0;
         }
         return Resultado;
@@ -2842,6 +3051,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbBuzon.myIdBuzon(idUsuario);
         } catch (Exception e) {
+            log.error("Error en Servicio miIdBuzon");
+            log.fatal("Error fatal en Servicio  miIdBuzon");
             Resultado = 0;
         }
         return Resultado;
@@ -2859,6 +3070,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbPaquete.editarRespaqDePaquete(new BigDecimal(idpaq));
             Resultado = 1;
         } catch (Exception e) {
+             log.error("Error en Servicio editarRespuestaPaquete");
+            log.fatal("Error fatal en Servicio  editarRespuestaPaquete");
             Resultado = 0;
         }
         return Resultado;
@@ -2876,6 +3089,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbSede.listarSedesParaEnvio(new BigDecimal(idSede));
         } catch (Exception e) {
+             log.error("Error en Servicio listarSedesParaEnvio");
+            log.fatal("Error fatal en Servicio  listarSedesParaEnvio");
             return null;
         }
         return Resultado;
@@ -2892,6 +3107,8 @@ public class SistemaDeCorrespondenciaWS {
         try {
             Resultado = ejbMensaje.consultarMensajeXIdPaquete(idpaq);
         } catch (Exception e) {
+            log.error("Error en Servicio listarMensajesXPaquete");
+            log.fatal("Error fatal en Servicio  listarMensajesXPaquete");
             return null;
         }
         return Resultado;
@@ -2911,6 +3128,8 @@ public class SistemaDeCorrespondenciaWS {
             idValija.setIdval(new BigDecimal(idval));
             Resultado = ejbIncidente.consultarIncidenteXValija(idValija);
         } catch (Exception e) {
+            log.error("Error en Servicio listarIncidentesXValija");
+            log.fatal("Error fatal en Servicio  listarIncidentesXValija");
             return null;
         }
         return Resultado;
@@ -2946,6 +3165,8 @@ public class SistemaDeCorrespondenciaWS {
             ejbSede.create(registroSede);
             Resultado = 1;
         } catch (Exception e) {
+            log.error("Error en Servicio insertarNuevaSede");
+            log.fatal("Error fatal en Servicio  insertarNuevaSede");
             Resultado = 0;
         }
         return Resultado;
