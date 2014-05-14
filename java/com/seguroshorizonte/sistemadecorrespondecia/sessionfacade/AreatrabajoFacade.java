@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -21,6 +22,7 @@ public class AreatrabajoFacade extends AbstractFacade<Areatrabajo> {
 
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
+    private static Logger log = Logger.getLogger(AreatrabajoFacade.class);
 
     @Override
     protected EntityManager getEntityManager() {
@@ -50,18 +52,17 @@ public class AreatrabajoFacade extends AbstractFacade<Areatrabajo> {
     }
 
     public int consultarAreaExistente(String nombre, String sede) {
-        
-       int Resultado = 0;
+        int Resultado = 0;
         BigDecimal idsed = new BigDecimal(sede);
-      try {
-           Query consulta = em.createNamedQuery("Areatrabajo.findByNombreatr").setParameter("nombreatr", nombre).setParameter("idsed", idsed);
-          Object rr = consulta.getSingleResult();
-           Resultado = 1;
+        try {
+            Query consulta = em.createNamedQuery("Areatrabajo.findByNombreatr").setParameter("nombreatr", nombre).setParameter("idsed", idsed);
+            Object rr = consulta.getSingleResult();
+            Resultado = 1;
         } catch (Exception e) {
-             Resultado = 0;
+            log.error("Error en consultarAreaExistente");
+            log.fatal("Error fatal en consultarAreaExistente");
+            Resultado = 0;
         }
-      
-     
         return Resultado;
     }
 

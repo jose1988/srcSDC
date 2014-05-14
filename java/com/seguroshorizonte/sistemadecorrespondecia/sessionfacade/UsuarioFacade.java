@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -24,6 +25,7 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
 
     @PersistenceContext(unitName = "SistemaDeCorrespondeciaPU")
     private EntityManager em;
+    private static Logger log = Logger.getLogger(UsuarioFacade.class);
 
     @Override
     protected EntityManager getEntityManager() {
@@ -39,6 +41,8 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         try {
             Registro = (Usuario) (em.createNamedQuery("Usuario.findByUserusu").setParameter("userusu", user).getSingleResult());
         } catch (Exception e) {
+            log.error("Error en consultarUsuarioXUser");
+            log.fatal("Error fatal en consultarUsuarioXUser");
             return Registro;
         }
         return Registro;
@@ -118,7 +122,6 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
         String[] values;
         String[] vect = new String[2];
         boolean find = false;
-
         try {
             ldapVersion = LDAPConnection.LDAP_V3;
             //Puerto por Defecto 389
@@ -128,21 +131,22 @@ public class UsuarioFacade extends AbstractFacade<Usuario> {
             dn = user + base;
             conn.connect(ldapHost, ldapPort);
             conn.bind(ldapVersion, dn, password.getBytes("UTF8"));
-
             if (conn.isBound()) {
                 return "ACEPT";
-
             } else {
                 return "FAIL";
             }
-
         } //catch(LDAPException ex){
         catch (UnsupportedEncodingException ex) {
+            log.error("Error al Autenticar");
+            log.fatal("Error fatal al Autenticar");
             return "FAIL";
         } catch (LDAPException ex) {
             if (ex.getLDAPErrorMessage().split(",")[2].trim().split(" ")[1].trim().compareTo("773") == 0) {
                 return "PASS";
             }
+            log.error("Error al Autenticar");
+            log.fatal("Error fatal al Autenticar");
             return "FAIL";
         } finally {
             //conn.disconnect();

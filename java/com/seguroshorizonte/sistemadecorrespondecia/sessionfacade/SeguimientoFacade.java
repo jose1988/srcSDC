@@ -76,13 +76,13 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
             consulta = em.createNamedQuery("Seguimiento.findPaqueteByRolSede").setParameter("idsed", Registro.getIdsed());
             Resultado = consulta.getResultList();
         }
-        if (Registro.getIdrol().getIdrol().toString().compareTo("1") == 0) { //caso area
-
+        //caso area
+        if (Registro.getIdrol().getIdrol().toString().compareTo("1") == 0) {
             consulta = em.createNamedQuery("Seguimiento.findPaqueteByArea").setParameter("idsed", Registro.getIdsed());
             Resultado = consulta.getResultList();
         }
-        if (Registro.getIdrol().getIdrol().toString().compareTo("3") == 0) { //caso emisario
-
+        //caso emisario
+        if (Registro.getIdrol().getIdrol().toString().compareTo("3") == 0) {
             consulta = em.createNamedQuery("Seguimiento.findPaqueteByEmisario").setParameter("idsed", Registro.getIdsed());
             Resultado = consulta.getResultList();
         }
@@ -94,14 +94,12 @@ public class SeguimientoFacade extends AbstractFacade<Seguimiento> {
         List<Paquete> Resultado = null;
         Query consulta = em.createNamedQuery("Seguimiento.findPaqByExterno").setParameter("idsed", sede);
         Resultado = consulta.getResultList();
-
         return Resultado;
     }
 
     public void actualizacionEstadoEnvioExterno(Paquete idPaq) {
         Query q = em.createNativeQuery("UPDATE SEGUIMIENTO SET STATUSSEG=1 WHERE idpaq = " + idPaq.getIdpaq() + " AND NIVELSEG ='Externo' ");
         q.executeUpdate();
-
     }
 
     public Date FechaActual() {

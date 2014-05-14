@@ -29,6 +29,7 @@ public class UsuariosedeFacade extends AbstractFacade<Usuariosede> {
     protected EntityManager getEntityManager() {
         return em;
     }
+
     public UsuariosedeFacade() {
         super(Usuariosede.class);
     }

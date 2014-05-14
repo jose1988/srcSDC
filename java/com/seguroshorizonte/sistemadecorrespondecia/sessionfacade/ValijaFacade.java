@@ -57,7 +57,7 @@ public class ValijaFacade extends AbstractFacade<Valija> {
     }
 
     public void entregarValija(BigDecimal idValija, String Status, Usuariosede use) {
-          Date fecha = new Date();
+        Date fecha = new Date();
         Calendar cal = Calendar.getInstance();
         cal.setTime(fecha);
         cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -199,31 +199,26 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         }
         return Resultado;
     }
-    
-     public Valija consultarValijaXIdOCodigoBarra(String Codigo) {
+
+    public Valija consultarValijaXIdOCodigoBarra(String Codigo) {
         Valija Resultado = null;
-   
         if (Codigo.toString().length() > 8) {
             String sede = new String(Codigo.substring(0, 4));
             String año = new String(Codigo.substring(6, 8));
             BigDecimal id = new BigDecimal(Codigo.substring(8, Codigo.toString().length()));
-           
-           
-               Query consulta = em.createNamedQuery("Valija.findByIdval").setParameter("idval", id);
-                Resultado = (Valija) consulta.getSingleResult();
-                
-           
+            Query consulta = em.createNamedQuery("Valija.findByIdval").setParameter("idval", id);
+            Resultado = (Valija) consulta.getSingleResult();
         } else {
             Query consulta = em.createNamedQuery("Valija.findByIdval").setParameter("idval", new BigDecimal(Codigo));
             Resultado = (Valija) consulta.getSingleResult();
         }
         return Resultado;
     }
-     
-      public List<Valija> consultarStatusValija(Usuariosede iduse) {
-        List<Valija>  Resultado;
+
+    public List<Valija> consultarStatusValija(Usuariosede iduse) {
+        List<Valija> Resultado;
         Query consulta = em.createNamedQuery("Valija.findByStatusval").setParameter("iduse", iduse.getIduse()).setParameter("iduser", iduse.getIduse());
-        Resultado = (List<Valija>)  consulta.getResultList();
+        Resultado = (List<Valija>) consulta.getResultList();
         return Resultado;
     }
 }
