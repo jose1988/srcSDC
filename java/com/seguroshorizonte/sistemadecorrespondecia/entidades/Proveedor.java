@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proveedor.findByIdpro", query = "SELECT p FROM Proveedor p WHERE p.idpro = :idpro"),
     @NamedQuery(name = "Proveedor.findByNombrepro", query = "SELECT p FROM Proveedor p WHERE p.nombrepro = :nombrepro"),
     @NamedQuery(name = "Proveedor.findMaxProveedor", query = "SELECT MAX(p.idpro) FROM Proveedor p"),
-    @NamedQuery(name = "Proveedor.findByExistente", query = "SELECT p FROM Proveedor p Proveedorsede s WHERE p.nombrepro = :nombrepro AND s.idsed.idsed= :idsed  AND s.idpro.idpro=p.idpro ")})
+    @NamedQuery(name = "Proveedor.findByExistente", query = "SELECT p FROM Proveedor p, Proveedorsede s WHERE p.nombrepro = :nombrepro AND s.idsed.idsed= :idsed  AND s.idpro.idpro=p.idpro ")})
 public class Proveedor implements Serializable {
 
     private static final long serialVersionUID = 1L;

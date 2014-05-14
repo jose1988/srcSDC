@@ -63,11 +63,10 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import java.util.Collections;
 import java.util.Comparator;
+import org.apache.log4j.*;
 
-/**
- *
- * @author Pangea
- */
+
+
 @WebService(serviceName = "SistemaDeCorrespondenciaWS")
 public class SistemaDeCorrespondenciaWS {
 
@@ -116,6 +115,8 @@ public class SistemaDeCorrespondenciaWS {
     @EJB
     private NivelFacade ejbNivel;
 
+    
+    private static Logger log = Logger.getLogger(SistemaDeCorrespondenciaWS.class);
     /**
      * This is a sample web service operation
      *
@@ -123,11 +124,17 @@ public class SistemaDeCorrespondenciaWS {
      */
     @WebMethod(operationName = "consultarBandejas")
     public List<Infobandeja> consultarBandejas() {
+        
+       BasicConfigurator.configure(); 
 
         List<Infobandeja> Registro = new ArrayList<Infobandeja>();
         try {
             Registro = ejbInfobandeja.findAll();
         } catch (Exception e) {
+            
+            log.error("Error en consultarBandejas");
+            log.fatal("Error fatal en consultarBandejas");
+            
             Registro = null;
         }
         return Registro;
