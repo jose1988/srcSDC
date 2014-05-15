@@ -11,10 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-/**
- *
- * @author Pangea
- */
+
 @Stateless
 public class AdjuntoFacade extends AbstractFacade<Adjunto> {
 
