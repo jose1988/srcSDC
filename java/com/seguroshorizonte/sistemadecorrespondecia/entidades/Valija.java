@@ -6,6 +6,8 @@ package com.seguroshorizonte.sistemadecorrespondecia.entidades;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,6 +27,7 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -55,6 +59,8 @@ public class Valija implements Serializable {
     @NotNull
     @Column(name = "ORIGENVAL")
     private BigDecimal origenval;
+    @OneToMany(mappedBy = "idval")
+    private Collection<Paquete> paqueteCollection;
     @JoinColumn(name = "IDRUSE", referencedColumnName = "IDUSE")
     @ManyToOne
     private Usuariosede idruse;
@@ -204,6 +210,14 @@ public class Valija implements Serializable {
         this.tipoval = tipoval;
     }
 
+    public Usuariosede getIdruse() {
+        return idruse;
+    }
+
+    public void setIdruse(Usuariosede idruse) {
+        this.idruse = idruse;
+    }
+
     public BigDecimal getOrigenval() {
         return origenval;
     }
@@ -212,11 +226,12 @@ public class Valija implements Serializable {
         this.origenval = origenval;
     }
 
-    public Usuariosede getIdruse() {
-        return idruse;
+    @XmlTransient
+    public Collection<Paquete> getPaqueteCollection() {
+        return paqueteCollection;
     }
 
-    public void setIdruse(Usuariosede idruse) {
-        this.idruse = idruse;
+    public void setPaqueteCollection(Collection<Paquete> paqueteCollection) {
+        this.paqueteCollection = paqueteCollection;
     }
 }

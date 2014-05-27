@@ -37,6 +37,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Proveedor.findMaxProveedor", query = "SELECT MAX(p.idpro) FROM Proveedor p"),
     @NamedQuery(name = "Proveedor.findByExistente", query = "SELECT p FROM Proveedor p, Proveedorsede s WHERE p.nombrepro = :nombrepro AND s.idsed.idsed= :idsed  AND s.idpro.idpro=p.idpro ")})
 public class Proveedor implements Serializable {
+    @OneToMany(mappedBy = "idpro")
+    private Collection<Valija> valijaCollection;
 
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -130,5 +132,14 @@ public class Proveedor implements Serializable {
 
     public void setCodigopro(String codigopro) {
         this.codigopro = codigopro;
+    }
+
+    @XmlTransient
+    public Collection<Valija> getValijaCollection() {
+        return valijaCollection;
+    }
+
+    public void setValijaCollection(Collection<Valija> valijaCollection) {
+        this.valijaCollection = valijaCollection;
     }
 }

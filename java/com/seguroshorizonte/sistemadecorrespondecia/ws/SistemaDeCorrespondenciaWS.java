@@ -166,7 +166,7 @@ public class SistemaDeCorrespondenciaWS {
      * @return
      */
     @WebMethod(operationName = "consultarPaquetesXBandeja")
-    public List<Paquete> consultarPaquetesXBandeja(@WebParam(name = "user") String idUser, @WebParam(name = "ban") String ban) {
+    public List<Paquete> consultarPaquetesXBandeja(@WebParam(name = "user") String idUser, @WebParam(name = "ban") String ban, @WebParam(name = "idsed") String idsed) {
 
         BigDecimal id = new BigDecimal(idUser);
         BigDecimal b1 = new BigDecimal("1");
@@ -181,17 +181,16 @@ public class SistemaDeCorrespondenciaWS {
         while (iterator.hasNext()) {
             Bandeja aux = iterator.next();
             if (banj.equals(b1) || banj.equals(b2)) {
-                boolean x = aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu());
-                boolean y = aux.getIdusu().getIdusu().equals(usuario.getIdusu());
+               
               
-                if (aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu()) && aux.getIdusu().getIdusu().equals(usuario.getIdusu())) {
+                if (aux.getIdpaq().getIdsed().getIdsed().equals(new BigDecimal(idsed)) && aux.getIdpaq().getOrigenpaq().getIdusu().getIdusu().equals(usuario.getIdusu()) && aux.getIdusu().getIdusu().equals(usuario.getIdusu())) {
                     Registro.add(aux.getIdpaq());
                 } else {
                     iterator.remove();
                 }
             }
             if (banj.equals(b3) || banj.equals(b4)) {
-                if (aux.getIdpaq().getDestinopaq().getIdusu().getIdusu().equals(usuario.getIdusu()) && aux.getIdusu().getIdusu().equals(usuario.getIdusu())) {
+                if ( aux.getIdpaq().getDestinopaq().getIdatr().getIdsed().getIdsed().equals(new BigDecimal(idsed)) && aux.getIdpaq().getDestinopaq().getIdusu().getIdusu().equals(usuario.getIdusu()) && aux.getIdusu().getIdusu().equals(usuario.getIdusu())) {
                     Registro.add(aux.getIdpaq());
                 } else {
                     iterator.remove();
@@ -592,8 +591,8 @@ public class SistemaDeCorrespondenciaWS {
                 }
             }
         } catch (Exception e) {
-            log.error("Error en Servicio ConsultarPaquetesParaValija");
-            log.fatal("Error fatal en Servicio  ConsultarPaquetesParaValija");
+            log.error("Error en Servicio ConsultarSedeParaValija");
+            log.fatal("Error fatal en Servicio  ConsultarSedeParaValija");
             return null;
         }
         return Resultado;
@@ -2968,6 +2967,9 @@ public class SistemaDeCorrespondenciaWS {
         Valija Resultado = null;
         try {
             Resultado = ejbValija.consultarValijaXIdOCodigoBarras(codigo, sede);
+            if (Resultado.getCodproveedorval() == null) {
+                Resultado = null;
+            }
         } catch (Exception e) {
             log.error("Error en Servicio consultarValijaXIdOCodigoBarras");
             log.fatal("Error fatal en Servicio  consultarValijaXIdOCodigoBarras");

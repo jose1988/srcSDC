@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Pangea
  */
 @Entity
-@Table(name = "INFOBANDEJA")
+@Table(name = "INFO_BANDEJA")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Infobandeja.findAll", query = "SELECT i FROM Infobandeja i"),
@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Infobandeja.findByNombreiba", query = "SELECT i FROM Infobandeja i WHERE i.nombreiba = :nombreiba"),
     @NamedQuery(name = "Infobandeja.findByDescripcioniba", query = "SELECT i FROM Infobandeja i WHERE i.descripcioniba = :descripcioniba")})
 public class Infobandeja implements Serializable {
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idiba")
+    private Collection<Bandeja> bandejaCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -48,8 +49,6 @@ public class Infobandeja implements Serializable {
     @Size(max = 2500)
     @Column(name = "DESCRIPCIONIBA")
     private String descripcioniba;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idiba")
-    private Collection<Bandeja> bandejaCollection;
 
     public Infobandeja() {
     }
@@ -82,15 +81,6 @@ public class Infobandeja implements Serializable {
         this.descripcioniba = descripcioniba;
     }
 
-    @XmlTransient
-    public Collection<Bandeja> getBandejaCollection() {
-        return bandejaCollection;
-    }
-
-    public void setBandejaCollection(Collection<Bandeja> bandejaCollection) {
-        this.bandejaCollection = bandejaCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -115,4 +105,14 @@ public class Infobandeja implements Serializable {
     public String toString() {
         return "com.seguroshorizonte.sistemadecorrespondecia.entidades.Infobandeja[ idiba=" + idiba + " ]";
     }
+
+    @XmlTransient
+    public Collection<Bandeja> getBandejaCollection() {
+        return bandejaCollection;
+    }
+
+    public void setBandejaCollection(Collection<Bandeja> bandejaCollection) {
+        this.bandejaCollection = bandejaCollection;
+    }
+    
 }

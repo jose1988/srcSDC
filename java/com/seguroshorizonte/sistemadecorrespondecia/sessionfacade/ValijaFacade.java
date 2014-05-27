@@ -65,9 +65,9 @@ public class ValijaFacade extends AbstractFacade<Valija> {
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
         fecha = cal.getTime();
-        Query q = em.createNativeQuery("UPDATE valija SET statusval=? idruse=? fecharval=? WHERE idval=?");
+        Query q = em.createNativeQuery("UPDATE valija SET statusval=?, idruse=?, fecharval=? WHERE idval=?");
         q.setParameter(1, Status);
-        q.setParameter(2, use);
+        q.setParameter(2, use.getIduse());
         q.setParameter(3, fecha);
         q.setParameter(4, idValija);
         q.executeUpdate();
